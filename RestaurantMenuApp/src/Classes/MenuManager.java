@@ -180,6 +180,9 @@ public class MenuManager {
 		}
 	}
 
+	public static float getItemPrice(int id) {
+		return 0;
+	}
 	public static void start(ScannerHandler sc) {
 		for (MenuItem item : items) {
 			if (item == null) {
