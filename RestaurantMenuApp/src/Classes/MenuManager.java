@@ -27,16 +27,42 @@ public class MenuManager {
 	public void choices(Scanner s)
 	{
 		int choice = -1;
-		while(choice!= 0)
+		while(choice!= 5)
 		{
-			//choices
+			System.out.println("1. View Items");
+			System.out.println("2. Add Items");
+			System.out.println("3. Edit Items");
+			System.out.println("4. Remove Items");
+			System.out.println("5. Exit");
+			try {
 			choice = s.nextInt();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Please enter a valid choice.");	
+			}
 			switch(choice)
 			{
+			//View Items
 			case 1:
 				break;
+				
+			//Add Items
 			case 2 :
 				break;
+			
+			//Edit Items
+			case 3 :
+				break;
+			
+			//Remove Items
+			case 4 :
+				break;
+				
+			//Exit
+			case 5 :
+				break;
+				
 			default:
 				System.out.println("Please enter a valid choice.");	
 			}
