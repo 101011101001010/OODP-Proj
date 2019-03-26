@@ -1,15 +1,21 @@
 package Classes;
 
+import java.sql.Date;
 import java.util.ArrayList;
+
+import tools.MenuFactory;
 
 public class Order {
 	ArrayList<OrderItem> orderItemList = new ArrayList<OrderItem>();
 	int orderID;
 	int staffID;
+	Date orderDate;
+	String sessions;
 	
 	public Order(int orderID, int staffID){
 		this.orderID = orderID;
 		this.staffID = staffID;
+		orderDate.toLocalDate();
 	}
 	
 	public void addItem(int itemID,int count)
@@ -27,5 +33,15 @@ public class Order {
 		  	price += orderItemList.get(i).price;
 		  }
 		return price;
+	}
+	public void print(String tableID)
+	{
+		String title = "Bill for "+tableID;
+		String[] items = new String[this.orderItemList.size()];
+		for(int i =0; i<orderItemList.size();i++)
+		{
+			items[i] = orderItemList.get(i).print();
+		}
+		MenuFactory.printMenu(title, items);
 	}
 }

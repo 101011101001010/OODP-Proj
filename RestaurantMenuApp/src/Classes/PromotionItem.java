@@ -5,6 +5,7 @@ public class PromotionItem {
 	int itemID;
 	float price;
 	String name;
+	int saleCount;
 	
 	public PromotionItem()
 	{
