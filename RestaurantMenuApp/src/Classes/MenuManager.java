@@ -110,16 +110,6 @@ public class MenuManager {
 	       });
 		break;
 		
-		//Price
-				case 3:
-					Collections.sort(tempList, new Comparator<MenuItem>(){
-			            public int compare(MenuItem s1, MenuItem s2) {
-			            	return Float.compare(s1.price, s2.price);
-			           }
-			       });
-				break;
-				}
-		
 		//Category	
 		case 4:
 			Collections.sort(tempList, new Comparator<MenuItem>(){
@@ -134,7 +124,15 @@ public class MenuManager {
 	       });
 		break;
 		
-		
+		//Price
+		case 3:
+			Collections.sort(tempList, new Comparator<MenuItem>(){
+	            public int compare(MenuItem s1, MenuItem s2) {
+	            	return Float.compare(s1.price, s2.price);
+	           }
+	       });
+		break;
+		}
 		
 		for(int i = 0; i<tempList.size(); i++)
 		{
