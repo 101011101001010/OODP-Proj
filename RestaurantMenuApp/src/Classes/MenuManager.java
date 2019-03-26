@@ -45,6 +45,10 @@ public class MenuManager {
 		}
 	}
 
+	public static List<MenuItem> getItems() {
+		return items;
+	}
+
 	private static List<String> getItemNames() {
 		List<String> list = new ArrayList<>();
 
@@ -67,7 +71,7 @@ public class MenuManager {
 		return list;
 	}
 
-	public static void updateSalesCount(int id, int salesCount) {
+	public static void addSalesCount(int id, int salesCount) {
 		if (id >= 10000) {
 			return;
 		}

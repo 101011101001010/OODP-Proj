@@ -17,9 +17,9 @@ public class OrderItem{
 	public void addCount()
 	{
 		if(promotion)
-			PromotionManager.addCount(itemID,count);
+			PromotionManager.addSalesCount(itemID,count);
 		else
-			MenuManager.addCount(itemID,count);
+			MenuManager.addSalesCount(itemID,count);
 	}
 	public String print()
 	{
@@ -35,11 +35,12 @@ public class OrderItem{
 		}
 		else
 		{
-			for(int i =0; i<MenuManager.menuList.size();i++)
+			for(int i =0; i<MenuManager.getItems().size();i++)
 			{
-				if(MenuManager.menuList.get(i).itemID == itemID)
+				MenuItem item = MenuManager.getItems().get(i);
+				if(item.getItemId() == itemID)
 				{
-					return MenuManager.menuList.get(i).name+ " " + this.price;
+					return item.getName()+ " " + this.price;
 				}
 			}
 		}
