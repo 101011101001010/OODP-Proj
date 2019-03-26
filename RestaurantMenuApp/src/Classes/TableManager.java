@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class TableManager {
 
 	public static ArrayList<Table> tableList = new ArrayList<Table>();
-	private Map<String, Integer> map;
+	private static Map<String, Integer> map;
 
 	public TableManager()
 	{
@@ -124,7 +124,8 @@ public class TableManager {
 		}
 	}
 
-	public void setOccupied(String tableID, int orderID)
+
+	public static void setOccupied(String tableID, int orderID)
 	{
 		int index = map.get(tableID);
 		tableList.get(index).setOrderID(orderID);
@@ -132,13 +133,13 @@ public class TableManager {
 
 	}
 
-	public void setReserved(String tableID, int pax){
+	public static void setReserved(String tableID, int pax){
 		int index = map.get(tableID);
 		tableList.get(index).setOccupied(-1);
 		tableList.get(index).setPax(pax);
 	}
 
-	public void clear (String tableID)
+	public static void clear (String tableID)
 	{
 		int index = map.get(tableID);
 		tableList.get(index).setOccupied(0);
