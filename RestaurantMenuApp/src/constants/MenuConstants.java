@@ -14,7 +14,6 @@ public class MenuConstants {
     public static final String MSG_EXIT_PROGRAM = "Exit Program";
     public static final String MSG_CONTINUE = "Enter anything to continue...";
 
-    public static final String MENU_HANDLER_CLASS_PREFIX = "console.MenuHandler_";
     public static final String MENU_HANDLER_CALL_METHOD = "start";
 
     //////////////////
@@ -62,11 +61,11 @@ public class MenuConstants {
             "Sort by Price"
     };
 
-    public static final String MENU_HEADER_4 = OPTIONS_MAIN[4];
-    public static final String[] MENU_SUB_4 = {
-            MENU_HEADER_4 + " - " + MENU_ACTIONS[0],
-            MENU_HEADER_4 + " - " + MENU_ACTIONS[1],
-            MENU_HEADER_4 + " - " + MENU_ACTIONS[2],
-            MENU_HEADER_4 + " - " + MENU_ACTIONS[3]
+    public static final String MENU_HEADER_5 = OPTIONS_MAIN[5];
+    public static final String[] MENU_SUB_5 = {
+            MENU_HEADER_5 + " - " + MENU_ACTIONS[0],
+            MENU_HEADER_5 + " - " + MENU_ACTIONS[1],
+            MENU_HEADER_5 + " - " + MENU_ACTIONS[2],
+            MENU_HEADER_5 + " - " + MENU_ACTIONS[3]
     };
 }

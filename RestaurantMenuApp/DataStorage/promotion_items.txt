@@ -1,1 +1,1 @@
-PACKAGE, 10.0, 10, 0, 0
+HELLO, 10.0, 0, 0, WORLD/GG
