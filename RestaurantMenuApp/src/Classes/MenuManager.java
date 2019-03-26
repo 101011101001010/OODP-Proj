@@ -29,7 +29,7 @@ public class MenuManager {
 	public void choices(Scanner s)
 	{
 		int choice = -1;
-		int choice1 = -1;
+		int choice1 = -1; 
 		while(choice != 3)
 		{
 			System.out.println("1. Menu Items");
