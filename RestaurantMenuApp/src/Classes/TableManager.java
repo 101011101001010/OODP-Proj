@@ -9,8 +9,9 @@ public class TableManager {
 
 	public static ArrayList<Table> tableList = new ArrayList<Table>();
 	private static Map<String, Integer> map;
+	static boolean done = false;
 
-	public TableManager()
+	static
 	{
 		map = new HashMap<>();
 
@@ -46,19 +47,20 @@ public class TableManager {
 			count++;
 		}
 
+		done = true;
 	}
-	public void choices(Scanner s)
+
+	public static void choices(Scanner s)
 	{
 		int choice = -1;
 		while (choice != 0){
 			System.out.println("1. Show Table");
 			System.out.println("1. Set Table");
 			System.out.println("1. Show Table");
-
 		}
 	}
 
-	public void checkVacancy()
+	public static void checkVacancy()
 	{
 		int index = 0;
 		System.out.println("Tables with 2 seats.");
@@ -130,7 +132,6 @@ public class TableManager {
 		int index = map.get(tableID);
 		tableList.get(index).setOrderID(orderID);
 		tableList.get(index).setOccupied(1);
-
 	}
 
 	public static void setReserved(String tableID, int pax){

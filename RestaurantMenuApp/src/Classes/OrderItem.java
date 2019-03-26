@@ -5,7 +5,7 @@ public class OrderItem{
 	int itemID;
 	float price;
 	boolean promotion = false;
-	public OrderItem(int count,int itemID)
+	public OrderItem(int itemID,int count)
 	{
 		this.itemID = itemID;
 		this.count = count;
@@ -39,6 +39,7 @@ public class OrderItem{
 			for(int i =0; i<MenuManager.getItems().size();i++)
 			{
 				MenuItem item = MenuManager.getItems().get(i);
+				System.out.println("*" + itemID);
 				if(item.getItemId() == itemID)
 				{
 					return item.getName()+ " " + this.price;

@@ -14,13 +14,16 @@ public class OrderManager {
 	{
 		System.out.println("Please enter Staff ID");
 		int staffID = s.nextInt();
+		s.nextLine();
 		System.out.println("Please enter the table ID");
 		String tableID = s.next();
 		orderCount++;
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
+		System.out.println("Order Count "+ orderCount + orderList.size());
 		TableManager.setOccupied(tableID,x.orderID);
 	}
+
 	public static void viewOrder()
 	{
 		for(int i = 0; i<orderList.size();i++)
@@ -28,6 +31,7 @@ public class OrderManager {
 			orderList.get(i).view();
 		}
 	}
+
 	public static void removeOrder(Scanner s)
 	{
 		System.out.println("Please enter the table ID");
@@ -60,7 +64,7 @@ public class OrderManager {
 		tableID = s.next();
 		for(int i = 0;i<TableManager.tableList.size(); i++)
 		{
-			if(TableManager.tableList.get(i).tableID == tableID)
+			if(TableManager.tableList.get(i).tableID.equals(tableID))
 			{
 				TableManager.tableList.get(i).occupied=0;
 				tempOrderID = TableManager.tableList.get(i).orderID;
@@ -87,7 +91,7 @@ public class OrderManager {
 		tableID = s.next();
 		for(int i = 0;i<TableManager.tableList.size(); i++)
 		{
-			if(TableManager.tableList.get(i).tableID == tableID)
+			if(TableManager.tableList.get(i).tableID.equals(tableID))
 			{
 				tempOrderID = TableManager.tableList.get(i).orderID;
 			}

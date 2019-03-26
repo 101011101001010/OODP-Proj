@@ -2,6 +2,7 @@ package Classes;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import constants.AppConstants;
 import tools.FileIOHandler;
@@ -11,7 +12,7 @@ public class Order {
 	ArrayList<OrderItem> orderItemList = new ArrayList<OrderItem>();
 	int orderID;
 	int staffID;
-	Date orderDate;
+	//Date orderDate;
 	String sessions;
 	String tableID;
 	
@@ -19,7 +20,7 @@ public class Order {
 		this.orderID = orderID;
 		this.staffID = staffID;
 		this.tableID = tableID;
-		orderDate.toLocalDate();
+		//orderDate.toLocalDate();
 	}
 	
 	public void addItem(int itemID,int count)
@@ -53,17 +54,19 @@ public class Order {
 		float totalPrice = 0;
 		String writeData=tableID + ", " + orderID +", ";
 		String title = "Bill for "+tableID;
+		List<String> items2 = new ArrayList<>();
 		String[] items = new String[this.orderItemList.size()];
 		for(int i =0; i<orderItemList.size();i++)
 		{
 			writeData+=orderItemList.get(i).itemID + ", " + orderItemList.get(i).count + ", " + orderItemList.get(i).price+", ";
 			totalPrice+=orderItemList.get(i).price;
 			orderItemList.get(i).addCount();
-			items[i] = orderItemList.get(i).print();
+			items2.add(orderItemList.get(i).print());
 		}
-		writeData+=totalPrice+'/';
-		items[orderItemList.size()+1] = "Total: "+totalPrice;
-		MenuFactory.printMenu(title, items);
+
+		writeData+=totalPrice+'\n';
+		items2.add("Total: "+totalPrice);
+		MenuFactory.printMenu(title, items2);
 		FileIOHandler.write(AppConstants.FILE_NAMES[5].toLowerCase(), writeData);
 		//saveItemToRevenue
 	}

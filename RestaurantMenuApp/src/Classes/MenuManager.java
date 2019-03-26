@@ -185,8 +185,19 @@ public class MenuManager {
 	}
 
 	public static float getItemPrice(int id) {
+		if (id >= 10000) {
+			return 0;
+		}
+
+		for (MenuItem item : items) {
+			if (item.getItemId() == id) {
+				return item.getPrice();
+			}
+		}
+
 		return 0;
 	}
+
 	public static void start(ScannerHandler sc) {
 		for (MenuItem item : items) {
 			if (item == null) {
