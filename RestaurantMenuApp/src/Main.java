@@ -44,7 +44,15 @@ public class Main {
 			
 			//Menu 
 			case 4:
-				break;
+			{
+				System.out.println("Please select an option");
+				System.out.println("1. Orders");
+				System.out.println("2. Print bill");
+				System.out.println("3. Reservation");
+				System.out.println("4. Menu options");
+				System.out.println("5. Admin menu");
+				System.out.println("6. Exit");
+			}
 			
 			//Admin
 			case 5:
