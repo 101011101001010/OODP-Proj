@@ -19,5 +19,6 @@ public class PromotionItem {
 		System.out.println("Name :" + this.name);
 		System.out.println("Price :" + this.price);
 		System.out.println("Description :" + this.description);
+		System.out.println("=================================");
 	}
 }

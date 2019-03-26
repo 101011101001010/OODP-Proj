@@ -34,5 +34,6 @@ public class MenuItem {
 		System.out.println("Category :" + this.category);
 		System.out.println("Price :" + this.price);
 		System.out.println("Description :" + this.description);
+		System.out.println("=================================");
 	}
 }
