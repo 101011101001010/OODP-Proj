@@ -27,7 +27,7 @@ public class OrderItem{
 		{
 			for(int i =0; i<PromotionManager.promotionList.size();i++)
 			{
-				if(PromotionManager.promotionList.get(i).itemID == itemID)
+				if(PromotionManager.promotionList.get(i).itemId == itemID)
 				{
 					return PromotionManager.promotionList.get(i).name + " " + this.price;
 				}

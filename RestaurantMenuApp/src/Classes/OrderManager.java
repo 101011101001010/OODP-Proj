@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class OrderManager {
+	/*
 	ArrayList<Order> orderList = new ArrayList<Order>();
 	int orderCount = 0;
 	public OrderManager()
@@ -160,4 +161,5 @@ public class OrderManager {
 			}
 		}
 	}
+	*/
 }

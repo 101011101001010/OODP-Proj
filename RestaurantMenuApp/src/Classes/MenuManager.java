@@ -165,7 +165,7 @@ public class MenuManager {
 	}
 
 	private static void remove(ScannerHandler sc) {
-		String header = MenuConstants.MENU_SUB_0[2];
+		String header = MenuConstants.MENU_SUB_0[3];
 		List<String> list = getItemNames();
 		MenuFactory.printMenu(header, list);
 		int itemId = MenuFactory.loopChoice(sc, list.size());

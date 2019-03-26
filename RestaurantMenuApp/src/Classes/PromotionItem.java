@@ -1,25 +1,69 @@
 package Classes;
 
+import constants.AppConstants;
+
 public class PromotionItem {
 	String description;
-	int itemID;
+	int itemId;
 	float price;
 	String name;
-	int saleCount;
-	
-	public PromotionItem()
-	{
-		name = "";
-		description = "";
-		itemID = -1;
-		price = -1;
+	int salesCount;
+
+	public PromotionItem(String name, float price, String description, int itemId, int salesCount) {
+		this.name = name;
+		this.price = price;
+		this.description = description;
+		this.itemId = itemId;
+		this.salesCount = salesCount;
 	}
-	public void print()
-	{
-		System.out.println("ID :" + this.itemID);
-		System.out.println("Name :" + this.name);
-		System.out.println("Price :" + this.price);
-		System.out.println("Description :" + this.description);
-		System.out.println("=================================");
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void addSalesCount(int salesCount) {
+		this.salesCount += salesCount;
+	}
+
+	public int getSalesCount() {
+		return salesCount;
+	}
+
+	public String getWriteData() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(name);
+		stringBuilder.append(AppConstants.FILE_SEPARATOR);
+		stringBuilder.append(price);
+		stringBuilder.append(AppConstants.FILE_SEPARATOR);
+		stringBuilder.append(description);
+		stringBuilder.append(AppConstants.FILE_SEPARATOR);
+		stringBuilder.append(itemId);
+		stringBuilder.append(AppConstants.FILE_SEPARATOR);
+		stringBuilder.append(salesCount);
+		return stringBuilder.toString();
 	}
 }
