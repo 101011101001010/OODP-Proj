@@ -3,6 +3,8 @@ package tools;
 import constants.MenuConstants;
 import tools.ScannerHandler;
 
+import java.util.List;
+
 public class MenuFactory {
 
     public static void printMenu(String title, String[] options) {
@@ -16,6 +18,34 @@ public class MenuFactory {
                 //}
             } else {
                 printMenuItems(i, options[i]);
+            }
+        }
+
+        printDivider('-');
+
+        if (title.equals(MenuConstants.APP_TITLE)) {
+            printMenuItems(-1, MenuConstants.MSG_EXIT_PROGRAM);
+        } else {
+            printMenuItems(-1, MenuConstants.MSG_GO_BACK);
+            printMenuItems(-2, MenuConstants.MSG_MAIN_MENU);
+        }
+
+        printDivider('=');
+        System.out.println();
+    }
+
+
+    public static void printMenu(String title, List<String> options) {
+        System.out.println();
+        printMenuHeader(title);
+
+        for (int i = 0; i < options.size(); i++) {
+            if (title.equals(MenuConstants.APP_TITLE)) {
+                //if (i == 0 || i == 4) {
+                printMenuItems(i, options.get(i));
+                //}
+            } else {
+                printMenuItems(i, options.get(i));
             }
         }
 
@@ -51,6 +81,36 @@ public class MenuFactory {
         }
 
         if (options.length > 0) {
+            printDivider('-');
+        }
+
+        int terminatingInput = MenuConstants.OPTIONS_TERMINATE;
+        printMenuItems(terminatingInput, MenuConstants.MSG_GO_BACK);
+        printMenuItems((terminatingInput - 1), MenuConstants.MSG_MAIN_MENU);
+
+        printDivider('=');
+        System.out.println();
+    }
+
+    public static void printMenuX(String title, List<String> options) {
+        String[] data;
+        System.out.println();
+        printMenuHeader(title);
+
+        for (int i = 0; i < options.size(); i++) {
+            data = options.get(i).split("\n");
+            printMenuItems(i, data[0]);
+
+            for (int j = 1; j < data.length; j++) {
+                printMenuItems(data[j]);
+            }
+
+            if (i != (options.size() - 1)) {
+                printMenuItems("");
+            }
+        }
+
+        if (options.size() > 0) {
             printDivider('-');
         }
 
