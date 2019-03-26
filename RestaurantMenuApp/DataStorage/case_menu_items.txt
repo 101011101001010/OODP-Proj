@@ -1,0 +1,18 @@
+GL CLOS DU VAL, 13, , , 0, 101|
+GL-TALLEY CHAR,13, , , 0, 102|
+TALLEY, 49, , , 0, 103|
+PRE FIXE COLLEC, 65, , , 0, 104|
+SIDE LOB MASH, 9, , , 0, 105|
+COFFEE, 3, , , 0, 106|
+
+Chicken Rice, 27, , , 0, 201|
+Chicken Curry, 24, , , 0, 202|
+
+Oysters, 6, , , 0, 301|
+Smelts, 12, , , 0, 302|
+Duck Terrine, 14, , , 0, 303|
+Prix Dessert, 16, , , 0, 304|
+AG Malbec, 25, , , 0, 305|
+Soup, 8, , , 0, 306|
+Tagliatelle, 16, , , 0, 307|
+D&S Brownie, 9, , , 0, 308|

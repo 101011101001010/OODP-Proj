@@ -1,9 +1,10 @@
 import java.util.Scanner;
-
+import tools.*;
 import Classes.*;
 public class Main {
 	public static void main(String[] args) {
 		//Start by loading files
+		FileIOHandler.buildDirectory();
 		OrderManager orderManager = new OrderManager();
 		MenuManager menuManager = new MenuManager();
 		ReservationManager reservationManager = new ReservationManager();
@@ -11,7 +12,7 @@ public class Main {
 		TableManager tableManager = new TableManager();
 		Scanner s = new Scanner(System.in);
 		int choice = -1;
-		while(choice!=0)
+		while(choice!=6)
 		{
 			System.out.println("Please select an option");
 			System.out.println("1. Orders");

@@ -1,0 +1,50 @@
+name,price,category,desc,promotion,itemid|
+
+Cream of Mushroom, 3.8, Starters, , 0, 101|
+Garlic Bread,2.8,Starters, , 0, 102|
+Nuggets, 4.5, Starters, , 0, 103|
+Chicken Wings, 4.5, Starters, , 0, 104|
+Vienna Sausages, 5.9, Starters, , 0, 105|
+Classic Ceasar Salad, 7.9, Starters, , 0, 106|
+Escargots, 7.9, Starters, , 0, 107|
+Mexican Nachos, 7.9, Starters, , 0, 108|
+
+Chicken & Fish, 17.9, Super Combo, , 0, 201|
+Steak & Chicken, 24.5, Super Combo, , 0, 202|
+Surf & Turf, 21.9, Super Combo, , 0, 203|
+All Day Special, 17.9, Super Combo, , 0, 204|
+Grand Sampler, 18.9, Super Combo, , 0, 205|
+
+Aston Classic Cheeseburger, 14.9, Burger, , 0, 301|
+iEat Super Burger, 15.9, Burger, , 0, 302|
+
+Chicken Napolitana, 9.9, Spaghetti Fiesta, , 0, 401|
+Beef Bolognese, 10.9, Spaghetti Fiesta, , 0, 402|
+Salmon Spaghetti, 10.9, Spaghetti Fiesta, , 0, 403|
+Seafood Marinara, 10.9, Spaghetti Fiesta, , 0, 404|
+Carbonara, 10.9, Spaghetti Fiesta, , 0, 405|
+
+Baked Potato, 2.8, Hot Side Dishes, , 0, 501|
+BBQ Beans, 2.8, Hot Side Dishes, , 0, 502|
+Corn On The Cob, 2.8, Hot Side Dishes, , 0, 503|
+French Fries, 2.8, Hot Side Dishes, , 0, 504|
+Garden Veggie, 2.8, Hot Side Dishes, , 0, 505|
+Mac & Cheese, 2.8, Hot Side Dishes, , 0, 506|
+Mashed Potato, 2.8, Hot Side Dishes, , 0, 507|
+Onion Rings, 2.8, Hot Side Dishes, , 0, 508|
+Potato Wedges, 2.8, Hot Side Dishes, , 0, 509|
+Tasty Rice, 2.8, Hot Side Dishes, , 0, 510|
+
+Coleslaw, 2.8, Cold Side Dishes, , 0, 601|
+House Salad, 2.8, Cold Side Dishes, , 0, 602|
+Pasta Salad, 2.8, Cold Side Dishes, , 0, 603|
+Potato Salad, 2.8, Cold Side Dishes, , 0, 604|
+
+Plain Water, 0.5, Beverage, , 0, 701|
+Coke/Coke Light, 2.2, Beverage, , 0, 702|
+Sprite, 2.2, Beverage, , 0, 703|
+Orange Juice, 2.8, Beverage, , 0, 704|
+Ice Lemon Tea, 2.8, Beverage, , 0, 705|
+Green Tea, 2.8, Beverage, , 0, 706|
+
+

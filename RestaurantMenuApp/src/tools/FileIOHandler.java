@@ -11,6 +11,7 @@ public class FileIOHandler {
     public static boolean buildDirectory() {
         try {
             Files.createDirectories(Paths.get(AppConstants.FILE_DIR));
+            System.out.println(AppConstants.FILE_DIR);
         }
 
         catch (IOException e) {

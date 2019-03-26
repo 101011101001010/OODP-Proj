@@ -6,7 +6,7 @@ public class AppConstants {
     public static final int PROMO_ID = 100;
     public static final int IO_ID = 1000;
 
-    public static final String FILE_DIR = "C:/RRPSS/";
+    public static final String FILE_DIR = System.getProperty("user.dir")+"\\DataStorage\\";
 
     public static final String FILE_PROMO= "promo";
     public static final String FILE_STAFF = "staff";
@@ -21,17 +21,12 @@ public class AppConstants {
     };
 
     public static final String[] FILE_NAMES = {
-        "starter",
-        "main",
-        "side",
-        "dessert",
-        "drink",
-        FILE_PROMO,
+        "menu_items",
+        "promotion_items",
         "order",
-        "booking",
-        "tables",
-        "revenue",
-        FILE_STAFF
+        "reservations",
+        "staff",
+        "revenue"
     };
 
 }
