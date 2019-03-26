@@ -63,7 +63,7 @@ public class OrderManager {
 		{
 			if(TableManager.tableList.get(i).tableID == tableID)
 			{
-				TableManager.tableList.get(i).occupied=false;
+				TableManager.tableList.get(i).occupied=0;
 				tempOrderID = TableManager.tableList.get(i).orderID;
 				TableManager.tableList.get(i).orderID = 0;
 				for(int j = 0; j<orderList.size();j++)
