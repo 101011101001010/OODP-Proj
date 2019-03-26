@@ -11,13 +11,23 @@ public class AppConstants {
     public static final String FILE_PROMO= "promo";
     public static final String FILE_STAFF = "staff";
 
-    public static final String[] CODE_NAMES = {
+    public static final String[] CODE_NAMES2 = {
             "items.FoodMenu",
             "items.Promo",
             "orders.Order",
             "tables.Booking",
             "staff.Staff",
             "sales.Sales"
+    };
+
+    public static final String[] CODE_NAMES = {
+            "Classes.MenuManager",
+            "Classes.PromotionManager",
+            "Classes.OrderManager",
+            "Classes.ReservationManager",
+            "Classes.TableManager",
+            "Classes.Staff",
+            "Classes.Sales"
     };
 
     public static final String[] FILE_NAMES = {
