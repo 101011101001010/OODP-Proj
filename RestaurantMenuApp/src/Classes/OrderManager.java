@@ -7,12 +7,10 @@ import java.util.ArrayList;
 
 public class OrderManager {
 
-	ArrayList<Order> orderList = new ArrayList<Order>();
-	int orderCount = 0;
-	public OrderManager()
-	{
-	}
-	public void addNewOrder(Scanner s)
+	static ArrayList<Order> orderList = new ArrayList<Order>();
+	static int orderCount = 0;
+
+	public static void addNewOrder(Scanner s)
 	{
 		System.out.println("Please enter Staff ID");
 		int staffID = s.nextInt();
@@ -23,14 +21,14 @@ public class OrderManager {
 		orderList.add(x);
 		TableManager.setOccupied(tableID,x.orderID);
 	}
-	public void viewOrder()
+	public static void viewOrder()
 	{
 		for(int i = 0; i<orderList.size();i++)
 		{
 			orderList.get(i).view();
 		}
 	}
-	public void removeOrder(Scanner s)
+	public static void removeOrder(Scanner s)
 	{
 		System.out.println("Please enter the table ID");
 		String tableID = s.next();
@@ -54,7 +52,7 @@ public class OrderManager {
 			System.out.println("Error removing order!");
 		}
 	}
-	public void printBill(Scanner s)
+	public static void printBill(Scanner s)
 	{
 		String tableID = "";
 		int tempOrderID = -1;
@@ -78,7 +76,7 @@ public class OrderManager {
 			}
 		}
 	}
-	public void addItem(Scanner s)
+	public static void addItem(Scanner s)
 	{
 		int tempOrderID = -1;
 		int tempItemID = -1;
@@ -121,7 +119,7 @@ public class OrderManager {
 				
 		}
 	}
-	public void choices(Scanner s)
+	public static void choices(Scanner s)
 	{
 		int choice = -1;
 		while(choice!= 6)
@@ -163,5 +161,5 @@ public class OrderManager {
 			}
 		}
 	}
-	
+
 }
