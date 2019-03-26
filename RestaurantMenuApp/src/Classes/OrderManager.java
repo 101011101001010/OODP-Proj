@@ -20,7 +20,7 @@ public class OrderManager {
 		orderCount++;
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
-		TableManager.setOccupied(tableID,x);
+		TableManager.setOccupied(tableID,x.orderID);
 	}
 	public void viewOrder()
 	{

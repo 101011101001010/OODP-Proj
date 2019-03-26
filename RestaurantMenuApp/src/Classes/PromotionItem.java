@@ -2,14 +2,16 @@ package Classes;
 
 import constants.AppConstants;
 
+import java.util.List;
+
 public class PromotionItem {
-	String description;
+	List<String> description;
 	int itemId;
 	float price;
 	String name;
 	int salesCount;
 
-	public PromotionItem(String name, float price, String description, int itemId, int salesCount) {
+	public PromotionItem(String name, float price, int itemId, int salesCount, List<String> description) {
 		this.name = name;
 		this.price = price;
 		this.description = description;
@@ -37,11 +39,11 @@ public class PromotionItem {
 		return price;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(List<String> description) {
 		this.description = description;
 	}
 
-	public String getDescription() {
+	public List<String> getDescription() {
 		return description;
 	}
 
@@ -59,11 +61,19 @@ public class PromotionItem {
 		stringBuilder.append(AppConstants.FILE_SEPARATOR);
 		stringBuilder.append(price);
 		stringBuilder.append(AppConstants.FILE_SEPARATOR);
-		stringBuilder.append(description);
-		stringBuilder.append(AppConstants.FILE_SEPARATOR);
 		stringBuilder.append(itemId);
 		stringBuilder.append(AppConstants.FILE_SEPARATOR);
 		stringBuilder.append(salesCount);
+		stringBuilder.append(AppConstants.FILE_SEPARATOR);
+
+		for (int i = 0; i < description.size(); i++) {
+			stringBuilder.append(description.get(i));
+
+			if (i != (description.size() - 1)) {
+				stringBuilder.append("/");
+			}
+		}
+
 		return stringBuilder.toString();
 	}
 }

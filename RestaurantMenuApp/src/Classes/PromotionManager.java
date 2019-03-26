@@ -14,26 +14,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PromotionManager {
 	static ArrayList<PromotionItem> promotionList = new ArrayList<PromotionItem>();
 
-	private static List<PromotionItem> items;
+	private static List<PromotionItem> itemList;
 	private static int backInput = MenuConstants.OPTIONS_TERMINATE;
 	private static int returnInput = (backInput - 1);
 	private static AtomicInteger cId;
 
 	static {
-		List<String> fileData = FileIOHandler.read(AppConstants.FILE_NAMES[0].toLowerCase());
+		List<String> fileData = FileIOHandler.read(AppConstants.FILE_NAMES[1].toLowerCase());
 		String[] lineData;
 
 		if (fileData != null) {
-			items = new ArrayList<>();
+			itemList = new ArrayList<>();
 			cId = new AtomicInteger(-1);
 
 			for (String line : fileData) {
 				lineData = line.split(AppConstants.FILE_SEPARATOR);
 
 				if (lineData.length == 5) {
-					int itemId = Integer.parseInt(lineData[3]);
-					PromotionItem item = new PromotionItem(lineData[0], Float.parseFloat(lineData[1]), lineData[2], itemId, Integer.parseInt(lineData[4]));
-					items.add(item);
+					int itemId = Integer.parseInt(lineData[2]);
+					String[] subItems = lineData[4].split("/");
+					List<String> description = new ArrayList<>();
+					Collections.addAll(description, subItems);
+					PromotionItem item = new PromotionItem(lineData[0], Float.parseFloat(lineData[1]), itemId, Integer.parseInt(lineData[3]), description);
+					itemList.add(item);
 
 					if (itemId > cId.get()) {
 						cId.set(itemId);
@@ -43,14 +46,14 @@ public class PromotionManager {
 		}
 	}
 
-	public static List<PromotionItem> getItems() {
-		return items;
+	public static List<PromotionItem> getItemList() {
+		return itemList;
 	}
 
 	private static List<String> getItemNames() {
 		List<String> list = new ArrayList<>();
 
-		for (PromotionItem item : items) {
+		for (PromotionItem item : itemList) {
 			list.add(item.getName());
 		}
 
@@ -62,8 +65,18 @@ public class PromotionManager {
 		List<PromotionItem> tempList = sortItems(sortOption);
 
 		for (PromotionItem item : tempList) {
-			String base = item.getName() + "\n" + item.getDescription() + "\nPrice: " + item.getPrice() + "\nID: " + item.getItemId();
-			list.add(base);
+			String base = item.getName() + "\nPrice: " + item.getPrice() + "\nItems included:\n";
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append(base);
+			List<String> subItems = item.getDescription();
+
+			for (String subItem : subItems) {
+				stringBuilder.append(subItem);
+				stringBuilder.append("\n");
+			}
+
+			stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+			list.add(stringBuilder.toString());
 		}
 
 		return list;
@@ -74,7 +87,7 @@ public class PromotionManager {
 			return;
 		}
 
-		for (PromotionItem item : items) {
+		for (PromotionItem item : itemList) {
 			if (item.getItemId() == id) {
 				item.addSalesCount(salesCount);
 				return;
@@ -83,7 +96,7 @@ public class PromotionManager {
 	}
 
 	public static List<PromotionItem> sortItems(int sortOption) {
-		List<PromotionItem> tempList = new ArrayList<>(List.copyOf(items));
+		List<PromotionItem> tempList = new ArrayList<>(List.copyOf(itemList));
 
 		System.out.println("HI");
 		switch(sortOption) {
@@ -121,12 +134,19 @@ public class PromotionManager {
 	private static void create(ScannerHandler sc) {
 		String name = sc.getString("Enter name: ");
 		float price = sc.getFloat("Enter price: ");
-		String description = sc.getString("Enter description: ");
 		int id = cId.incrementAndGet();
 
-		PromotionItem item = new PromotionItem(name, price, description, id, 0);
+		int subItemsCount = sc.getInt("Enter number of sub-itemList: ");
+		List<String> subItems = new ArrayList<>();
+
+		for (int i = 0; i < subItemsCount; i++) {
+			String subName = sc.getString("Enter name for item #" + (i + 1) + ": ");
+			subItems.add(subName);
+		}
+
+		PromotionItem item = new PromotionItem(name, price, id, 0, subItems);
 		FileIOHandler.write(AppConstants.FILE_NAMES[1].toLowerCase(), item.getWriteData());
-		items.add(item);
+		itemList.add(item);
 	}
 
 	private static void update(ScannerHandler sc) {
@@ -140,16 +160,21 @@ public class PromotionManager {
 		}
 
 		if (itemId != backInput) {
-			PromotionItem item = items.get(itemId);
+			PromotionItem item = itemList.get(itemId);
 			String name = sc.getString("Enter name [leave blank if no change]: ");
 			float price = sc.getFloat("Enter price [enter -1 if no change]: ");
-			String desc = sc.getString("Enter description [leave blank if no change]: ");
+			List<String> subItems = item.getDescription();
 
+			for (int i = 0; i < subItems.size(); i++) {
+				String subName = sc.getString("Enter name for item #" + (i + 1) + " [leave blank if no change]: ");
+				subItems.set(i, subName.isBlank()? subItems.get(i) : subName);
+			}
+
+			item.setDescription(subItems);
 			item.setName(name.isBlank()? item.getName() : name);
 			item.setPrice((price < 0)? item.getPrice() : price);
-			item.setDescription(desc.isBlank()? item.getDescription() : desc);
 			FileIOHandler.replace(AppConstants.FILE_NAMES[1].toLowerCase(), itemId, item.getWriteData());
-			items.set(itemId, item);
+			itemList.set(itemId, item);
 		}
 	}
 
@@ -168,7 +193,7 @@ public class PromotionManager {
 
 			if (choice.equalsIgnoreCase("y")) {
 				FileIOHandler.remove(AppConstants.FILE_NAMES[1].toLowerCase(), itemId);
-				items.remove(itemId);
+				itemList.remove(itemId);
 			}
 		}
 	}
@@ -176,8 +201,9 @@ public class PromotionManager {
 	public static float getItemPrice(int id) {
 		return 0;
 	}
+
 	public static void start(ScannerHandler sc) {
-		for (PromotionItem item : items) {
+		for (PromotionItem item : itemList) {
 			if (item == null) {
 				return;
 			}
@@ -186,7 +212,7 @@ public class PromotionManager {
 		int action;
 
 		do {
-			String header = MenuConstants.MENU_HEADER_0;
+			String header = MenuConstants.MENU_HEADER_1;
 			String[] actions = MenuConstants.MENU_ACTIONS;
 			MenuFactory.printMenu(header, actions);
 			action = MenuFactory.loopChoice(sc, actions.length);
