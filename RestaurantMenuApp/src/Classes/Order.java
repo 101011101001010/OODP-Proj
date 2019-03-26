@@ -11,10 +11,12 @@ public class Order {
 	int staffID;
 	Date orderDate;
 	String sessions;
+	String tableID;
 	
-	public Order(int orderID, int staffID){
+	public Order(int orderID, int staffID,String tableID){
 		this.orderID = orderID;
 		this.staffID = staffID;
+		this.tableID = tableID;
 		orderDate.toLocalDate();
 	}
 	
@@ -36,9 +38,6 @@ public class Order {
 	}
 	public void view()
 	{
-		for(int i = 0; i<TableManager.tableList.size();i++)
-		{
-			String tableID = TableManager.tableList.get(i).tableID;
 			String title = "Bill for "+tableID;
 			String[] items = new String[this.orderItemList.size()];
 			for(int j =0; j<orderItemList.size();j++)
@@ -46,7 +45,6 @@ public class Order {
 				items[j] = orderItemList.get(j).print();
 			}
 			MenuFactory.printMenu(title, items);
-		}
 	}
 	public void print(String tableID)
 	{

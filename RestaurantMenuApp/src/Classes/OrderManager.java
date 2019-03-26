@@ -1,15 +1,16 @@
 package Classes;
 import java.util.Scanner;
+
+import tools.MenuFactory;
+
 import java.util.ArrayList;
 
 public class OrderManager {
-	/*
 	ArrayList<Order> orderList = new ArrayList<Order>();
 	int orderCount = 0;
 	public OrderManager()
 	{
 	}
-	
 	public void addNewOrder(Scanner s)
 	{
 		System.out.println("Please enter Staff ID");
@@ -17,7 +18,7 @@ public class OrderManager {
 		System.out.println("Please enter the table ID");
 		String tableID = s.next();
 		orderCount++;
-		Order x = new Order(orderCount,staffID);
+		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
 		TableManager.setOccupied(tableID,x);
 	}
@@ -161,5 +162,5 @@ public class OrderManager {
 			}
 		}
 	}
-	*/
+	
 }
