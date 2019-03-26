@@ -1,10 +1,10 @@
 package Classes;
 
 public class Table {
-	private String tableID;
-	private int pax;
-	private int occupied;
-	private int orderID;
+	public String tableID;
+	public int pax;
+	public int occupied;
+	public int orderID;
 
 	public Table(String tableID)
 	{
