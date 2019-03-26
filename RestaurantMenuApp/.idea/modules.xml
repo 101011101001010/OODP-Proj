@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OODP-Proj_RestaurantMenuApp.iml" filepath="$PROJECT_DIR$/OODP-Proj_RestaurantMenuApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RestaurantMenuApp.iml" filepath="$PROJECT_DIR$/.idea/RestaurantMenuApp.iml" />
     </modules>
   </component>
 </project>
