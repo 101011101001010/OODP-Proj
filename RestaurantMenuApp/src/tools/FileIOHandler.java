@@ -1,6 +1,5 @@
 package tools;
 
-import app.App;
 import constants.AppConstants;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ public class FileIOHandler {
         }
 
         catch (IOException e) {
-            App.printError(e, AppConstants.IO_ID + 1);
+            //App.printError(e, AppConstants.IO_ID + 1);
             return false;
         }
 
@@ -29,7 +28,7 @@ public class FileIOHandler {
             catch (FileAlreadyExistsException ignored) {}
 
             catch (IOException e) {
-                App.printError(e, AppConstants.IO_ID + 2);
+                //App.printError(e, AppConstants.IO_ID + 2);
                 return false;
             }
         }
@@ -46,7 +45,7 @@ public class FileIOHandler {
         }
 
         catch (IOException e) {
-            App.printError(e, AppConstants.IO_ID + 3);
+            //App.printError(e, AppConstants.IO_ID + 3);
         }
 
         return fileData;
@@ -61,7 +60,7 @@ public class FileIOHandler {
         }
 
         catch (IOException e) {
-            App.printError(e, AppConstants.IO_ID + 4);
+            //App.printError(e, AppConstants.IO_ID + 4);
         }
     }
 
@@ -76,7 +75,7 @@ public class FileIOHandler {
         }
 
         catch (IOException e) {
-            App.printError(e, AppConstants.IO_ID + 5);
+            //App.printError(e, AppConstants.IO_ID + 5);
         }
     }
 
@@ -91,7 +90,7 @@ public class FileIOHandler {
         }
 
         catch (IOException e) {
-            App.printError(e, AppConstants.IO_ID + 6);
+            //App.printError(e, AppConstants.IO_ID + 6);
         }
     }
 
@@ -108,7 +107,7 @@ public class FileIOHandler {
         }
 
         catch (IOException e) {
-            App.printError(e, AppConstants.IO_ID + 7);
+            //App.printError(e, AppConstants.IO_ID + 7);
             return false;
         }
     }
@@ -121,7 +120,7 @@ public class FileIOHandler {
         }
 
         catch (IOException e) {
-            App.printError(e, AppConstants.IO_ID + 8);
+            //App.printError(e, AppConstants.IO_ID + 8);
         }
     }
 }
