@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class TableManager {
 
-	ArrayList<Table> tableList = new ArrayList<Table>();
+	public static ArrayList<Table> tableList = new ArrayList<Table>();
 	
 	public TableManager()
 	{
