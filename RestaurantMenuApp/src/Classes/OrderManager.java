@@ -6,6 +6,7 @@ import tools.MenuFactory;
 import java.util.ArrayList;
 
 public class OrderManager {
+
 	ArrayList<Order> orderList = new ArrayList<Order>();
 	int orderCount = 0;
 	public OrderManager()

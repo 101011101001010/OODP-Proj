@@ -5,11 +5,11 @@ import constants.AppConstants;
 import java.util.List;
 
 public class PromotionItem {
-	List<String> description;
-	int itemId;
-	float price;
-	String name;
-	int salesCount;
+	private List<String> description;
+	private int itemId;
+	private float price;
+	private String name;
+	private int salesCount;
 
 	public PromotionItem(String name, float price, int itemId, int salesCount, List<String> description) {
 		this.name = name;

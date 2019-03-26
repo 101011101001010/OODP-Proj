@@ -25,11 +25,12 @@ public class OrderItem{
 	{
 		if(promotion)
 		{
-			for(int i =0; i<PromotionManager.promotionList.size();i++)
+			for(int i =0; i<PromotionManager.getItemList().size();i++)
 			{
-				if(PromotionManager.promotionList.get(i).itemId == itemID)
+				PromotionItem item = PromotionManager.getItemList().get(i);
+				if(item.getItemId() == itemID)
 				{
-					return PromotionManager.promotionList.get(i).name + " " + this.price;
+					return item.getName() + " " + this.price;
 				}
 			}
 		}
