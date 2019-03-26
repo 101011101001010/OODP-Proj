@@ -3,8 +3,6 @@ import tools.*;
 import Classes.*;
 public class Main {
 	public static void main(String[] args) {
-		//Start by loading files
-		FileIOHandler.buildDirectory();
 		OrderManager orderManager = new OrderManager();
 		MenuManager menuManager = new MenuManager();
 		ReservationManager reservationManager = new ReservationManager();
