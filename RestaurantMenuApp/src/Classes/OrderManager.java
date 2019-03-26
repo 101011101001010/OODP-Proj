@@ -20,7 +20,13 @@ public class OrderManager {
 		orderList.add(x);
 		TableManager.setOccupied(tableID,x);
 	}
-	
+	public void viewOrder()
+	{
+		for(int i = 0; i<orderList.size();i++)
+		{
+			orderList.get(i).view();
+		}
+	}
 	public void removeOrder(Scanner s)
 	{
 		System.out.println("Please enter the table ID");
@@ -133,6 +139,7 @@ public class OrderManager {
 			
 			switch(choice) {
 			case 1:
+				viewOrder();
 				break;
 			case 2:
 				addNewOrder(s);
@@ -141,6 +148,7 @@ public class OrderManager {
 				addItem(s);
 				break;
 			case 4:
+				removeOrder(s);
 				break;
 			case 5:
 				printBill(s);
