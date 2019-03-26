@@ -34,14 +34,30 @@ public class Order {
 		  }
 		return price;
 	}
+	public void view()
+	{
+		for(int i = 0; i<TableManager.tableList.size();i++)
+		{
+			String tableID = TableManager.tableList.get(i).tableID;
+			String title = "Bill for "+tableID;
+			String[] items = new String[this.orderItemList.size()];
+			for(int j =0; j<orderItemList.size();j++)
+			{
+				items[j] = orderItemList.get(j).print();
+			}
+			MenuFactory.printMenu(title, items);
+		}
+	}
 	public void print(String tableID)
 	{
 		String title = "Bill for "+tableID;
 		String[] items = new String[this.orderItemList.size()];
 		for(int i =0; i<orderItemList.size();i++)
 		{
+			orderItemList.get(i).addCount();
 			items[i] = orderItemList.get(i).print();
 		}
 		MenuFactory.printMenu(title, items);
+		//saveItemToRevenue
 	}
 }

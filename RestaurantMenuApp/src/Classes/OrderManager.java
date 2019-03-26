@@ -9,11 +9,41 @@ public class OrderManager {
 	{
 	}
 	
-	public void addNewOrder(int staffID)
+	public void addNewOrder(Scanner s)
 	{
+		System.out.println("Please enter Staff ID");
+		int staffID = s.nextInt();
+		System.out.println("Please enter the table ID");
+		String tableID = s.next();
 		orderCount++;
 		Order x = new Order(orderCount,staffID);
 		orderList.add(x);
+		TableManager.setOccupied(tableID,x);
+	}
+	
+	public void removeOrder(Scanner s)
+	{
+		System.out.println("Please enter the table ID");
+		String tableID = s.next();
+		int orderID = -1;
+		for(int i = 0; i<TableManager.tableList.size();i++)
+		{
+			if(TableManager.tableList.get(i).tableID == tableID)
+				orderID=TableManager.tableList.get(i).orderID;
+		}
+		if(orderID!=-1)
+		{
+			for(int i =0; i<orderList.size();i++)
+			{
+				if(orderList.get(i).orderID == orderID)
+					orderList.remove(i);
+			}
+			TableManager.clear(tableID);
+		}
+		else
+		{
+			System.out.println("Error removing order!");
+		}
 	}
 	public void printBill(Scanner s)
 	{
@@ -32,10 +62,8 @@ public class OrderManager {
 				{
 					if(orderList.get(j).orderID == tempOrderID)
 					{
-						Order tempOrder = orderList.get(j);
+						orderList.get(j).print(tableID);
 						orderList.remove(j);
-						tempOrder.print(tableID);
-						//saveItemToRevenue
 					}
 				}
 			}
@@ -89,11 +117,11 @@ public class OrderManager {
 		int choice = -1;
 		while(choice!= 6)
 		{
-			System.out.println("1. View Orders");
-			System.out.println("2. Add New Order");
-			System.out.println("3. Add Item To Order");
-			System.out.println("4. Remove Order");
-			System.out.println("5. Print Bill");
+			System.out.println("1. View Orders");//done
+			System.out.println("2. Add New Order");//done
+			System.out.println("3. Add Item To Order");//done
+			System.out.println("4. Remove Order");//done
+			System.out.println("5. Print Bill");//done
 			System.out.println("6. Exit");
 			try {
 				choice = s.nextInt();
@@ -107,6 +135,7 @@ public class OrderManager {
 			case 1:
 				break;
 			case 2:
+				addNewOrder(s);
 				break;
 			case 3:
 				addItem(s);
