@@ -1,14 +1,23 @@
 package Classes;
 
 public class PromotionItem {
-	String desc;
+	String description;
 	int itemID;
 	float price;
+	String name;
 	
 	public PromotionItem()
 	{
-		desc = "";
+		name = "";
+		description = "";
 		itemID = -1;
 		price = -1;
+	}
+	public void print()
+	{
+		System.out.println("ID :" + this.itemID);
+		System.out.println("Name :" + this.name);
+		System.out.println("Price :" + this.price);
+		System.out.println("Description :" + this.description);
 	}
 }
