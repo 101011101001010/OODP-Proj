@@ -44,6 +44,11 @@ public class MenuConstants {
             MENU_HEADER_0 + " - " + MENU_ACTIONS[2],
             MENU_HEADER_0 + " - " + MENU_ACTIONS[3]
     };
+    public static final String[] MENU_SORT_ACTIONS_0 = {
+            "Sort by Name",
+            "Sort by Price",
+            "Sort by Category"
+    };
 
     public static final String MENU_HEADER_1 = OPTIONS_MAIN[1];
     public static final String[] MENU_SUB_1 = {
