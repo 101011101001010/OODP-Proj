@@ -1,8 +1,43 @@
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Scanner;
+
+import constants.AppConstants;
+import constants.MenuConstants;
 import tools.*;
 import Classes.*;
 public class Main {
 	public static void main(String[] args) {
+		if (!FileIOHandler.buildDirectory()) {
+			return;
+		}
+
+		int choice;
+		int backInput = MenuConstants.OPTIONS_TERMINATE;
+		ScannerHandler sc = new ScannerHandler(new Scanner(System.in));
+
+		do {
+			MenuFactory.printMenu(MenuConstants.APP_TITLE, MenuConstants.OPTIONS_MAIN);
+			choice = MenuFactory.loopChoice(sc, MenuConstants.OPTIONS_MAIN.length);
+
+			if (choice != backInput) {
+				String className = AppConstants.CODE_NAMES[choice];
+				String methodName = MenuConstants.MENU_HANDLER_CALL_METHOD;
+
+				try {
+					Class c = Class.forName(className);
+					Method method = c.getDeclaredMethod(methodName, ScannerHandler.class);
+					method.invoke(null, sc);
+				}
+
+				// die lor
+				catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+					System.out.println("WORK IN PROGRESS!");
+				}
+			}
+		} while (choice != backInput);
+
+		/*
 		OrderManager orderManager = new OrderManager();
 		MenuManager menuManager = new MenuManager();
 		ReservationManager reservationManager = new ReservationManager();
@@ -68,6 +103,7 @@ public class Main {
 		//saveStaff();
 		//saveSales();
 		//Should add these into "Add" functions
+		*/
 	}
 
 }
