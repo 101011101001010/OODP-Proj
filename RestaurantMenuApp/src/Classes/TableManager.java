@@ -1,55 +1,147 @@
 package Classes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TableManager {
 
 	public static ArrayList<Table> tableList = new ArrayList<Table>();
-	
+	private Map<String, Integer> map;
+
 	public TableManager()
 	{
+		map = new HashMap<>();
+
 		String id;
+		int count = 0;
+
 		for (int i = 0; i<10; i++)
 		{
 			id = "2" + i;
-			tableList.add(new Table(2,id));
+			tableList.add(new Table(id));
+			map.put(id, count);
+			count++;
 		}
 		for (int i = 0; i<10; i++)
 		{
 			id = "4" + i;
-			tableList.add(new Table(4,id));
+			tableList.add(new Table(id));
+			map.put(id, count);
+			count++;
 		}
 		for (int i = 0; i<5; i++)
 		{
 			id = "8" + i;
-			tableList.add(new Table(8,id));
+			tableList.add(new Table(id));
+			map.put(id, count);
+			count++;
 		}
 		for (int i = 0; i<5; i++)
 		{
 			id = "10" + i;
-			tableList.add(new Table(10,id));
+			tableList.add(new Table(id));
+			map.put(id, count);
+			count++;
 		}
+
 	}
 	public void choices(Scanner s)
 	{
-		
+		int choice = -1;
+		while (choice != 0){
+			System.out.println("1. Show Table");
+			System.out.println("1. Set Table");
+			System.out.println("1. Show Table");
+
+		}
 	}
-	
-	/*public void checkVacancy()
-	*{
-	*}
-	*/
-	
-	/*public void occupyTable()
-	 * {
-	 * }
-	 */
-	
-	/*public void clearTable()
-	 * {
-	 * }
-	 */
-	
+
+	public void checkVacancy()
+	{
+		int index = 0;
+		System.out.println("Tables with 2 seats.");
+		for (; index < 10; index++) {
+			System.out.println("Table " + tableList.get(index).getTableID() + " is ");
+			switch (tableList.get(index).isOccupied()) {
+				case -1:
+					System.out.print("reserved.");
+					break;
+				case 0:
+					System.out.print("occupied.");
+					break;
+				case 1:
+					System.out.print("not occupied.");
+					break;
+			}
+		}
+
+		System.out.println("Tables with 4 seats.");
+		for (; index < 20; index++) {
+			System.out.println("Table " + tableList.get(index).getTableID() + " is ");
+			switch (tableList.get(index).isOccupied()) {
+				case -1:
+					System.out.print("reserved.");
+					break;
+				case 0:
+					System.out.print("occupied.");
+					break;
+				case 1:
+					System.out.print("not occupied.");
+					break;
+			}
+		}
+		System.out.println("Tables with 8 seats.");
+		for (; index < 25; index++) {
+			System.out.println("Table " + tableList.get(index).getTableID() + " is ");
+			switch (tableList.get(index).isOccupied()) {
+				case -1:
+					System.out.print("reserved.");
+					break;
+				case 0:
+					System.out.print("occupied.");
+					break;
+				case 1:
+					System.out.print("not occupied.");
+					break;
+			}
+		}
+		System.out.println("Tables with 10 seats.");
+		for (; index < 30; index++) {
+			System.out.println("Table " + tableList.get(index).getTableID() + " is ");
+			switch (tableList.get(index).isOccupied()) {
+				case -1:
+					System.out.print("reserved.");
+					break;
+				case 0:
+					System.out.print("occupied.");
+					break;
+				case 1:
+					System.out.print("not occupied.");
+					break;
+			}
+		}
+	}
+
+	public void setOccupied(String tableID, int orderID)
+	{
+		int index = map.get(tableID);
+		tableList.get(index).setOrderID(orderID);
+		tableList.get(index).setOccupied(1);
+
+	}
+
+	public void setReserved(String tableID, int pax){
+		int index = map.get(tableID);
+		tableList.get(index).setOccupied(-1);
+		tableList.get(index).setPax(pax);
+	}
+
+	public void clear (String tableID)
+	{
+		int index = map.get(tableID);
+		tableList.get(index).setOccupied(0);
+	}
 }
 
