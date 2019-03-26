@@ -1,15 +1,19 @@
 package Classes;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Order {
 	ArrayList<OrderItem> orderItemList = new ArrayList<OrderItem>();
 	int orderID;
 	int staffID;
+	Date orderDate;
+	String sessions;
 	
 	public Order(int orderID, int staffID){
 		this.orderID = orderID;
 		this.staffID = staffID;
+		orderDate.toLocalDate();
 	}
 	
 	public void addItem(int itemID,int count)

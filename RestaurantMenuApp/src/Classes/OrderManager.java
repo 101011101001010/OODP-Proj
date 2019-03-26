@@ -19,6 +19,17 @@ public class OrderManager {
 	{
 		
 	}
+	public void addItem(String tableID)
+	{
+		int tempOrderID;
+		for(int i = 0;i<TableManager.tableList.size(); i++)
+		{
+			if(TableManager.tableList.get(i).tableID == tableID)
+			{
+				tempOrderID = TableManager.tableList.get(i).billID;
+			}
+		}
+	}
 	public void choices(Scanner s)
 	{
 		//choices
