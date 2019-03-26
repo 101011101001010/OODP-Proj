@@ -1,7 +1,7 @@
 package Classes;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 public class MenuManager {
 	
 	static ArrayList<MenuItem> menuList = new ArrayList<MenuItem>();
@@ -24,23 +24,8 @@ public class MenuManager {
 		}
 		return -1;
 	}
-	public void choices(Scanner s)
+	public void choices()
 	{
-		int choice = -1;
-		while(choice!= 0)
-		{
-			//choices
-			choice = s.nextInt();
-			switch(choice)
-			{
-			case 1:
-				break;
-			case 2 :
-				break;
-			default:
-				System.out.println("Please enter a valid choice.");	
-			}
-		}
+		//print menu related choices
 	}
-	
 }

@@ -1,7 +1,6 @@
 package Classes;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class TableManager {
 
@@ -30,10 +29,6 @@ public class TableManager {
 			id = "10" + i;
 			tableList.add(new Table(10,id));
 		}
-	}
-	public void choices(Scanner s)
-	{
-		
 	}
 	
 	/*public void checkVacancy()

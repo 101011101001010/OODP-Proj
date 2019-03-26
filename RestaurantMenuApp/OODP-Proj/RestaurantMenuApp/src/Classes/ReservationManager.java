@@ -1,7 +1,6 @@
 package Classes;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ReservationManager {
 	ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
@@ -11,7 +10,7 @@ public class ReservationManager {
 		//import data to reservationList from txt
 	}
 	
-	public void choices(Scanner s)
+	public void choice()
 	{
 		//print reservation related choices
 	}

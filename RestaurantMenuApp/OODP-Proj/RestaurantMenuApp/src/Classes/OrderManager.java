@@ -1,5 +1,5 @@
 package Classes;
-import java.util.Scanner;
+
 import java.util.ArrayList;
 
 public class OrderManager {
@@ -18,9 +18,5 @@ public class OrderManager {
 	public void printBill(int orderID)
 	{
 		
-	}
-	public void choices(Scanner s)
-	{
-		//choices
 	}
 }

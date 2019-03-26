@@ -4,12 +4,12 @@ import Classes.*;
 public class Main {
 	public static void main(String[] args) {
 		//Start by loading files
-		OrderManager orderManager = new OrderManager();
-		MenuManager menuManager = new MenuManager();
-		ReservationManager reservationManager = new ReservationManager();
-		StaffManager staffManager = new StaffManager();
-		TableManager tableManager = new TableManager();
-		Scanner s = new Scanner(System.in);
+		//loadReservations();
+		//loadMenu();
+		//loadPromotions();
+		//loadStaff();
+		//loadSales();
+		Scanner scanner = new Scanner(System.in);
 		int choice = -1;
 		while(choice!=0)
 		{
@@ -22,7 +22,7 @@ public class Main {
 			System.out.println("6. Exit");
 			try
 			{
-			choice = s.nextInt();
+			choice = scanner.nextInt();
 			}
 			catch(Exception e)
 			{
@@ -32,7 +32,7 @@ public class Main {
 			switch(choice) {
 			//Orders
 			case 1:
-				orderManager.choices(s);
+				break;
 			
 			//Print bill
 			case 2:
@@ -40,11 +40,19 @@ public class Main {
 			
 			//Reservations
 			case 3:
-				reservationManager.choices(s);
+				break;
 			
 			//Menu 
 			case 4:
-				menuManager.choices(s);
+			{
+				System.out.println("Please select an option");
+				System.out.println("1. Orders");
+				System.out.println("2. Print bill");
+				System.out.println("3. Reservation");
+				System.out.println("4. Menu options");
+				System.out.println("5. Admin menu");
+				System.out.println("6. Exit");
+			}
 			
 			//Admin
 			case 5:
@@ -55,13 +63,15 @@ public class Main {
 			
 			//False input
 			default:
-				System.out.println("Please enter a valid choice.");				
+				System.out.println("Please enter a valid choice.");	
+			break;
+			
 			}
 		}
 		
 		
 		//Closing
-		s.close();
+		scanner.close();
 		//Saving
 		//saveReservations();
 		//saveMenu();
