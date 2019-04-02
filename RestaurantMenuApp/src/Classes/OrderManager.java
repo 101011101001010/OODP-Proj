@@ -1,6 +1,7 @@
 package Classes;
 import java.util.Scanner;
 
+import tools.InputChecker;
 import tools.MenuFactory;
 
 import java.util.ArrayList;
@@ -17,6 +18,11 @@ public class OrderManager {
 		s.nextLine();
 		System.out.println("Please enter the table ID");
 		int tableID = s.nextInt();
+		if(!InputChecker.checkTableID(tableID))
+		{
+			System.out.println("TableID Error.");
+			return;
+		}
 		orderCount++;
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
@@ -35,6 +41,11 @@ public class OrderManager {
 	{
 		System.out.println("Please enter the table ID");
 		int tableID = s.nextInt();
+		if(!InputChecker.checkTableID(tableID))
+		{
+			System.out.println("TableID Error.");
+			return;
+		}
 		int orderID = -1;
 		orderID = tm.getOrderID(tableID);
 		if(orderID!=-1)
@@ -57,7 +68,12 @@ public class OrderManager {
 		int tempOrderID = -1;
 		System.out.println("Please enter the table ID");
 		tableID = s.nextInt();
-		tempOrderID = tm.getOrderID (tableID);
+		if(!InputChecker.checkTableID(tableID))
+		{
+			System.out.println("TableID Error.");
+			return;
+		}
+		tempOrderID = tm.getOrderID(tableID);
 		tm.clear(tableID);
 		for(int j = 0; j<orderList.size();j++)
 		{
@@ -77,6 +93,11 @@ public class OrderManager {
 		boolean  added = false;
 		System.out.println("Please enter the table ID");
 		tableID = s.nextInt();
+		if(!InputChecker.checkTableID(tableID))
+		{
+			System.out.println("TableID Error.");
+			return;
+		}
 		tempOrderID = tm.getOrderID(tableID);
 		if(tempOrderID != -1)
 		{
