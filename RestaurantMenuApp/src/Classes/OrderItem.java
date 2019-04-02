@@ -29,13 +29,17 @@ public class OrderItem{
 		this.promotion = promotion;
 	}
 	boolean promotion = false;
-	public OrderItem(int itemID,int count)
+	public OrderItem(int itemID,int count,PromotionManager pm,MenuManager mm)
 	{
 		this.itemID = itemID;
 		this.count = count;
-		this.price = MenuManager.getItemPrice(this.itemID) * count;
 		if(itemID >= 10000)
+		{
+			this.price = pm.getItemPrice(this.itemID) * count;
 			promotion = true;
+		}
+		else
+			this.price = mm.getItemPrice(this.itemID) * count;
 		
 	}
 	public void addCount(PromotionManager pm, MenuManager mm)

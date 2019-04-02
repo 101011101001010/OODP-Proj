@@ -59,9 +59,9 @@ public class Order {
 	{
 		return this.tableID;
 	}
-	public void addItem(int itemID,int count)
+	public void addItem(int itemID,int count,PromotionManager pm, MenuManager mm)
 	{
-		OrderItem x = new OrderItem(itemID,count);
+		OrderItem x = new OrderItem(itemID,count,pm,mm);
 		orderItemList.add(x);
 	}
 	

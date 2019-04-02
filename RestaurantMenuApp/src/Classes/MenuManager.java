@@ -49,7 +49,7 @@ public class MenuManager {
 		return items;
 	}
 
-	private static List<String> getItemNames() {
+	private List<String> getItemNames() {
 		List<String> list = new ArrayList<>();
 
 		for (MenuItem item : items) {
@@ -59,7 +59,7 @@ public class MenuManager {
 		return list;
 	}
 
-	private static List<String> getSortedItems(int sortOption) {
+	private List<String> getSortedItems(int sortOption) {
 		List<String> list = new ArrayList<>();
 		List<MenuItem> tempList = sortItems(sortOption);
 
@@ -84,7 +84,7 @@ public class MenuManager {
 		}
 	}
 
-	public static List<MenuItem> sortItems(int sortOption) {
+	public List<MenuItem> sortItems(int sortOption) {
 		List<MenuItem> tempList = new ArrayList<>(List.copyOf(items));
 
 		System.out.println("HI");
@@ -109,7 +109,7 @@ public class MenuManager {
 		return tempList;
 	}
 
-	private static void view(ScannerHandler sc) {
+	private void view(ScannerHandler sc) {
 		String header = MenuConstants.MENU_SUB_0[0];
 		String[] options = MenuConstants.MENU_SORT_ACTIONS_0;
 		MenuFactory.printMenu(header, options);
@@ -126,7 +126,7 @@ public class MenuManager {
 		}
 	}
 
-	private static void create(ScannerHandler sc) {
+	private void create(ScannerHandler sc) {
 		String name = sc.getString("Enter name: ");
 		float price = sc.getFloat("Enter price: ");
 		String category = sc.getString("Enter category: ");
@@ -138,7 +138,7 @@ public class MenuManager {
 		items.add(item);
 	}
 
-	private static void update(ScannerHandler sc) {
+	private void update(ScannerHandler sc) {
 		String header = MenuConstants.MENU_SUB_0[2];
 		List<String> list = getItemNames();
 		MenuFactory.printMenu(header, list);
@@ -164,7 +164,7 @@ public class MenuManager {
 		}
 	}
 
-	private static void remove(ScannerHandler sc) {
+	private void remove(ScannerHandler sc) {
 		String header = MenuConstants.MENU_SUB_0[3];
 		List<String> list = getItemNames();
 		MenuFactory.printMenu(header, list);
@@ -184,7 +184,7 @@ public class MenuManager {
 		}
 	}
 
-	public static float getItemPrice(int id) {
+	public float getItemPrice(int id) {
 		if (id >= 10000) {
 			return 0;
 		}
@@ -198,7 +198,7 @@ public class MenuManager {
 		return 0;
 	}
 
-	public static void start(ScannerHandler sc) {
+	public void start(ScannerHandler sc) {
 		for (MenuItem item : items) {
 			if (item == null) {
 				return;

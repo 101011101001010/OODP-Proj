@@ -68,7 +68,7 @@ public class OrderManager {
 			}
 		}
 	}
-	public void addItem(Scanner s,TableManager tm)
+	public void addItem(Scanner s,TableManager tm,PromotionManager pm, MenuManager mm)
 	{
 		int tempOrderID = -1;
 		int tempItemID = -1;
@@ -89,7 +89,7 @@ public class OrderManager {
 				{
 					if(orderList.get(i).orderID == tempOrderID)
 					{
-						orderList.get(i).addItem(tempItemID, tempItemCount);
+						orderList.get(i).addItem(tempItemID, tempItemCount,pm,mm);
 						added = true;
 					}
 				}
@@ -132,7 +132,7 @@ public class OrderManager {
 				addNewOrder(s,tm);
 				break;
 			case 3:
-				addItem(s,tm);
+				addItem(s,tm,pm,mm);
 				break;
 			case 4:
 				removeOrder(s,tm);

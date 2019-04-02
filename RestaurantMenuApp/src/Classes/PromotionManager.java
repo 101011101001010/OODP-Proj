@@ -50,7 +50,7 @@ public class PromotionManager {
 		return itemList;
 	}
 
-	private static List<String> getItemNames() {
+	private List<String> getItemNames() {
 		List<String> list = new ArrayList<>();
 
 		for (PromotionItem item : itemList) {
@@ -60,7 +60,7 @@ public class PromotionManager {
 		return list;
 	}
 
-	private static List<String> getSortedItems(int sortOption) {
+	private List<String> getSortedItems(int sortOption) {
 		List<String> list = new ArrayList<>();
 		List<PromotionItem> tempList = sortItems(sortOption);
 
@@ -95,7 +95,7 @@ public class PromotionManager {
 		}
 	}
 
-	public static List<PromotionItem> sortItems(int sortOption) {
+	public List<PromotionItem> sortItems(int sortOption) {
 		List<PromotionItem> tempList = new ArrayList<>(List.copyOf(itemList));
 
 		System.out.println("HI");
@@ -114,7 +114,7 @@ public class PromotionManager {
 		return tempList;
 	}
 
-	private static void view(ScannerHandler sc) {
+	private void view(ScannerHandler sc) {
 		String header = MenuConstants.MENU_SUB_1[0];
 		String[] options = MenuConstants.MENU_SORT_ACTIONS_1;
 		MenuFactory.printMenu(header, options);
@@ -131,7 +131,7 @@ public class PromotionManager {
 		}
 	}
 
-	private static void create(ScannerHandler sc) {
+	private void create(ScannerHandler sc) {
 		String name = sc.getString("Enter name: ");
 		float price = sc.getFloat("Enter price: ");
 		int id = cId.incrementAndGet();
@@ -149,7 +149,7 @@ public class PromotionManager {
 		itemList.add(item);
 	}
 
-	private static void update(ScannerHandler sc) {
+	private void update(ScannerHandler sc) {
 		String header = MenuConstants.MENU_SUB_1[2];
 		List<String> list = getItemNames();
 		MenuFactory.printMenu(header, list);
@@ -178,7 +178,7 @@ public class PromotionManager {
 		}
 	}
 
-	private static void remove(ScannerHandler sc) {
+	private void remove(ScannerHandler sc) {
 		String header = MenuConstants.MENU_SUB_1[3];
 		List<String> list = getItemNames();
 		MenuFactory.printMenu(header, list);
@@ -198,11 +198,11 @@ public class PromotionManager {
 		}
 	}
 
-	public static float getItemPrice(int id) {
+	public float getItemPrice(int id) {
 		return 0;
 	}
 
-	public static void start(ScannerHandler sc) {
+	public void start(ScannerHandler sc) {
 		for (PromotionItem item : itemList) {
 			if (item == null) {
 				return;
