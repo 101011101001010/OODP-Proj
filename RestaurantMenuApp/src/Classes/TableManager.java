@@ -2,6 +2,7 @@ package Classes;
 
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -9,10 +10,10 @@ public class TableManager {
 
     public static ArrayList<Table> tableList = new ArrayList<>();
     private static Map<Integer, Integer> map;
-    //DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern();
 
     public TableManager() {
         map = new HashMap<>();
+
 
         int id = 20;
 
@@ -79,6 +80,7 @@ public class TableManager {
 
     public void addReservation(Scanner s) {
         LocalDateTime combineDate;
+        LocalDateTime now = LocalDateTime.now();
         String name, date;
         int pax = 0, index=-1, contact;
         boolean done = false;
@@ -93,12 +95,16 @@ public class TableManager {
         tableList.get(28).isReserved(9876, "D", formatting(test4), 10);
         tableList.get(29).isReserved(24680, "E", formatting(test5), 10);
         showReservation();
+        do{
+            System.out.println("Enter reserving date(ddmmyyyy) : ");
+            date = s.next();
+            System.out.println("Enter reserving time(hh:mm(am/pm))");
+            date = date + s.next();
+            combineDate = formatting(date);
+            if(combineDate.minus(Period.ofDays(30)).isAfter(now))
+                System.out.println("Reservation can only be made in at most 1 month in advance. Please enter again.");
+        }while (combineDate.minus(Period.ofMonths(1)).isAfter(now));
 
-        System.out.println("Enter reserving date(ddmmyyyy) : ");
-        date = s.next();
-        System.out.println("Enter reserving time(hh:mm(am/pm))");
-        date = date + s.next();
-        combineDate = formatting(date);
         while(!done) {
             try {
                 do {
@@ -132,7 +138,7 @@ public class TableManager {
 		else
 		    System.out.println("Sorry, Booking Full.");
     }
-
+    //public  boolean
     public int checkReservation(LocalDateTime combineDate, int pax) {
         DateTimeFormatter session = DateTimeFormatter.ofPattern("a");
         for (Table t : tableList) {
