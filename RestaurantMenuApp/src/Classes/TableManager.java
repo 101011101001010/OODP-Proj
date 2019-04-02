@@ -138,7 +138,17 @@ public class TableManager {
 		else
 		    System.out.println("Sorry, Booking Full.");
     }
-    //public  boolean
+    public void deleteReservation (Scanner s){
+        int index;
+        showReservation();
+        System.out.println("Enter TableID.");
+        index = map.get(s.nextInt());
+        tableList.get(index).showReservationList();
+        System.out.println("Enter Reservation ID To Delete.");
+        tableList.get(index).getReservationList().remove(s.nextInt()-1);
+        showReservation();
+        System.out.println("Successfully Removed.");
+    }
     public int checkReservation(LocalDateTime combineDate, int pax) {
         DateTimeFormatter session = DateTimeFormatter.ofPattern("a");
         for (Table t : tableList) {
@@ -183,10 +193,15 @@ public class TableManager {
 
     }
     public void showReservation (){
-        for (int i =0; i <tableList.size();i++){
-            System.out.println("For Table " + tableList.get(i).getTableID());
-            for (int j =0; j <tableList.get(i).getReservationList().size(); j++){
-                System.out.println(tableList.get(i).getReservationList().get(j).toStringTwo());
+
+        for (Table t : tableList){
+            int count = 1;
+            if (t.getReservationList().size()!=0){
+                System.out.println("For Table " + t.getTableID());
+                for (Table.Reservations r : t.getReservationList()){
+
+                    System.out.println(count++ + ". " + r.toStringTwo());
+                }
             }
         }
     }

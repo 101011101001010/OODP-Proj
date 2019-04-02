@@ -81,6 +81,14 @@ public class Table {
 	public ArrayList<Reservations> getReservationList(){
 		return reservationList;
 	}
+	public void showReservationList (){
+		int index=1;
+		System.out.println("For Table " + getTableID());
+		for (Reservations r : reservationList){
+				System.out.println(index++ + ". " + r.toStringTwo());
+		}
+
+	}
 
 	public String toString(){
 		String check=null;
