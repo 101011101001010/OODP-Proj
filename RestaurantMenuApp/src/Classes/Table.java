@@ -1,12 +1,15 @@
 package Classes;
 
+import client.Restaurant;
+import client.RestaurantAsset;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
 
-public class Table extends TableManager{
+public class Table extends RestaurantAsset {
 	private int tableID;
 	private int pax;
 	private int occupied;
@@ -110,6 +113,11 @@ public class Table extends TableManager{
 		if (isOccupied()==1)
 			check = "occupied.";
 		return "Table " + getTableID() + " is " + check;
+	}
+
+	@Override
+	public String toDisplayString() {
+		return null;
 	}
 
 

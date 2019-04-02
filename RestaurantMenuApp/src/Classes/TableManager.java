@@ -20,9 +20,7 @@ public class TableManager extends BaseManager {
     public TableManager() {
         map = new HashMap<>();
 
-
         int id = 20;
-
         for (int i = 0; i < 30; i++) {
 
             tableList.add(new Table(id));
