@@ -23,6 +23,10 @@ public class OrderManager {
 			System.out.println("TableID Error.");
 			return;
 		}
+		if(tm.checkOccupied(tableID))
+		{
+			System.out.println("Table is occupied!");
+		}
 		orderCount++;
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);

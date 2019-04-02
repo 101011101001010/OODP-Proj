@@ -97,11 +97,10 @@ public class Order {
 			totalPrice+=orderItemList.get(i).price;
 			orderItemList.get(i).addCount(pm,mm);
 			items2.add(orderItemList.get(i).print(pm,mm));
+			FileIOHandler.write(AppConstants.FILE_NAMES[5].toLowerCase(), writeData);
+			writeData = "";
 		}
-
-		writeData+=totalPrice+'\n';
 		items2.add("Total: "+totalPrice);
 		MenuFactory.printMenu(title, items2);
-		FileIOHandler.write(AppConstants.FILE_NAMES[5].toLowerCase(), writeData);
 	}
 }
