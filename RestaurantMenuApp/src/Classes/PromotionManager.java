@@ -46,7 +46,7 @@ public class PromotionManager {
 		}
 	}
 
-	public static List<PromotionItem> getItemList() {
+	public List<PromotionItem> getItemList() {
 		return itemList;
 	}
 
@@ -82,7 +82,7 @@ public class PromotionManager {
 		return list;
 	}
 
-	public static void addSalesCount(int id, int salesCount) {
+	public void addSalesCount(int id, int salesCount) {
 		if (id >= 10000) {
 			return;
 		}

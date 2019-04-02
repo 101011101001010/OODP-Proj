@@ -45,7 +45,7 @@ public class MenuManager {
 		}
 	}
 
-	public static List<MenuItem> getItems() {
+	public List<MenuItem> getItems() {
 		return items;
 	}
 
@@ -71,7 +71,7 @@ public class MenuManager {
 		return list;
 	}
 
-	public static void addSalesCount(int id, int salesCount) {
+	public void addSalesCount(int id, int salesCount) {
 		if (id >= 10000) {
 			return;
 		}

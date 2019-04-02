@@ -103,6 +103,5 @@ public class Order {
 		items2.add("Total: "+totalPrice);
 		MenuFactory.printMenu(title, items2);
 		FileIOHandler.write(AppConstants.FILE_NAMES[5].toLowerCase(), writeData);
-		//saveItemToRevenue
 	}
 }
