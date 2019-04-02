@@ -20,7 +20,6 @@ public class OrderManager {
 		orderCount++;
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
-		System.out.println("Order Count "+ orderCount + orderList.size());
 		tm.setOccupied(tableID,x.orderID);
 	}
 
