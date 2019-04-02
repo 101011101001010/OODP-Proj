@@ -1,12 +1,18 @@
 package Classes;
 
 
+import client.BaseManager;
+import client.enums.AssetType;
+import client.enums.Op;
+import tools.FileIO;
+import tools.Pair;
+
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class TableManager {
+public class TableManager extends BaseManager {
 
     public static ArrayList<Table> tableList = new ArrayList<>();
     private static Map<Integer, Integer> map;
@@ -30,6 +36,14 @@ public class TableManager {
         }
     }
 
+    public void choices(Scanner s) {
+        System.out.println("1. Show Table");
+        System.out.println("1. Set Table");
+        System.out.println("1. Set reservation");
+        System.out.println("");
+
+    }
+
     public static void setOccupied(int tableID, int orderID) {
         int index = map.get(tableID);
         tableList.get(index).setOrderID(orderID);
@@ -47,14 +61,6 @@ public class TableManager {
         int index = map.get(tableID);
         tableList.get(index).setOccupied(0);
         tableList.get(index).setOrderID(-1);
-    }
-
-    public void choices(Scanner s) {
-        System.out.println("1. Show Table");
-        System.out.println("1. Set Table");
-        System.out.println("1. Set reservation");
-        System.out.println("");
-
     }
 
     public void checkVacancy() {
@@ -190,7 +196,6 @@ public class TableManager {
             }
         }
             return -1;
-
     }
 
     public void searchReservation (Scanner s){
@@ -222,13 +227,38 @@ public class TableManager {
             }
         }
     }
-    public LocalDateTime formatting (String datetime) {
+    private LocalDateTime formatting (String datetime) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
         return LocalDateTime.parse(datetime, formatter);
     }
     public boolean compareDate (LocalDateTime compare1, LocalDateTime compare2){
         return compare1.toLocalDate().equals(compare2.toLocalDate());
+    }
+
+    //
+    //
+    //
+
+    public Pair<Op, String> init(){
+        FileIO f = new FileIO();
+        List<String> tableData = f.read(FileIO.FileNames.TABLE_FILE);
+        String splitStr = " // ";
+
+        if (tableData==null)
+            return  (new Pair<>(Op.FAILED, "Failed to read files."));
+        if (!getRestaurant().registerClassToAsset(Table.class, AssetType.TABLE))
+            return (new Pair<>(Op.FAILED, "Failed to register class."));
+    }
+
+    @Override
+    public String[] getMainCLIOptions() {
+        return new String[0];
+    }
+
+    @Override
+    public Runnable[] getOptionRunnables() {
+        return new Runnable[0];
     }
 }
 

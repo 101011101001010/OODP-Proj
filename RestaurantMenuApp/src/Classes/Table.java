@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 
-public class Table {
+public class Table extends TableManager{
 	private int tableID;
 	private int pax;
 	private int occupied;
