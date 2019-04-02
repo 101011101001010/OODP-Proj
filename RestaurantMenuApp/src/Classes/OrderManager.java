@@ -16,7 +16,7 @@ public class OrderManager {
 		int staffID = s.nextInt();
 		s.nextLine();
 		System.out.println("Please enter the table ID");
-		String tableID = s.next();
+		int tableID = s.nextInt();
 		orderCount++;
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
@@ -34,7 +34,7 @@ public class OrderManager {
 	public void removeOrder(Scanner s,TableManager tm)
 	{
 		System.out.println("Please enter the table ID");
-		String tableID = s.next();
+		int tableID = s.nextInt();
 		int orderID = -1;
 		orderID = tm.getOrderID(tableID);
 		if(orderID!=-1)
@@ -53,10 +53,10 @@ public class OrderManager {
 	}
 	public void printBill(Scanner s,TableManager tm,PromotionManager pm, MenuManager mm)
 	{
-		String tableID = "";
+		int tableID;
 		int tempOrderID = -1;
 		System.out.println("Please enter the table ID");
-		tableID = s.next();
+		tableID = s.nextInt();
 		tempOrderID = tm.getOrderID (tableID);
 		tm.clear(tableID);
 		for(int j = 0; j<orderList.size();j++)
@@ -73,10 +73,10 @@ public class OrderManager {
 		int tempOrderID = -1;
 		int tempItemID = -1;
 		int tempItemCount = -1;
-		String tableID="";
+		int tableID;
 		boolean  added = false;
 		System.out.println("Please enter the table ID");
-		tableID = s.next();
+		tableID = s.nextInt();
 		tempOrderID = tm.getOrderID(tableID);
 		if(tempOrderID != -1)
 		{

@@ -20,7 +20,7 @@ public class Order {
 	int staffID;
 	Date orderDate;
 	String sessions;
-	String tableID;
+	int tableID;
 	
 	public ArrayList<OrderItem> getOrderItemList() {
 		return orderItemList;
@@ -46,16 +46,16 @@ public class Order {
 	public void setSessions(String sessions) {
 		this.sessions = sessions;
 	}
-	public void setTableID(String tableID) {
+	public void setTableID(int tableID) {
 		this.tableID = tableID;
 	}
-	public Order(int orderID, int staffID,String tableID){
+	public Order(int orderID, int staffID,int tableID){
 		this.orderID = orderID;
 		this.staffID = staffID;
 		this.tableID = tableID;
 		//orderDate.toLocalDate();
 	}
-	public String getTableID()
+	public int getTableID()
 	{
 		return this.tableID;
 	}
@@ -85,7 +85,7 @@ public class Order {
 			}
 			MenuFactory.printMenu(title, items);
 	}
-	public void print(String tableID,PromotionManager pm, MenuManager mm)
+	public void print(int tableID,PromotionManager pm, MenuManager mm)
 	{
 		float totalPrice = 0;
 		String writeData=tableID + ", " + orderID +", ";
