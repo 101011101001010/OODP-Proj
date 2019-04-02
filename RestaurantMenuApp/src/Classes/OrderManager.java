@@ -10,7 +10,7 @@ public class OrderManager {
 	static ArrayList<Order> orderList = new ArrayList<Order>();
 	static int orderCount = 0;
 
-	public static void addNewOrder(Scanner s, TableManager tm)
+	public void addNewOrder(Scanner s, TableManager tm)
 	{
 		System.out.println("Please enter Staff ID");
 		int staffID = s.nextInt();
@@ -24,7 +24,7 @@ public class OrderManager {
 		tm.setOccupied(tableID,x.orderID);
 	}
 
-	public static void viewOrder()
+	public void viewOrder()
 	{
 		for(int i = 0; i<orderList.size();i++)
 		{
@@ -32,16 +32,12 @@ public class OrderManager {
 		}
 	}
 
-	public static void removeOrder(Scanner s)
+	public void removeOrder(Scanner s,TableManager tm)
 	{
 		System.out.println("Please enter the table ID");
 		String tableID = s.next();
 		int orderID = -1;
-		for(int i = 0; i<TableManager.tableList.size();i++)
-		{
-			if(TableManager.tableList.get(i).tableID == tableID)
-				orderID=TableManager.tableList.get(i).orderID;
-		}
+		orderID = tm.getOrderID(tableID);
 		if(orderID!=-1)
 		{
 			for(int i =0; i<orderList.size();i++)
@@ -49,14 +45,14 @@ public class OrderManager {
 				if(orderList.get(i).orderID == orderID)
 					orderList.remove(i);
 			}
-			TableManager.clear(tableID);
+			tm.clear(tableID);
 		}
 		else
 		{
-			System.out.println("Error removing order!");
+			System.out.println("Table does not have an order!");
 		}
 	}
-	public static void printBill(Scanner s)
+	public void printBill(Scanner s)
 	{
 		String tableID = "";
 		int tempOrderID = -1;
@@ -80,7 +76,7 @@ public class OrderManager {
 			}
 		}
 	}
-	public static void addItem(Scanner s)
+	public void addItem(Scanner s)
 	{
 		int tempOrderID = -1;
 		int tempItemID = -1;
@@ -153,7 +149,7 @@ public class OrderManager {
 				addItem(s);
 				break;
 			case 4:
-				removeOrder(s);
+				removeOrder(s,tm);
 				break;
 			case 5:
 				printBill(s);
