@@ -1,7 +1,9 @@
 package Classes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 
 public class Table {
@@ -27,11 +29,26 @@ public class Table {
 		public String getDate(){
 			return date;
 		}
+		public String getName(){
+			return name;
+		}
+		public String getContact(){
+			return contact;
+		}
+		public int getPax(){
+			return pax;
+		}
+		public String toStringTwo(){
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
+			LocalDateTime date = LocalDateTime.parse(getDate(),format);
+			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime() +
+					", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
+		}
 	}
 
 	public Table(int tableID)
 	{
-		this.occupied = 1;
+		this.occupied = 0;
 		this.orderID = -1;
 		this.pax = 0;
 		this.tableID = tableID;

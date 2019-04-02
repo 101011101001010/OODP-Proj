@@ -1,5 +1,6 @@
 package Classes;
 
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -13,11 +14,11 @@ public class TableManager {
 		map = new HashMap<>();
 
 		int id = 20;
-		int count = 0;
+
 		for (int i = 0; i < 30; i++) {
 
 			tableList.add(new Table(id));
-			map.put(id++, count++);
+			map.put(id++, i);
 			if (id == 30)
 				id = 40;
 			if (id == 50)
@@ -63,6 +64,13 @@ public class TableManager {
 	public int getOrderID(int tableID){
 		return tableList.get(map.get(tableID)).getOrderID();
 	}
+	public boolean checkOccupied(int tableID){
+		if (tableList.get(map.get(tableID)).isOccupied()!=0)
+			return true;
+		else
+			return false;
+
+	}
 
 	//
 	//
@@ -70,34 +78,56 @@ public class TableManager {
 
 	public void addReservation(Scanner s) {
 		String date, name, contact;
-		int pax, index;
+		int pax = 0, index=-1;
+		boolean done = false;
+		String test1 = "0204201909:30pm";
+		String test2 = "0204201910:30pm";
+		String test3 = "0204201909:45pm";
+		String test4 = "0204201909:15pm";
+		String test5 = "0204201907:30pm";
+		tableList.get(25).isReserved("12345", "A", test1, 10);
+		tableList.get(26).isReserved("67890", "B", test2, 10);
+		tableList.get(27).isReserved("54321", "C", test3, 10);
+		tableList.get(28).isReserved("09876", "D", test4, 10);
+		tableList.get(29).isReserved("24680", "E", test5, 10);
+		showReservation();
+
 		System.out.println("Enter reserving date(ddmmyyyy) : ");
 		date = s.next();
 		System.out.println("Enter reserving time(hh:mm(am/pm))");
 		date = date + s.next();
+		while(!done) {
+			try {
+				do {
+					System.out.println("Enter number of people.");
 
-		System.out.println(format(date).toLocalTime());
+					pax = s.nextInt();
 
-		do {
-			System.out.println("Enter number of people.");
-			pax = s.nextInt();
-			if (pax > 10) {
-				System.out.println("Tables are limited to a maximum number of 10 people, please enter again.");
+					if (pax > 10)
+						System.out.println("Tables are limited to a maximum number of 10 people, please enter again.");
+					else if (pax < 1)
+						System.out.println("Unable to book a table with less than a person, please enter again.");
+					else
+						done = true;
+				} while (pax > 10 || pax < 1);
+
+			} catch (Exception e) {
+				s.next();
+				System.out.println("Please enter a number");
 			}
-			if (pax < 1) {
-				System.out.println("Unable to book a table with less than a person, please enter again.");
-			}
-		} while (pax > 10 || pax < 1);
-
-		/*index = checkReservation(date, pax);
+		}
+		index = checkReservation(date, pax);
 
 		if(index != -1){
+			System.out.println(index);
 			System.out.println("Enter Your Name.");
 			name = s.next();
 			System.out.println("Enter Your Contact.");
 			contact = s.next();
 			tableList.get(index).getReservationList().add(new Table.Reservations(contact, name, date, pax));
-		}*/
+		}
+		else
+			System.out.println("Sorry, Booking Full.");
 	}
 
 	public int checkReservation(String datetime, int pax) {
@@ -107,7 +137,7 @@ public class TableManager {
 				for (Table.Reservations r : t.getReservationList()) {
 					if (compareDate(datetime, r.getDate())!=0)
 						return map.get(t.getTableID());
-					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+					else if (!formatting(datetime).format(session).equals(formatting(r.getDate()).format(session))) {
 						return map.get(t.getTableID());
 					}
 				}
@@ -116,7 +146,7 @@ public class TableManager {
 				for (Table.Reservations r : t.getReservationList()) {
 					if (compareDate(datetime, r.getDate())!=0)
 						return map.get(t.getTableID());
-					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+					else if (!formatting(datetime).format(session).equals(formatting(r.getDate()).format(session))) {
 						return map.get(t.getTableID());
 					}
 				}
@@ -125,7 +155,7 @@ public class TableManager {
 				for (Table.Reservations r : t.getReservationList()) {
 					if (compareDate(datetime, r.getDate())!=0)
 						return map.get(t.getTableID());
-					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+					else if (!formatting(datetime).format(session).equals(formatting(r.getDate()).format(session))) {
 						return map.get(t.getTableID());
 					}
 				}
@@ -134,7 +164,7 @@ public class TableManager {
 				for (Table.Reservations r : t.getReservationList()) {
 					if (compareDate(datetime, r.getDate())!=0)
 						return map.get(t.getTableID());
-					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+					else if (!formatting(datetime).format(session).equals(formatting(r.getDate()).format(session))) {
 						return map.get(t.getTableID());
 					}
 				}
@@ -144,13 +174,21 @@ public class TableManager {
 
 
 	}
-	public LocalDateTime format (String datetime) {
+	public void showReservation (){
+		for (int i =0; i <tableList.size();i++){
+			System.out.println("For Table " + tableList.get(i).getTableID());
+			for (int j =0; j <tableList.get(i).getReservationList().size(); j++){
+				System.out.println(tableList.get(i).getReservationList().get(j).toStringTwo());
+			}
+		}
+	}
+	public LocalDateTime formatting (String datetime) {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
 		return LocalDateTime.parse(datetime, formatter);
 	}
 	public int compareDate (String compare1, String compare2){
-		return format(compare1).toLocalDate().compareTo(format(compare2).toLocalDate());
+		return formatting(compare1).toLocalDate().compareTo(formatting(compare2).toLocalDate());
 	}
 }
 
