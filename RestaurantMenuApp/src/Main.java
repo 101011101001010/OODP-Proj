@@ -2,6 +2,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Scanner;
 
+import Classes.OrderManager;
 import constants.AppConstants;
 import constants.MenuConstants;
 import tools.*;
@@ -24,20 +25,20 @@ public class Main {
 				String className = AppConstants.CODE_NAMES[choice];
 				String methodName = MenuConstants.MENU_HANDLER_CALL_METHOD;
 
-				try {
-					Class c = Class.forName(className);
-					Method method = c.getDeclaredMethod(methodName, ScannerHandler.class);
-					method.invoke(null, sc);
+				if (choice == 2) {
+					OrderManager.choices(s);
 				}
 
-				// die lor
-				catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+				else {
 					try {
 						Class c = Class.forName(className);
-						Method method = c.getDeclaredMethod("choices", Scanner.class);
-						method.invoke(null, s);
-					} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ee) {
-						System.out.println("WORK IN PROGRESS!");
+						Method method = c.getDeclaredMethod(methodName, ScannerHandler.class);
+						method.invoke(null, sc);
+					}
+
+					// die lor
+					catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+						e.printStackTrace();
 					}
 				}
 			}
