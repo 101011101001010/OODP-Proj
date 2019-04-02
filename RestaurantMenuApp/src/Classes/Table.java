@@ -89,6 +89,17 @@ public class Table {
 		}
 
 	}
+	public boolean findReservation(int contact){
+
+		for (Reservations r : reservationList){
+			if(r.getContact() == contact){
+				System.out.println("Reservation Found At Table " + tableID);
+				System.out.println(r.toStringTwo());
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public String toString(){
 		String check=null;

@@ -192,6 +192,23 @@ public class TableManager {
             return -1;
 
     }
+
+    public void searchReservation (Scanner s){
+        int contact;
+        boolean check =false;
+
+        System.out.println("Enter contact number to check for reservation.");
+        contact = s.nextInt();
+        for (Table t : tableList){
+            if (t.findReservation(contact)){
+                check = true;
+                break;
+            }
+        }
+        if (!check)
+            System.out.println("No reservation found.");
+    }
+
     public void showReservation (){
 
         for (Table t : tableList){
