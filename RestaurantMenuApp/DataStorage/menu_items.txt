@@ -1,43 +1,40 @@
-Cream of Mushroom, 3.8, Starters, desc, 101, 0
-Garlic Bread, 2.8, Starters, desc, 102, 0
-Nuggets, 4.5, Starters, desc, 103, 0
-Chicken Wings, 4.5, Starters, desc, 104, 0
-Vienna Sausages, 5.9, Starters, desc, 105, 0
-Classic Ceasar Salad, 7.9, Starters, desc, 106, 0
-Escargots, 7.9, Starters, desc, 107, 0
-Mexican Nachos, 7.9, Starters, desc, 108, 0
-Chicken & Fish, 17.9, Super Combo, desc, 201, 0
-Steak & Chicken, 24.5, Super Combo, desc, 202, 0
-Surf & Turf, 21.9, Super Combo, desc, 203, 0
-All Day Special, 17.9, Super Combo, desc, 204, 0
-Grand Sampler, 18.9, Super Combo, desc, 205, 0
-Aston Classic Cheeseburger, 14.9, Burger, desc, 301, 0
-iEat Super Burger, 15.9, Burger, desc, 302, 0
-Chicken Napolitana, 9.9, Spaghetti Fiesta, desc, 401, 0
-Beef Bolognese, 10.9, Spaghetti Fiesta, desc, 402, 0
-Salmon Spaghetti, 10.9, Spaghetti Fiesta, desc, 403, 0
-Seafood Marinara, 10.9, Spaghetti Fiesta, desc, 404, 0
-Carbonara, 10.9, Spaghetti Fiesta, desc, 405, 0
-Baked Potato, 2.8, Hot Side Dishes, desc, 501, 0
-BBQ Beans, 2.8, Hot Side Dishes, desc, 502, 0
-Corn On The Cob, 2.8, Hot Side Dishes, desc, 503, 0
-French Fries, 2.8, Hot Side Dishes, desc, 504, 0
-Garden Veggie, 2.8, Hot Side Dishes, desc, 505, 0
-Mac & Cheese, 2.8, Hot Side Dishes, desc, 506, 0
-Mashed Potato, 2.8, Hot Side Dishes, desc, 507, 0
-Onion Rings, 2.8, Hot Side Dishes, desc, 508, 0
-Potato Wedges, 2.8, Hot Side Dishes, desc, 509, 0
-Tasty Rice, 2.8, Hot Side Dishes, desc, 510, 0
-Coleslaw, 2.8, Cold Side Dishes, desc, 601, 0
-House Salad, 2.8, Cold Side Dishes, desc, 602, 0
-Pasta Salad, 2.8, Cold Side Dishes, desc, 603, 0
-Potato Salad, 2.8, Cold Side Dishes, desc, 604, 0
-Plain Water, 0.5, Beverage, desc, 701, 0
-Coke/Coke Light, 2.2, Beverage, desc, 702, 0
-Sprite, 2.2, Beverage, desc, 703, 0
-Orange Juice, 2.8, Beverage, desc, 704, 0
-Ice Lemon Tea, 2.8, Beverage, desc, 705, 0
-Green Tea, 2.8, Beverage, desc, 706, 0
-
-TEST ITEM, 100.0, TEST ITEM, TEST ITEM, 707, 0
-TEST ITEM2, 99.0, TEST ITEM, TEST ITEM2, 708, 0
+0 // Cream of Mushroom // 3.8 // Description // Starters
+1 // Garlic Bread // 2.8 // Description // Starters
+2 // Nuggets // 4.5 // Description // Starters
+3 // Vienna Sausages // 5.9 // Description // Starters
+4 // Classic Ceasar Salad // 7.9 // Description // Starters
+5 // Escargots // 7.9 // Description // Starters
+6 // Mexican Nachos // 7.9 // Description // Starters
+7 // Chicken & Fish // 17.9 // Description // Super Combo
+8 // Steak & Chicken // 24.5 // Description // Super Combo
+9 // Surf & Turf // 21.9 // Description // Super Combo
+10 // All Day Special // 17.9 // Description // Super Combo
+11 // Grand Sampler // 18.9 // Description // Super Combo
+12 // Aston Classic Cheeseburger // 14.9 // Description // Burger
+13 // iEat Super Burger // 15.9 // Description // Burger
+14 // Chicken Napolitana // 9.9 // Description // Spaghetti Fiesta
+15 // Beef Bolognese // 10.9 // Description // Spaghetti Fiesta
+16 // Salmon Spaghetti // 10.9 // Description // Spaghetti Fiesta
+17 // Seafood Marinara // 10.9 // Description // Spaghetti Fiesta
+18 // Carbonara // 10.9 // Description // Spaghetti Fiesta
+19 // Baked Potato // 2.8 // Description // Hot Side Dishes
+20 // BBQ Beans // 2.8 // Description // Hot Side Dishes
+21 // Corn On The Cob // 2.8 // Description // Hot Side Dishes
+22 // French Fries // 2.8 // Description // Hot Side Dishes
+23 // Garden Veggie // 2.8 // Description // Hot Side Dishes
+24 // Mac & Cheese // 2.8 // Description // Hot Side Dishes
+25 // Mashed Potato // 2.8 // Description // Hot Side Dishes
+26 // Onion Rings // 2.8 // Description // Hot Side Dishes
+27 // Potato Wedges // 2.8 // Description // Hot Side Dishes
+28 // Tasty Rice // 2.8 // Description // Hot Side Dishes
+29 // Coleslaw // 2.8 // Description // Cold Side Dishes
+30 // House Salad // 2.8 // Description // Cold Side Dishes
+31 // Pasta Salad // 2.8 // Description // Cold Side Dishes
+32 // Potato Salad // 2.8 // Description // Cold Side Dishes
+33 // Plain Water // 0.5 // Description // Beverage
+34 // Coke/Coke Light // 2.2 // Description // Beverage
+35 // Sprite // 2.2 // Description // Beverage
+36 // Orange Juice // 2.8 // Description // Beverage
+37 // Ice Lemon Tea // 2.8 // Description // Beverage
+38 // Green Tea // 2.8 // Description // Beverage
+39 // SCAM ITEM // 9999.00 // This is an item that scams your money! // SCAM

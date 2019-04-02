@@ -1,73 +1,207 @@
 package Classes;
-import java.util.Scanner;
+import java.util.*;
 
+import client.BaseManager;
+import client.Restaurant;
+import client.RestaurantAsset;
+import client.enums.AssetType;
+import client.enums.Op;
 import tools.InputChecker;
-import tools.MenuFactory;
+import tools.Pair;
 
-import java.util.ArrayList;
+public class OrderManager extends BaseManager {
 
-public class OrderManager {
-
+	/*
 	static ArrayList<Order> orderList = new ArrayList<Order>();
 	static int orderCount = 0;
+	*/
 
-	public void addNewOrder(Scanner s, TableManager tm)
-	{
-		System.out.println("Please enter Staff ID");
-		int staffID = s.nextInt();
-		s.nextLine();
-		System.out.println("Please enter the table ID");
-		int tableID = s.nextInt();
-		if(!InputChecker.checkTableID(tableID))
-		{
-			System.out.println("TableID Error.");
-			return;
-		}
-		//if(tm.checkOccupied(tableID))
-		//{
-		//	System.out.println("Table is occupied!");
-		//}
-		orderCount++;
-		Order x = new Order(orderCount,staffID,tableID);
-		orderList.add(x);
-		tm.setOccupied(tableID,x.orderID);
-	}
+	public OrderManager(Restaurant restaurant) {
+		super(restaurant);
 
-	public void viewOrder(PromotionManager pm, MenuManager mm)
-	{
-		for(int i = 0; i<orderList.size();i++)
-		{
-			orderList.get(i).view(pm,mm);
+		if (!getRestaurant().registerClassToAsset(Order.class, AssetType.ORDER)) {
+			System.out.println("FAIL");
 		}
 	}
 
-	public void removeOrder(Scanner s,TableManager tm)
+	@Override
+	public Pair<Op, String> init() {
+		return null;
+	}
+
+	@Override
+	public String[] getMainCLIOptions() {
+		return new String[] {
+				"View orders",
+				"Add new order",
+				"Add item to order",
+				"Remove order",
+				"Print bill",
+		};
+	}
+
+	@Override
+	public Runnable[] getOptionRunnables() {
+		return new Runnable[] {
+				this::viewOrder,
+				this::addNewOrder,
+				this::addItem,
+				this::removeOrder,
+				this::printBill
+		};
+	}
+
+	public void addNewOrder()
 	{
-		System.out.println("Please enter the table ID");
-		int tableID = s.nextInt();
-		if(!InputChecker.checkTableID(tableID))
-		{
-			System.out.println("TableID Error.");
+		int staffId = getCs().getInt("Please enter staff ID");
+		int tableId = getCs().getInt("Please enter table ID");
+
+		if(!((tableId>=20 && tableId<=29)||(tableId>=40 && tableId<=49)||(tableId>=80 && tableId<=84)||(tableId>=100 && tableId<=104))) {
+			System.out.println("TableID error.");
 			return;
 		}
-		int orderID = -1;
-		orderID = tm.getOrderID(tableID);
-		if(orderID!=-1)
-		{
-			for(int i =0; i<orderList.size();i++)
-			{
-				if(orderList.get(i).orderID == orderID)
-					orderList.remove(i);
+
+		if(getRestaurant().getTableManager().checkOccupied(tableId)) {
+			System.out.println("Table is occupied!");
+			return;
+		}
+
+		Order x = new Order(getRestaurant().incrementAndGetCounter(AssetType.ORDER), staffId, tableId);
+		getRestaurant().add(x);
+		getRestaurant().getTableManager().setOccupied(tableId, x.orderID);
+		System.out.println("Order added");
+	}
+
+	private void viewOrder() {
+		int choice = 1;
+		List<String> displayList;
+
+		do {
+			displayList = getDisplay(choice);
+			if (displayList == null) {
+				System.out.println("Failed to get list.");
+				return;
 			}
-			tm.clear(tableID);
-		}
-		else
-		{
-			System.out.println("Table does not have an order!");
-		}
+			getCs().printDisplayTable("View Order", displayList);
+		} while ((choice = getCs().printChoices("Command // Corresponding Function", Arrays.asList("Sort by ID", "Sort by staff ID", "Sort by table ID"), new String[] {"Go back"})) != -1);
 	}
-	public void printBill(Scanner s,TableManager tm,PromotionManager pm, MenuManager mm)
+
+	public void removeOrder()
 	{
+		List<Table> activeTableList = getActiveTables();
+		List<String> nameList = new ArrayList<>();
+
+		for (Table table : activeTableList) {
+			nameList.add("Table " + table.getTableID());
+		}
+
+		if (activeTableList == null) {
+			System.out.println("Failed to get list.");
+			return;
+		}
+
+		int tableIndex = getCs().printChoices("Index // Active Tables", nameList, new String[]{"Go back"});
+		if (tableIndex == -1) {
+			return;
+		}
+
+		tableIndex -= 1;
+		Table table = activeTableList.get(tableIndex);
+
+		for (RestaurantAsset o : getRestaurant().getAsset(AssetType.ORDER)) {
+			if (o.getId() == table.getOrderID()) {
+				if (o instanceof Order) {
+					getRestaurant().remove(o);
+					getRestaurant().getTableManager().clear(table.getTableID());
+					return;
+				}
+			}
+		}
+
+		System.out.println("Error!");
+	}
+
+
+	public void addItem() {
+		List<Table> activeTableList = getActiveTables();
+		List<String> nameList = new ArrayList<>();
+
+		for (Table table : activeTableList) {
+			nameList.add("Table " + table.getTableID());
+		}
+
+		if (activeTableList == null) {
+			System.out.println("Failed to get list.");
+			return;
+		}
+
+		int tableIndex = getCs().printChoices("Index // Active Tables", nameList, new String[]{"Go back"});
+		if (tableIndex == -1) {
+			return;
+		}
+
+		tableIndex -= 1;
+		int itemId = getCs().getInt("Please enter the item ID");
+		int itemCount = getCs().getInt("Please enter the item count");
+		Table table = activeTableList.get(tableIndex);
+
+		for (RestaurantAsset o : getRestaurant().getAsset(AssetType.ORDER)) {
+			if (o.getId() == table.getOrderID()) {
+				if (o instanceof Order) {
+					RestaurantAsset item;
+					if (itemId >= 100000) {
+						item = getRestaurant().getItemFromId(AssetType.PROMO, itemId);
+					} else {
+						 item = getRestaurant().getItemFromId(AssetType.FOOD, itemId);
+					}
+
+					if (item instanceof MenuItem) {
+						((Order) o).addItem(new OrderItem((MenuItem) item, itemCount));
+						System.out.println("Order has been added.");
+						return;
+					}
+				}
+			}
+		}
+
+		System.out.println("Error. Order not added.");
+	}
+
+	public void printBill()
+	{
+		List<Table> activeTableList = getActiveTables();
+		List<String> nameList = new ArrayList<>();
+
+		for (Table table : activeTableList) {
+			nameList.add("Table " + table.getTableID());
+		}
+
+		if (activeTableList == null) {
+			System.out.println("Failed to get list.");
+			return;
+		}
+
+		int tableIndex = getCs().printChoices("Index // Active Tables", nameList, new String[]{"Go back"});
+		if (tableIndex == -1) {
+			return;
+		}
+
+		tableIndex -= 1;
+		Table table = activeTableList.get(tableIndex);
+
+		for (RestaurantAsset o : getRestaurant().getAsset(AssetType.ORDER)) {
+			if (o.getId() == table.getOrderID()) {
+				if (o instanceof Order) {
+					getCs().printDisplayTable("Invoice for table " + table.getTableID(), Collections.singletonList(((Order) o).toInvoiceString()));
+					o.toString();
+					getRestaurant().remove(o);
+					getRestaurant().getTableManager().clear(table.getTableID());
+					return;
+				}
+			}
+		}
+
+		/*
 		int tableID;
 		int tempOrderID = -1;
 		System.out.println("Please enter the table ID");
@@ -88,90 +222,46 @@ public class OrderManager {
 				orderList.remove(j);
 			}
 		}
-	}
-	public void addItem(Scanner s,TableManager tm,PromotionManager pm, MenuManager mm)
-	{
-		int tempOrderID = -1;
-		int tempItemID = -1;
-		int tempItemCount = -1;
-		int tableID;
-		boolean  added = false;
-		System.out.println("Please enter the table ID");
-		tableID = s.nextInt();
-		if(!InputChecker.checkTableID(tableID))
-		{
-			System.out.println("TableID Error.");
-			return;
-		}
-		tempOrderID = tm.getOrderID(tableID);
-		if(tempOrderID != -1)
-		{
-			System.out.println("Please enter the item ID");
-			tempItemID = s.nextInt();
-			System.out.println("Please enter the item count");
-			tempItemCount = s.nextInt();
-			try {
-				for(int i = 0; i<orderList.size();i++)
-				{
-					if(orderList.get(i).orderID == tempOrderID)
-					{
-						orderList.get(i).addItem(tempItemID, tempItemCount,pm,mm);
-						added = true;
-					}
-				}
-			}
-			catch(Exception e)
-			{
-				System.out.println("Error. Order not added.");
-			}
-			if(added)
-				System.out.println("Order has been added!");
-			else
-				System.out.println("Error. Order not added.");
-				
-		}
-	}
-	public void choices(Scanner s, TableManager tm,PromotionManager pm, MenuManager mm)
-	{
-		int choice = -1;
-		while(choice!= 6)
-		{
-			System.out.println("1. View Orders");//done
-			System.out.println("2. Add New Order");//done
-			System.out.println("3. Add Item To Order");//done
-			System.out.println("4. Remove Order");//done
-			System.out.println("5. Print Bill");//done
-			System.out.println("6. Exit");
-			try {
-				choice = s.nextInt();
-			}
-			catch(Exception e)
-			{
-				System.out.println("Please enter a valid choice.");	
-			}
-			
-			switch(choice) {
-			case 1:
-				viewOrder(pm,mm);
-				break;
-			case 2:
-				addNewOrder(s,tm);
-				break;
-			case 3:
-				addItem(s,tm,pm,mm);
-				break;
-			case 4:
-				removeOrder(s,tm);
-				break;
-			case 5:
-				printBill(s,tm,pm,mm);
-				break;
-			case 6:
-				break;
-			default:
-				System.out.println("Please enter a valid choice.");	
-			}
-		}
+		*/
 	}
 
+	private List<String> getDisplay(int... sortOptions) {
+		int sortOption = (sortOptions.length > 0)? sortOptions[0] : 1;
+		List<? extends RestaurantAsset> masterList = new ArrayList<>(getRestaurant().getAsset(AssetType.ORDER));
+
+		List<String> ret = new ArrayList<>();
+		if (masterList.size() == 0) {
+			ret.add("There is no order added yet.");
+			return ret;
+		}
+
+		masterList.sort((item1, item2) -> {
+			switch (sortOption) {
+				case 2: return Integer.compare(((Order) item1).getStaffID(), ((Order) item2).getStaffID());
+				case 3: return Integer.compare(((Order) item1).getTableID(), ((Order) item2).getTableID());
+			}
+
+			return Integer.compare(((Order) item1).getOrderID(), ((Order) item2).getOrderID());
+		});
+
+		ret.add("Order ID // Table ID // Staff ID // Order Items");
+
+		for (RestaurantAsset o : masterList) {
+			ret.add(o.toDisplayString());
+		}
+
+		return ret;
+	}
+
+	private List<Table> getActiveTables() {
+		List<Table> nameList = new ArrayList<>();
+
+		for (Table table : getRestaurant().getTableManager().tableList) {
+			if (table.getOrderID() != -1) {
+				nameList.add(table);
+			}
+		}
+
+		return nameList;
+	}
 }

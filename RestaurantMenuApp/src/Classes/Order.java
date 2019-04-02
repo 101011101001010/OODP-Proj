@@ -1,15 +1,16 @@
 package Classes;
 
+import client.RestaurantAsset;
+import tools.FileIO;
+
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import constants.AppConstants;
-import tools.FileIOHandler;
-import tools.MenuFactory;
+public class Order extends RestaurantAsset {
 
-public class Order {
-	ArrayList<OrderItem> orderItemList = new ArrayList<OrderItem>();
+	List<OrderItem> orderItemList = new ArrayList<OrderItem>();
 	public Date getOrderDate() {
 		return orderDate;
 	}
@@ -22,7 +23,7 @@ public class Order {
 	String sessions;
 	int tableID;
 	
-	public ArrayList<OrderItem> getOrderItemList() {
+	public List<OrderItem> getOrderItemList() {
 		return orderItemList;
 	}
 	public void setOrderItemList(ArrayList<OrderItem> orderItemList) {
@@ -49,7 +50,8 @@ public class Order {
 	public void setTableID(int tableID) {
 		this.tableID = tableID;
 	}
-	public Order(int orderID, int staffID,int tableID){
+	public Order(int orderID, int staffID,int tableID) {
+		super(orderID);
 		this.orderID = orderID;
 		this.staffID = staffID;
 		this.tableID = tableID;
@@ -59,12 +61,13 @@ public class Order {
 	{
 		return this.tableID;
 	}
-	public void addItem(int itemID,int count,PromotionManager pm, MenuManager mm)
+
+	public void addItem(OrderItem x)
 	{
-		OrderItem x = new OrderItem(itemID,count,pm,mm);
 		orderItemList.add(x);
 	}
-	
+
+	/*
 	public float calculatePrice()
 	{
 		float price = 0;
@@ -75,6 +78,8 @@ public class Order {
 		  }
 		return price;
 	}
+
+
 	public void view(PromotionManager pm, MenuManager mm)
 	{
 			String title = "Bill for "+tableID;
@@ -103,5 +108,56 @@ public class Order {
 		}
 		items2.add("Total: "+totalPrice);
 		MenuFactory.printMenu(title, items2);
+	}
+	*/
+
+	@Override
+	public String toString() {
+		FileIO f = new FileIO();
+
+		String writeData;
+		for(int i =0; i<orderItemList.size();i++)
+		{
+			writeData=tableID + ", " + orderID +", ";
+			writeData+=orderItemList.get(i).itemID + ", " + orderItemList.get(i).count + ", " + orderItemList.get(i).price;
+			f.writeLine(FileIO.FileNames.SALES_FILE, writeData);
+		}
+
+		return "";
+	}
+
+	@Override
+	public String toDisplayString() {
+		StringBuilder sb = new StringBuilder();
+		String head = tableID + " // " + orderID + " // " + staffID + " // ";
+		sb.append(head);
+		BigDecimal totalPrice = new BigDecimal(0);
+
+		for (int index = 0; index < orderItemList.size(); index++) {
+			String s = orderItemList.get(index).getItem().getName() + " x " + orderItemList.get(index).getCount() + " - " + orderItemList.get(index).getPrice();
+			totalPrice = totalPrice.add(orderItemList.get(index).getPrice());
+			sb.append(s);
+			sb.append("--");
+		}
+
+		sb.append("Total: " + totalPrice.toString());
+		return sb.toString();
+	}
+
+	public String toInvoiceString() {
+		StringBuilder sb = new StringBuilder();
+		String head = "Order ID: " + orderID + "--";
+		sb.append(head);
+		BigDecimal totalPrice = new BigDecimal(0);
+
+		for (int index = 0; index < orderItemList.size(); index++) {
+			String s = orderItemList.get(index).getItem().getName() + " x " + orderItemList.get(index).getCount() + " - " + orderItemList.get(index).getPrice();
+			totalPrice = totalPrice.add(orderItemList.get(index).getPrice());
+			sb.append(s);
+			sb.append("--");
+		}
+
+		sb.append("Total: " + totalPrice.toString());
+		return sb.toString();
 	}
 }

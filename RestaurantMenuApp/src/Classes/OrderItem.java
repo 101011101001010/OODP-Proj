@@ -1,54 +1,29 @@
 package Classes;
 
-public class OrderItem{
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+public class OrderItem {
 	int count;
 	int itemID;
-	float price;
-	public int getCount() {
-		return count;
-	}
-	public void setCount(int count) {
-		this.count = count;
-	}
-	public int getItemID() {
-		return itemID;
-	}
-	public void setItemID(int itemID) {
-		this.itemID = itemID;
-	}
-	public float getPrice() {
-		return price;
-	}
-	public void setPrice(float price) {
-		this.price = price;
-	}
-	public boolean isPromotion() {
-		return promotion;
-	}
-	public void setPromotion(boolean promotion) {
-		this.promotion = promotion;
-	}
-	boolean promotion = false;
-	public OrderItem(int itemID,int count,PromotionManager pm,MenuManager mm)
+	private MenuItem item;
+	BigDecimal price;
+	//boolean promotion = false;
+	BigDecimal pricePer;
+
+	public OrderItem(MenuItem item, int count)
 	{
-		this.itemID = itemID;
+		this.item = item;
 		this.count = count;
-		if(itemID >= 10000)
-		{
-			this.price = pm.getItemPrice(this.itemID) * count;
-			promotion = true;
-		}
-		else
-			this.price = mm.getItemPrice(this.itemID) * count;
-		
+		this.pricePer = item.getPrice();
+		this.price = pricePer.multiply(new BigDecimal(count)).setScale(2, RoundingMode.FLOOR);
 	}
-	public void addCount(PromotionManager pm, MenuManager mm)
-	{
-		if(promotion)
-			pm.addSalesCount(itemID,count);
-		else
-			mm.addSalesCount(itemID,count);
+
+	public MenuItem getItem() {
+		return item;
 	}
+
+	/*
 	public String print(PromotionManager pm, MenuManager mm)
 	{
 		if(promotion)
@@ -74,5 +49,22 @@ public class OrderItem{
 			}
 		}
 		return null;
+	}
+	*/
+
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public int getItemID() {
+		return itemID;
+	}
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
+	public BigDecimal getPrice() {
+		return price;
 	}
 }
