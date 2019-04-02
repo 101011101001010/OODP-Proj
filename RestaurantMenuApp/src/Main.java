@@ -17,7 +17,6 @@ public class Main {
 		OrderManager orderManager = new OrderManager();
 		MenuManager menuManager = new MenuManager();
 		ReservationManager reservationManager = new ReservationManager();
-		StaffManager staffManager = new StaffManager();
 		TableManager tableManager = new TableManager();
 		Scanner s = new Scanner(System.in);
 		ScannerHandler sc = new ScannerHandler(s);
