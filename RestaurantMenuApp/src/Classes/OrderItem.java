@@ -4,6 +4,30 @@ public class OrderItem{
 	int count;
 	int itemID;
 	float price;
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public int getItemID() {
+		return itemID;
+	}
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
+	public float getPrice() {
+		return price;
+	}
+	public void setPrice(float price) {
+		this.price = price;
+	}
+	public boolean isPromotion() {
+		return promotion;
+	}
+	public void setPromotion(boolean promotion) {
+		this.promotion = promotion;
+	}
 	boolean promotion = false;
 	public OrderItem(int itemID,int count)
 	{

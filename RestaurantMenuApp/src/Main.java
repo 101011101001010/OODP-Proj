@@ -2,7 +2,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Scanner;
 
-import Classes.OrderManager;
+import Classes.*;
 import constants.AppConstants;
 import constants.MenuConstants;
 import tools.*;
@@ -14,6 +14,11 @@ public class Main {
 
 		int choice;
 		int backInput = MenuConstants.OPTIONS_TERMINATE;
+		OrderManager orderManager = new OrderManager();
+		MenuManager menuManager = new MenuManager();
+		ReservationManager reservationManager = new ReservationManager();
+		StaffManager staffManager = new StaffManager();
+		TableManager tableManager = new TableManager();
 		Scanner s = new Scanner(System.in);
 		ScannerHandler sc = new ScannerHandler(s);
 
@@ -26,7 +31,7 @@ public class Main {
 				String methodName = MenuConstants.MENU_HANDLER_CALL_METHOD;
 
 				if (choice == 2) {
-					OrderManager.choices(s);
+					orderManager.choices(s,tableManager);
 				}
 
 				else {
@@ -73,7 +78,7 @@ public class Main {
 			switch(choice) {
 			//Orders
 			case 1:
-				orderManager.choices(s);
+				orderManager.choices(s,tableManager);
 			
 			//Print bill
 			case 2:

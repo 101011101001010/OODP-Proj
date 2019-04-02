@@ -10,7 +10,7 @@ public class OrderManager {
 	static ArrayList<Order> orderList = new ArrayList<Order>();
 	static int orderCount = 0;
 
-	public static void addNewOrder(Scanner s)
+	public static void addNewOrder(Scanner s, TableManager tm)
 	{
 		System.out.println("Please enter Staff ID");
 		int staffID = s.nextInt();
@@ -21,7 +21,7 @@ public class OrderManager {
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
 		System.out.println("Order Count "+ orderCount + orderList.size());
-		TableManager.setOccupied(tableID,x.orderID);
+		tm.setOccupied(tableID,x.orderID);
 	}
 
 	public static void viewOrder()
@@ -123,7 +123,7 @@ public class OrderManager {
 				
 		}
 	}
-	public static void choices(Scanner s)
+	public void choices(Scanner s, TableManager tm)
 	{
 		int choice = -1;
 		while(choice!= 6)
@@ -147,7 +147,7 @@ public class OrderManager {
 				viewOrder();
 				break;
 			case 2:
-				addNewOrder(s);
+				addNewOrder(s,tm);
 				break;
 			case 3:
 				addItem(s);
