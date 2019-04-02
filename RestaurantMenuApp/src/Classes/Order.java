@@ -88,12 +88,13 @@ public class Order {
 	public void print(int tableID,PromotionManager pm, MenuManager mm)
 	{
 		float totalPrice = 0;
-		String writeData=tableID + ", " + orderID +", ";
+		String writeData;
 		String title = "Bill for "+tableID;
 		List<String> items2 = new ArrayList<>();
 		for(int i =0; i<orderItemList.size();i++)
 		{
-			writeData+=orderItemList.get(i).itemID + ", " + orderItemList.get(i).count + ", " + orderItemList.get(i).price+", ";
+			writeData=tableID + ", " + orderID +", ";
+			writeData+=orderItemList.get(i).itemID + ", " + orderItemList.get(i).count + ", " + orderItemList.get(i).price;
 			totalPrice+=orderItemList.get(i).price;
 			orderItemList.get(i).addCount(pm,mm);
 			items2.add(orderItemList.get(i).print(pm,mm));

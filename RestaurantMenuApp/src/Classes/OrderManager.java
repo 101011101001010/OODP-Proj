@@ -23,10 +23,10 @@ public class OrderManager {
 			System.out.println("TableID Error.");
 			return;
 		}
-		if(tm.checkOccupied(tableID))
-		{
-			System.out.println("Table is occupied!");
-		}
+		//if(tm.checkOccupied(tableID))
+		//{
+		//	System.out.println("Table is occupied!");
+		//}
 		orderCount++;
 		Order x = new Order(orderCount,staffID,tableID);
 		orderList.add(x);
@@ -83,6 +83,7 @@ public class OrderManager {
 		{
 			if(orderList.get(j).orderID == tempOrderID)
 			{
+				System.out.println("Test1");
 				orderList.get(j).print(tableID,pm,mm);
 				orderList.remove(j);
 			}

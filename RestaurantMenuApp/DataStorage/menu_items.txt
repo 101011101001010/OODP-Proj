@@ -1,5 +1,5 @@
 Cream of Mushroom, 3.8, Starters, desc, 101, 0
-Garlic Bread,2.8,Starters, desc, 102, 0
+Garlic Bread, 2.8, Starters, desc, 102, 0
 Nuggets, 4.5, Starters, desc, 103, 0
 Chicken Wings, 4.5, Starters, desc, 104, 0
 Vienna Sausages, 5.9, Starters, desc, 105, 0

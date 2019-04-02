@@ -67,7 +67,6 @@ public class OrderItem{
 			for(int i =0; i<mm.getItems().size();i++)
 			{
 				MenuItem item = mm.getItems().get(i);
-				System.out.println("*" + itemID);
 				if(item.getItemId() == itemID)
 				{
 					return item.getName()+ " " + this.price;
