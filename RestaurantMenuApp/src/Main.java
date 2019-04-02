@@ -16,6 +16,7 @@ public class Main {
 		int backInput = MenuConstants.OPTIONS_TERMINATE;
 		OrderManager orderManager = new OrderManager();
 		MenuManager menuManager = new MenuManager();
+		PromotionManager promotionManager = new PromotionManager();
 		ReservationManager reservationManager = new ReservationManager();
 		TableManager tableManager = new TableManager();
 		Scanner s = new Scanner(System.in);
@@ -30,7 +31,7 @@ public class Main {
 				String methodName = MenuConstants.MENU_HANDLER_CALL_METHOD;
 
 				if (choice == 2) {
-					orderManager.choices(s,tableManager);
+					orderManager.choices(s,tableManager,promotionManager,menuManager);
 				}
 
 				else {

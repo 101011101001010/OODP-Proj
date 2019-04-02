@@ -24,11 +24,11 @@ public class OrderManager {
 		tm.setOccupied(tableID,x.orderID);
 	}
 
-	public void viewOrder()
+	public void viewOrder(PromotionManager pm, MenuManager mm)
 	{
 		for(int i = 0; i<orderList.size();i++)
 		{
-			orderList.get(i).view();
+			orderList.get(i).view(pm,mm);
 		}
 	}
 
@@ -52,31 +52,24 @@ public class OrderManager {
 			System.out.println("Table does not have an order!");
 		}
 	}
-	public void printBill(Scanner s)
+	public void printBill(Scanner s,TableManager tm,PromotionManager pm, MenuManager mm)
 	{
 		String tableID = "";
 		int tempOrderID = -1;
 		System.out.println("Please enter the table ID");
 		tableID = s.next();
-		for(int i = 0;i<TableManager.tableList.size(); i++)
+		tempOrderID = tm.getOrderID (tableID);
+		tm.clear(tableID);
+		for(int j = 0; j<orderList.size();j++)
 		{
-			if(TableManager.tableList.get(i).tableID.equals(tableID))
+			if(orderList.get(j).orderID == tempOrderID)
 			{
-				TableManager.tableList.get(i).occupied=0;
-				tempOrderID = TableManager.tableList.get(i).orderID;
-				TableManager.tableList.get(i).orderID = 0;
-				for(int j = 0; j<orderList.size();j++)
-				{
-					if(orderList.get(j).orderID == tempOrderID)
-					{
-						orderList.get(j).print(tableID);
-						orderList.remove(j);
-					}
-				}
+				orderList.get(j).print(tableID,pm,mm);
+				orderList.remove(j);
 			}
 		}
 	}
-	public void addItem(Scanner s)
+	public void addItem(Scanner s,TableManager tm)
 	{
 		int tempOrderID = -1;
 		int tempItemID = -1;
@@ -85,13 +78,7 @@ public class OrderManager {
 		boolean  added = false;
 		System.out.println("Please enter the table ID");
 		tableID = s.next();
-		for(int i = 0;i<TableManager.tableList.size(); i++)
-		{
-			if(TableManager.tableList.get(i).tableID.equals(tableID))
-			{
-				tempOrderID = TableManager.tableList.get(i).orderID;
-			}
-		}
+		tempOrderID = tm.getOrderID(tableID);
 		if(tempOrderID != -1)
 		{
 			System.out.println("Please enter the item ID");
@@ -119,7 +106,7 @@ public class OrderManager {
 				
 		}
 	}
-	public void choices(Scanner s, TableManager tm)
+	public void choices(Scanner s, TableManager tm,PromotionManager pm, MenuManager mm)
 	{
 		int choice = -1;
 		while(choice!= 6)
@@ -140,19 +127,19 @@ public class OrderManager {
 			
 			switch(choice) {
 			case 1:
-				viewOrder();
+				viewOrder(pm,mm);
 				break;
 			case 2:
 				addNewOrder(s,tm);
 				break;
 			case 3:
-				addItem(s);
+				addItem(s,tm);
 				break;
 			case 4:
 				removeOrder(s,tm);
 				break;
 			case 5:
-				printBill(s);
+				printBill(s,tm,pm,mm);
 				break;
 			case 6:
 				break;

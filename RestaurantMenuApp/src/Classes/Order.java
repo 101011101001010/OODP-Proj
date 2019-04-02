@@ -75,17 +75,17 @@ public class Order {
 		  }
 		return price;
 	}
-	public void view()
+	public void view(PromotionManager pm, MenuManager mm)
 	{
 			String title = "Bill for "+tableID;
 			String[] items = new String[this.orderItemList.size()];
 			for(int j =0; j<orderItemList.size();j++)
 			{
-				items[j] = orderItemList.get(j).print();
+				items[j] = orderItemList.get(j).print(pm,mm);
 			}
 			MenuFactory.printMenu(title, items);
 	}
-	public void print(String tableID)
+	public void print(String tableID,PromotionManager pm, MenuManager mm)
 	{
 		float totalPrice = 0;
 		String writeData=tableID + ", " + orderID +", ";
@@ -95,8 +95,8 @@ public class Order {
 		{
 			writeData+=orderItemList.get(i).itemID + ", " + orderItemList.get(i).count + ", " + orderItemList.get(i).price+", ";
 			totalPrice+=orderItemList.get(i).price;
-			orderItemList.get(i).addCount();
-			items2.add(orderItemList.get(i).print());
+			orderItemList.get(i).addCount(pm,mm);
+			items2.add(orderItemList.get(i).print(pm,mm));
 		}
 
 		writeData+=totalPrice+'\n';
