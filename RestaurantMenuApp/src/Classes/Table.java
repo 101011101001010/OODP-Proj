@@ -14,33 +14,33 @@ public class Table {
 	private ArrayList<Reservations> reservationList = new ArrayList<>();
 
 	static class Reservations{
-		private String contact;
+		private int contact;
 		private String name;
-		private String date;
+		private LocalDateTime date;
 		private int pax;
 
 
-		public Reservations (String contact,String name, String date, int pax){
+		public Reservations (int contact,String name, LocalDateTime date, int pax){
 			this.contact = contact;
 			this.name = name;
 			this.date = date;
 			this.pax = pax;
 		}
-		public String getDate(){
+		public LocalDateTime getDate(){
 			return date;
 		}
 		public String getName(){
 			return name;
 		}
-		public String getContact(){
+		public int getContact(){
 			return contact;
 		}
 		public int getPax(){
 			return pax;
 		}
 		public String toStringTwo(){
-			DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
-			LocalDateTime date = LocalDateTime.parse(getDate(),format);
+			//DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
+			//LocalDateTime date = LocalDateTime.parse(getDate(),format);
 			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime() +
 					", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
 		}
@@ -94,7 +94,7 @@ public class Table {
 	}
 
 
-	public void isReserved(String contact,String name, String date, int pax){
+	public void isReserved(int contact,String name, LocalDateTime date, int pax){
 		reservationList.add(new Reservations(contact, name, date, pax));
 	}
 
