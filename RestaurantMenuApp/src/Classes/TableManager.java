@@ -27,20 +27,20 @@ public class TableManager {
 		}
 	}
 
-	public static void setOccupied(String tableID, int orderID) {
+	public static void setOccupied(int tableID, int orderID) {
 		int index = map.get(tableID);
 		tableList.get(index).setOrderID(orderID);
 		tableList.get(index).setOccupied(1);
 
 	}
 
-	public static void setReserved(String tableID, int pax) {
+	public static void setReserved(int tableID, int pax) {
 		int index = map.get(tableID);
 		tableList.get(index).setOccupied(-1);
 		tableList.get(index).setPax(pax);
 	}
 
-	public static void clear(String tableID) {
+	public static void clear(int tableID) {
 		int index = map.get(tableID);
 		tableList.get(index).setOccupied(0);
 		tableList.get(index).setOrderID(-1);
@@ -60,7 +60,7 @@ public class TableManager {
 		}
 	}
 
-	public int getOrderID(String tableID){
+	public int getOrderID(int tableID){
 		return tableList.get(map.get(tableID)).getOrderID();
 	}
 
@@ -101,56 +101,46 @@ public class TableManager {
 	}
 
 	public int checkReservation(String datetime, int pax) {
-		int index;
-		int noOfTables = 0;
 		DateTimeFormatter session = DateTimeFormatter.ofPattern("a");
-
 		for (Table t : tableList) {
 			if (pax <= 2 && (t.getTableID() / 10 == 2)) {
 				for (Table.Reservations r : t.getReservationList()) {
-					if ((format(datetime).toLocalDate().compareTo(format(r.getDate()).toLocalDate()) != 0)
-							&& (format(datetime).format(session) == format(r.getDate()).format(session))) {
-						noOfTables = noOfTables+1;
-						if (noOfTables>=10)
-							return -1;
+					if (compareDate(datetime, r.getDate())!=0)
+						return map.get(t.getTableID());
+					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+						return map.get(t.getTableID());
 					}
 				}
 			}
 			if ((pax == 3 || pax == 4) && (t.getTableID() / 10 == 4)) {
 				for (Table.Reservations r : t.getReservationList()) {
-					if ((format(datetime).toLocalDate().compareTo(format(r.getDate()).toLocalDate()) == 0)
-							&& (format(datetime).format(session) == format(r.getDate()).format(session))) {
-						noOfTables = noOfTables+1;
-						if (noOfTables>=10)
-							return -1;
+					if (compareDate(datetime, r.getDate())!=0)
+						return map.get(t.getTableID());
+					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+						return map.get(t.getTableID());
 					}
 				}
 			}
 			if (pax>=5 && pax<=8 && (t.getTableID() / 10 == 8)) {
 				for (Table.Reservations r : t.getReservationList()) {
-					if ((format(datetime).toLocalDate().compareTo(format(r.getDate()).toLocalDate()) == 0)
-							&& (format(datetime).format(session) == format(r.getDate()).format(session))) {
-						noOfTables = noOfTables+1;
-						if (noOfTables>=10)
-							return -1;
+					if (compareDate(datetime, r.getDate())!=0)
+						return map.get(t.getTableID());
+					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+						return map.get(t.getTableID());
 					}
 				}
 			}
 			if (pax>=9 && (t.getTableID() / 10 == 10)) {
 				for (Table.Reservations r : t.getReservationList()) {
-					if ((format(datetime).toLocalDate().compareTo(format(r.getDate()).toLocalDate()) == 0)
-							&& (format(datetime).format(session) == format(r.getDate()).format(session))) {
-						noOfTables = noOfTables+1;
-						if (noOfTables>=10)
-							return -1;
+					if (compareDate(datetime, r.getDate())!=0)
+						return map.get(t.getTableID());
+					if (format(datetime).format(session) != format(r.getDate()).format(session)) {
+						return map.get(t.getTableID());
 					}
 				}
 			}
 		}
-
-
-		//index = map.get(tableID);
-		return 0;
+		return -1;
 
 
 	}
@@ -158,6 +148,9 @@ public class TableManager {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
 		return LocalDateTime.parse(datetime, formatter);
+	}
+	public int compareDate (String compare1, String compare2){
+		return format(compare1).toLocalDate().compareTo(format(compare2).toLocalDate());
 	}
 }
 
