@@ -51,6 +51,7 @@ public class Table extends RestaurantAsset {
 
 	public Table(int tableID)
 	{
+		super(tableID);
 		this.occupied = 0;
 		this.orderID = -1;
 		this.pax = 0;

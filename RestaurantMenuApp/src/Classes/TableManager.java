@@ -2,6 +2,7 @@ package Classes;
 
 
 import client.BaseManager;
+import client.Restaurant;
 import client.enums.AssetType;
 import client.enums.Op;
 import tools.FileIO;
@@ -17,21 +18,9 @@ public class TableManager extends BaseManager {
     public static ArrayList<Table> tableList = new ArrayList<>();
     private static Map<Integer, Integer> map;
 
-    public TableManager() {
-        map = new HashMap<>();
+    public TableManager(Restaurant restaurant) {
+        super(restaurant);
 
-        int id = 20;
-        for (int i = 0; i < 30; i++) {
-
-            tableList.add(new Table(id));
-            map.put(id++, i);
-            if (id == 30)
-                id = 40;
-            if (id == 50)
-                id = 80;
-            if (id == 85)
-                id = 100;
-        }
     }
 
     public void choices(Scanner s) {
@@ -239,6 +228,26 @@ public class TableManager extends BaseManager {
     //
 
     public Pair<Op, String> init(){
+        map = new HashMap<>();
+        int id = 20;
+        for (int i = 0; i < 30; i++) {
+
+            tableList.add(new Table(id));
+            map.put(id++, i);
+            if (id == 30)
+                id = 40;
+            if (id == 50)
+                id = 80;
+            if (id == 85)
+                id = 100;
+        }
+
+        Table table = new Table(1);
+        getRestaurant().add(table);
+        getRestaurant().getAsset(AssetType.TABLE);
+        getRestaurant().remove(table);
+        return null;
+        /*
         FileIO f = new FileIO();
         List<String> tableData = f.read(FileIO.FileNames.TABLE_FILE);
         String splitStr = " // ";
@@ -247,11 +256,17 @@ public class TableManager extends BaseManager {
             return  (new Pair<>(Op.FAILED, "Failed to read files."));
         if (!getRestaurant().registerClassToAsset(Table.class, AssetType.TABLE))
             return (new Pair<>(Op.FAILED, "Failed to register class."));
+        return null;
+        */
     }
 
     @Override
     public String[] getMainCLIOptions() {
-        return new String[0];
+        return new String[] {
+                "Show Table",
+                "Set Table",
+                "Set reservation"
+        };
     }
 
     @Override

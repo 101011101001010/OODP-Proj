@@ -1,6 +1,7 @@
 import Classes.MenuManager;
 import Classes.OrderManager;
 import Classes.StaffManager;
+import Classes.TableManager;
 import client.BaseManager;
 import client.Restaurant;
 import client.enums.Op;
@@ -42,6 +43,9 @@ public class Main {
 		try {
 			manager = new MenuManager(restaurant);
 			manager.init();
+			map(manager);
+
+			manager = new TableManager(restaurant);
 			map(manager);
 
 			manager = new OrderManager(restaurant);

@@ -22,7 +22,7 @@ public class Restaurant {
             counterMap.put(type, type.equals(AssetType.PROMO)? 99999 : -1);
         }
 
-        tableManager = new TableManager();
+        tableManager = new TableManager(this);
     }
 
     public TableManager getTableManager() {
