@@ -1,4 +1,4 @@
-package Classes;
+package menu;
 
 import java.math.BigDecimal;
 
@@ -6,7 +6,7 @@ public class AlaCarteItem extends MenuItem {
 	private String description;
 	private String category;
 
-	public AlaCarteItem(int id, String name, BigDecimal price, String description, String category) {
+	AlaCarteItem(int id, String name, BigDecimal price, String description, String category) {
 		super(id, name, price);
 		this.description = description;
 		this.category = category;
@@ -20,7 +20,7 @@ public class AlaCarteItem extends MenuItem {
 		return category;
 	}
 
-	public void update(String name, BigDecimal price, String description, String category) {
+	void update(String name, BigDecimal price, String description, String category) {
 		setName(name);
 		setPrice(price);
 		this.description = description;
@@ -28,12 +28,12 @@ public class AlaCarteItem extends MenuItem {
 	}
 
 	@Override
-	public String toDisplayString() {
-		return toString();
+	public String toTableString() {
+		return toPrintString();
 	}
 
 	@Override
-	public String toString() {
+	public String toPrintString() {
 		return getId() + " // " + getName() + " // " + getPrice() + " // " + getDescription() + " // " + getCategory();
 	}
 }

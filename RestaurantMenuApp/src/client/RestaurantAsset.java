@@ -11,6 +11,6 @@ public abstract class RestaurantAsset {
         return id;
     }
 
-    public abstract String toString();
-    public abstract String toDisplayString();
+    public abstract String toPrintString();
+    public abstract String toTableString();
 }

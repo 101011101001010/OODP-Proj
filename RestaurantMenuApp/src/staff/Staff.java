@@ -1,4 +1,4 @@
-package Classes;
+package staff;
 
 import client.RestaurantAsset;
 
@@ -7,7 +7,7 @@ public class Staff extends RestaurantAsset {
     private String title;
     private String gender;
 
-    public Staff(int id, String name, String title, String gender) {
+    Staff(int id, String name, String title, String gender) {
         super(id);
         this.name = name;
         this.title = title;
@@ -33,11 +33,12 @@ public class Staff extends RestaurantAsset {
     }
 
     @Override
-    public String toDisplayString() {
-        return toString();
+    public String toPrintString() {
+        return getId() + " // " + getName() + " // " + getTitle() + " // " + getGender();
     }
 
-    public String toString() {
-        return getId() + " // " + getName() + " // " + getTitle() + " // " + getGender();
+    @Override
+    public String toTableString() {
+        return toPrintString();
     }
 }

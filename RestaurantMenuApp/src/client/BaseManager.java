@@ -1,8 +1,6 @@
 package client;
 
-import client.enums.Op;
 import tools.ConsoleHelper;
-import tools.Pair;
 
 public abstract class BaseManager {
     private Restaurant restaurant;
@@ -13,15 +11,21 @@ public abstract class BaseManager {
         this.cs = new ConsoleHelper();
     }
 
-    public Restaurant getRestaurant() {
+    protected Restaurant getRestaurant() {
         return restaurant;
     }
 
-    public ConsoleHelper getCs() {
+    protected ConsoleHelper getCs() {
         return cs;
     }
 
-    public abstract Pair<Op, String> init();
+    public abstract void init() throws ManagerInitFailedException;
     public abstract String[] getMainCLIOptions();
     public abstract Runnable[] getOptionRunnables();
+
+    public class ManagerInitFailedException extends Exception {
+        public ManagerInitFailedException(Object o, String rootMessage) {
+            super(o.getClass().getCanonicalName() + " initialisation failed: " + rootMessage);
+        }
+    }
 }

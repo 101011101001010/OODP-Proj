@@ -2,44 +2,36 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d468f3d0-5a99-4b92-950c-3da6594ba4da" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Classes/PromoItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataStorage/menu_items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/menu_items.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataStorage/promotion_items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/promotion_items.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataStorage/revenue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/revenue.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OODP-Proj_RestaurantMenuApp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OODP-Proj_RestaurantMenuApp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/MenuItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/MenuItem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/MenuManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/MenuManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/Order.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/OrderItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/OrderItem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/OrderManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/OrderManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/PromotionItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/PromotionManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Reservation.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/Reservation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/ReservationManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/ReservationManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/Table.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/TableManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/TableManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/constants/AppConstants.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/constants/MenuConstants.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tools/FileIOHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tools/InputChecker.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/tools/InputChecker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tools/MenuFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tools/ScannerHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/AlaCarteItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/MenuManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/MenuManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/OrderManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/PromotionItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/PromotionManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants/AppConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants/MenuConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/FileIOHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/MenuFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/ScannerHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/menu_items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/alacarte.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/order.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/table.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/promotion_items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/promo_package.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/revenue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/revenue_report.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/tables.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/.idea/Classes.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/AlaCarteItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/AlaCarteItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/MenuManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/OrderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/PromoItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/PromotionPackage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/staff/Staff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/StaffManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/staff/StaffManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/TableManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/TableManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/BaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/BaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/MainV2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Restaurant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/RestaurantAsset.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/RestaurantAsset.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/enums/AssetType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/enums/AssetType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/enums/Op.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/FileIO.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -51,10 +43,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Main.java">
+        <entry file="file://$PROJECT_DIR$/src/order/Order.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2000">
-              <caret line="94" column="62" selection-start-line="94" selection-start-column="53" selection-end-line="94" selection-end-column="62" />
+            <state relative-caret-position="72">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/order/OrderItem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -63,85 +64,46 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
+        <entry file="file://$PROJECT_DIR$/src/order/OrderManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="22" column="20" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+            <state relative-caret-position="54">
+              <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#8742#8743#0" expanded="true" />
-                <element signature="e#8778#8779#0" expanded="true" />
+                <element signature="e#581#582#0" expanded="true" />
+                <element signature="e#599#600#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/client/Restaurant.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="31" column="47" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="47" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#765#766#0" expanded="true" />
-                <element signature="e#800#801#0" expanded="true" />
-                <element signature="e#2068#2069#0" expanded="true" />
-                <element signature="e#2100#2101#0" expanded="true" />
-                <element signature="e#2136#2137#0" expanded="true" />
-                <element signature="e#2167#2168#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/DataStorage/case_menu_items.txt">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Classes/PromoItem.java">
+        <entry file="file://$PROJECT_DIR$/DataStorage/alacarte.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="51" column="4" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="4" />
-              <folding>
-                <element signature="e#2539#2540#0" expanded="true" />
-                <element signature="e#2557#2558#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="432">
+              <caret line="24" column="59" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Classes/MenuManager.java">
+        <entry file="file://$PROJECT_DIR$/src/enums/AssetType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2868">
-              <caret line="223" column="39" selection-start-line="223" selection-start-column="29" selection-end-line="223" selection-end-column="49" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="144">
+              <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Classes/AlaCarteItem.java">
+        <entry file="file://$PROJECT_DIR$/DataStorage/revenue_report.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Classes/OrderManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3925">
-              <caret line="167" column="5" selection-start-line="167" selection-start-column="5" selection-end-line="167" selection-end-column="5" />
+            <state relative-caret-position="18">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -166,6 +128,8 @@
       <find>checkOcc</find>
       <find>start</find>
       <find>runnables</find>
+      <find>getDisplay</find>
+      <find>.name()</find>
     </findStrings>
     <replaceStrings>
       <replace>AlaCarteItem</replace>
@@ -197,26 +161,37 @@
         <option value="$PROJECT_DIR$/DataStorage/promotion_items.txt" />
         <option value="$PROJECT_DIR$/src/Classes/OrderItem.java" />
         <option value="$PROJECT_DIR$/src/Classes/Order.java" />
-        <option value="$PROJECT_DIR$/src/client/BaseManager.java" />
         <option value="$PROJECT_DIR$/src/Classes/OrderManager.java" />
         <option value="$PROJECT_DIR$/src/Classes/Staff.java" />
         <option value="$PROJECT_DIR$/src/Classes/StaffManager.java" />
         <option value="$PROJECT_DIR$/DataStorage/staff.txt" />
         <option value="$PROJECT_DIR$/src/Classes/ReservationManager.java" />
-        <option value="$PROJECT_DIR$/src/client/Restaurant.java" />
         <option value="$PROJECT_DIR$/src/Classes/RevenueReader.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/Classes/MenuManager.java" />
-        <option value="$PROJECT_DIR$/src/tools/FileIO.java" />
         <option value="$PROJECT_DIR$/src/Classes/Table.java" />
         <option value="$PROJECT_DIR$/src/Classes/TableManager.java" />
+        <option value="$PROJECT_DIR$/src/client/RestaurantAsset.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/client/Main.java" />
+        <option value="$PROJECT_DIR$/src/staff/Staff.java" />
+        <option value="$PROJECT_DIR$/src/menu/AlaCarteItem.java" />
+        <option value="$PROJECT_DIR$/src/menu/PromotionPackage.java" />
+        <option value="$PROJECT_DIR$/src/enums/FileName.java" />
+        <option value="$PROJECT_DIR$/src/menu/MenuItem.java" />
+        <option value="$PROJECT_DIR$/src/tools/FileIO.java" />
+        <option value="$PROJECT_DIR$/src/client/BaseManager.java" />
+        <option value="$PROJECT_DIR$/src/client/Restaurant.java" />
+        <option value="$PROJECT_DIR$/src/menu/MenuManager.java" />
+        <option value="$PROJECT_DIR$/src/staff/StaffManager.java" />
+        <option value="$PROJECT_DIR$/src/order/OrderManager.java" />
+        <option value="$PROJECT_DIR$/src/enums/AssetType.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-9" />
-    <option name="width" value="978" />
-    <option name="height" value="1039" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-7" />
+    <option name="width" value="974" />
+    <option name="height" value="1057" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -227,13 +202,17 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
               <item name="RestaurantMenuApp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RestaurantMenuApp" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
@@ -261,8 +240,13 @@
               <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
               <item name="RestaurantMenuApp" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="enums" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RestaurantMenuApp" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="menu" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
@@ -274,10 +258,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554232287044" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554328846635" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
@@ -295,7 +280,7 @@
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
+      <option name="MAIN_CLASS_NAME" value="client.Main" />
       <module name="OODP-Proj_RestaurantMenuApp" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -321,9 +306,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26845637" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1337953" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -331,7 +317,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.22096318" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.22096318" />
       <window_info anchor="bottom" x="125" y="263" width="1310" height="603" id="Run" order="2" type="WINDOWED" weight="0.3290461" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -387,7 +373,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tools/Pair.java" />
     <entry file="file://$PROJECT_DIR$/src/tools/ConsoleHelper.java" />
     <entry file="file://$PROJECT_DIR$/src/tools/FileIOHandler.java" />
     <entry file="file://$PROJECT_DIR$/src/Classes/PromotionManager.java" />
@@ -395,46 +380,10 @@
     <entry file="file://$PROJECT_DIR$/src/tools/MenuFactory.java" />
     <entry file="file://$PROJECT_DIR$/src/constants/MenuConstants.java" />
     <entry file="file://$PROJECT_DIR$/src/tools/ScannerHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/Classes/MenuItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="29" lean-forward="true" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/promotion_items.txt">
+    <entry file="file://$PROJECT_DIR$/DataStorage/promo_package.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/OrderItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="67" column="20" selection-start-line="67" selection-start-column="20" selection-end-line="67" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#406#407#0" expanded="true" />
-            <element signature="e#424#425#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/menu_items.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="24" column="59" lean-forward="true" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/Order.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="148" column="50" selection-start-line="148" selection-start-column="50" selection-end-line="148" selection-end-column="50" />
         </state>
       </provider>
     </entry>
@@ -445,46 +394,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/revenue.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Classes/Reservation.java" />
     <entry file="file://$PROJECT_DIR$/src/Classes/ReservationManager.java" />
     <entry file="file://$PROJECT_DIR$/DataStorage/staff.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/Staff.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/MainV2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2175">
-          <caret line="87" column="18" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/StaffManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -505,119 +420,206 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/tables.txt">
+    <entry file="file://$PROJECT_DIR$/DataStorage/table.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tools/FileIO.java">
+    <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+        <state relative-caret-position="414">
+          <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/enums/AssetType.java">
+    <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="8" lean-forward="true" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+        <state relative-caret-position="972">
+          <caret line="54" column="4" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/BaseManager.java">
+    <entry file="file://$PROJECT_DIR$/src/tools/Pair.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+        <state relative-caret-position="36">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/MainV2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="869">
+          <caret line="87" column="18" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#361#362#0" expanded="true" />
-            <element signature="e#394#395#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/RestaurantAsset.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        <state relative-caret-position="198">
+          <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding>
+            <element signature="e#113#114#0" expanded="true" />
+            <element signature="e#141#142#0" expanded="true" />
+            <element signature="e#167#168#0" expanded="true" />
+            <element signature="e#192#193#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/Classes/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2000">
-          <caret line="94" column="62" selection-start-line="94" selection-start-column="53" selection-end-line="94" selection-end-column="62" />
+        <state relative-caret-position="-1296" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-540">
+          <caret line="33" column="43" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/PromoItem.java">
+    <entry file="file://$PROJECT_DIR$/src/menu/AlaCarteItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+        <state relative-caret-position="324">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/AlaCarteItem.java">
+    <entry file="file://$PROJECT_DIR$/src/menu/PromotionPackage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        <state relative-caret-position="216">
+          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/OrderManager.java">
+    <entry file="file://$PROJECT_DIR$/src/menu/MenuItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3925">
-          <caret line="167" column="5" selection-start-line="167" selection-start-column="5" selection-end-line="167" selection-end-column="5" />
+        <state relative-caret-position="198">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/enums/FileName.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tools/FileIO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="23" selection-start-line="2" selection-start-column="23" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/staff/StaffManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="95" column="19" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#466#467#0" expanded="true" />
+            <element signature="e#499#500#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/menu/MenuManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="369" column="16" lean-forward="true" selection-start-line="369" selection-start-column="16" selection-end-line="373" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/Restaurant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="31" column="47" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="47" />
+        <state relative-caret-position="396">
+          <caret line="90" lean-forward="true" selection-start-line="90" selection-end-line="90" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#765#766#0" expanded="true" />
-            <element signature="e#800#801#0" expanded="true" />
-            <element signature="e#2068#2069#0" expanded="true" />
-            <element signature="e#2100#2101#0" expanded="true" />
-            <element signature="e#2136#2137#0" expanded="true" />
-            <element signature="e#2167#2168#0" expanded="true" />
+            <element signature="e#4184#4185#0" expanded="true" />
+            <element signature="e#4255#4256#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
+    <entry file="file://$PROJECT_DIR$/src/client/BaseManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="51" column="4" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="4" />
+        <state relative-caret-position="342">
+          <caret line="23" column="52" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/staff/Staff.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/order/Order.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/order/OrderItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding>
-            <element signature="e#2539#2540#0" expanded="true" />
-            <element signature="e#2557#2558#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
+    <entry file="file://$PROJECT_DIR$/src/order/OrderManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="22" column="20" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+        <state relative-caret-position="54">
+          <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8742#8743#0" expanded="true" />
-            <element signature="e#8778#8779#0" expanded="true" />
+            <element signature="e#581#582#0" expanded="true" />
+            <element signature="e#599#600#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/MenuManager.java">
+    <entry file="file://$PROJECT_DIR$/DataStorage/case_menu_items.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/alacarte.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2868">
-          <caret line="223" column="39" selection-start-line="223" selection-start-column="29" selection-end-line="223" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="432">
+          <caret line="24" column="59" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/order.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/revenue_report.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/enums/AssetType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
         </state>
       </provider>
     </entry>
