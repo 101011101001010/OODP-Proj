@@ -4,6 +4,7 @@ import client.Restaurant;
 import client.RestaurantAsset;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -21,13 +22,15 @@ public class Table extends RestaurantAsset {
 		private String name;
 		private LocalDateTime date;
 		private int pax;
+		private String session;
 
 
-		public Reservations (int contact,String name, LocalDateTime date, int pax){
+		public Reservations (int contact, String name, LocalDateTime date, int pax, String session){
 			this.contact = contact;
 			this.name = name;
 			this.date = date;
 			this.pax = pax;
+			this.session = session;
 		}
 		public LocalDateTime getDate(){
 			return date;
@@ -41,10 +44,12 @@ public class Table extends RestaurantAsset {
 		public int getPax(){
 			return pax;
 		}
+		public String getSession() {
+			return session;
+		}
 		public String toStringTwo(){
-			//DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
-			//LocalDateTime date = LocalDateTime.parse(getDate(),format);
-			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime() +
+			DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
+			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime().format(tf) +
 					", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
 		}
 	}
@@ -57,6 +62,16 @@ public class Table extends RestaurantAsset {
 		this.pax = 0;
 		this.tableID = tableID;
 
+	}
+
+	@Override
+	public String toPrintString() {
+		return null;
+	}
+
+	@Override
+	public String toTableString() {
+		return null;
 	}
 
 	public int getTableID() {
@@ -116,14 +131,20 @@ public class Table extends RestaurantAsset {
 		return "Table " + getTableID() + " is " + check;
 	}
 
-	@Override
 	public String toDisplayString() {
 		return null;
 	}
 
 
 	public void isReserved(int contact,String name, LocalDateTime date, int pax){
-		reservationList.add(new Reservations(contact, name, date, pax));
+		String session = "03:00pm";
+		DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
+		if (date.toLocalTime().isBefore(LocalTime.parse(session, tf)))
+			session = "am";
+		else
+			session = "pm";
+
+		reservationList.add(new Reservations(contact, name, date, pax, session));
 	}
 
 }
