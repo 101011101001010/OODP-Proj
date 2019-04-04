@@ -3,22 +3,21 @@ package tables;
 
 import client.BaseManager;
 import client.Restaurant;
-import client.RestaurantAsset;
-import enums.AssetType;
-import enums.FileName;
+import client.RestaurantData;
+import enums.DataType;
 import order.Order;
 import tools.FileIO;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class TableManager extends BaseManager {
-    private AssetType assetType = AssetType.TABLE;
-    private FileName fileName = FileName.TABLE;
-    private static Map<Integer, Integer> map;
+    private DataType dataType = DataType.TABLE;
 
     public TableManager(Restaurant restaurant) {
         super(restaurant);
@@ -26,32 +25,31 @@ public class TableManager extends BaseManager {
 
     @Override
     public void init() throws ManagerInitFailedException {
-        map = new HashMap<>();
+        try {
+            getRestaurant().registerClass(Table.class, DataType.TABLE);
+        } catch (Restaurant.ClassNotRegisteredException e) {
+            throw (new ManagerInitFailedException(this, "Class registration failed: " + e.getMessage()));
+        }
 
         FileIO f = new FileIO();
         List<String> tableData;
         List<String> reservationData;
 
         try {
-            tableData = f.read(fileName);
-            reservationData = f.read(FileName.ORDER);
+            tableData = f.read(dataType);
+            reservationData = f.read(DataType.RESERVATION);
         } catch (IOException e) {
             throw (new ManagerInitFailedException(this, "Unable to load tables or orders from file: " + e.getMessage()));
         }
 
-        if (!getRestaurant().mapClassToAssetType(Table.class, AssetType.TABLE)) {
-            throw (new ManagerInitFailedException(this, "Failed to register class and asset to restaurant."));
-        }
-
         if (tableData.size() == 0) {
             int cap = 10;
-
             for (int prefix = 2; prefix <= 10; prefix += 2) {
                 for (int seat = 0; seat < cap; seat++) {
                     try {
                         int id = prefix * 10 + seat;
-                        getRestaurant().addFromFile(new Table(id, prefix));
-                    } catch (Restaurant.AssetNotRegisteredException | IOException e) {
+                        getRestaurant().save(new Table(id, prefix));
+                    } catch (IOException e) {
                         throw (new ManagerInitFailedException(this, e.getMessage()));
                     }
                 }
@@ -61,164 +59,94 @@ public class TableManager extends BaseManager {
                     cap = 5;
                 }
             }
+        } else {
+            for (String data : tableData) {
+                String[] datas = data.split(" // ");
 
-            return;
-        }
-
-        // will never happen (for now)
-        String splitStr = " // ";
-        for (String data : tableData) {
-            String[] datas = data.split(splitStr);
-
-            if (datas.length != 4) {
-                continue;
-            }
-
-            int id;
-            try {
-                id = Integer.parseInt(datas[0]);
-            } catch (NumberFormatException e) {
-                throw (new ManagerInitFailedException(this, e.getMessage()));
-            }
-
-            Order order = null;
-            try {
-                for (RestaurantAsset o : getRestaurant().getAsset(AssetType.ORDER)) {
-                    if (o.getId() == id && (o instanceof Order)) {
-                        order = (Order) o;
-                    }
+                if (datas.length != 3) {
+                    continue;
                 }
-            } catch (Restaurant.AssetNotRegisteredException ignored) {}
 
-            Table table = new Table(id, Integer.parseInt(datas[1]), Integer.parseInt(datas[2]), order);
-            for (String rStr : reservationData) {
-                String[] rDatas = rStr.split(splitStr);
-                int rId;
-
+                int id;
                 try {
-                    rId = Integer.parseInt(rDatas[0]);
+                    id = Integer.parseInt(datas[0]);
                 } catch (NumberFormatException e) {
                     throw (new ManagerInitFailedException(this, e.getMessage()));
                 }
 
-                if (rId == id) {
-                    //table.addReservation(Integer.parseInt(rDatas[1]), );
+                Table table = new Table(id, Integer.parseInt(datas[1]), Boolean.parseBoolean(datas[2]), null);
+                Order order;
+                for (RestaurantData o : getRestaurant().getData(DataType.ORDER)) {
+                    if (o.getId() == id) {
+                        order = (Order) o;
+                        table.attachOrder(order);
+                    }
                 }
-            }
 
-            try {
-                getRestaurant().addFromFile(table);
-            } catch (Restaurant.AssetNotRegisteredException | IOException e) {
-                throw (new ManagerInitFailedException(this, e.getMessage()));
+                for (String rStr : reservationData) {
+                    String[] rDatas = rStr.split(" // ");
+                    int rId;
+
+                    try {
+                        rId = Integer.parseInt(rDatas[0]);
+                    } catch (NumberFormatException e) {
+                        throw (new ManagerInitFailedException(this, e.getMessage()));
+                    }
+
+                    if (rId == id) {
+                        try {
+                            table.addReservation(Integer.parseInt(rDatas[1]), rDatas[2], formatting(rDatas[3]), Integer.parseInt(rDatas[4]));
+                        } catch (NumberFormatException e) {
+                            throw (new ManagerInitFailedException(this, e.getMessage()));
+                        }
+                    }
+                }
+
+                getRestaurant().load(table);
             }
         }
-
-        /*
-        int id = 20;
-        for (int i = 0; i < 30; i++) {
-
-            tableList.add(new Table(id));
-            map.put(id++, i);
-            if (id == 30)
-                id = 40;
-            if (id == 50)
-                id = 80;
-            if (id == 85)
-                id = 100;
-        }
-        Table table = new Table(1);
-        getRestaurant().add(table);
-        getRestaurant().getAsset(AssetType.TABLE);
-        getRestaurant().remove(table);
-        return null;
-        */
     }
 
-    public void setOccupied(int tableId, int orderId, int staffId) throws Restaurant.AssetNotRegisteredException {
-        Table table = (Table) getRestaurant().getAssetFromId(AssetType.TABLE, tableId);
+    public void setOccupied(int tableId, String orderId, int staffId) {
+        Table table = (Table) getRestaurant().getDataFromId(DataType.TABLE, tableId);
         table.attachOrder(orderId, staffId);
-        /*
-        int index = map.get(tableID);
-        tableList.get(index).setOrderID(orderID);
-        tableList.get(index).setOccupied(1);
-        */
     }
 
-    public void checkVacancy() throws Restaurant.AssetNotRegisteredException {
-        for (RestaurantAsset t : getRestaurant().getAsset(AssetType.TABLE)) {
+    public void checkVacancy() {
+        for (RestaurantData t : getRestaurant().getData(DataType.TABLE)) {
             System.out.println(t.toString());
         }
     }
 
-    //
-    //
-    //
+    public Table getAvailableTable(LocalDateTime dateTime, int pax) {
+        for (RestaurantData o : getRestaurant().getData(dataType)) {
+            if ((o instanceof Table) && ((Table) o).getCapacity() >= pax && ((Table) o).getCapacity() <= (pax + 2)) {
+                for (Table.Reservation reservation : ((Table) o).getReservationList()) {
 
-    public void addReservation() {
-        LocalDateTime combineDate;
-        LocalDateTime now = LocalDateTime.now();
-        String name, date, time;
-        int pax = 0, contact;
-        Table table;
-        boolean done = false;
-        String test1 = "0204201909:30PM";
-        String test2 = "0204201910:30PM";
-        String test3 = "0204201909:45PM";
-        String test4 = "0204201909:15PM";
-        String test5 = "0204201907:30PM";
-
-        try {
-            ((Table) getRestaurant().getAsset(AssetType.TABLE).get(25)).addReservation(12345, "A", formatting(test1), 10);
-            ((Table) getRestaurant().getAsset(AssetType.TABLE).get(26)).addReservation(67890, "B", formatting(test2), 10);
-            ((Table) getRestaurant().getAsset(AssetType.TABLE).get(27)).addReservation(54321, "C", formatting(test3), 10);
-            ((Table) getRestaurant().getAsset(AssetType.TABLE).get(28)).addReservation(9876, "D", formatting(test4), 10);
-            ((Table) getRestaurant().getAsset(AssetType.TABLE).get(29)).addReservation(24680, "E", formatting(test5), 10);
-            showReservation();
-        } catch (Restaurant.AssetNotRegisteredException e) {
-            System.out.println(e.getMessage());
-            return;
+                }
+            }
         }
 
-        do {
-            date = getCs().getString("Enter reserving date (ddmmyyyy)");
-            time = getCs().getString("Enter reserving time (hh:mm(am/pm))");
-            date = date + time;
-            combineDate = formatting(date);
-            if (combineDate.minus(Period.ofDays(30)).isAfter(now))
-                System.out.println("Reservation can only be made in at most 1 month in advance. Please enter again.");
-        } while (combineDate.minus(Period.ofMonths(1)).isAfter(now));
-
-        pax = getCs().getInt("Enter number of people", 10, 1);
-
-        try {
-            table = checkReservation(combineDate, pax);
-        } catch (Restaurant.AssetNotRegisteredException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        if (table != null) {
-            System.out.println("Table ID: " + table.getId());
-            name = getCs().getString("Enter Your Name");
-            contact = getCs().getInt("Enter Your Contact", 99999999, 10000000);
-            table.addReservation(contact, name, combineDate, pax);
-        } else {
-            System.out.println("Sorry, Booking Full.");
-        }
+        return null;
     }
+
+    private String getSession(LocalDateTime dateTime) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("a");
+        return dateTime.format(format);
+    }
+
+    private LocalDateTime formatDateTime(String dateTime) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
+        return LocalDateTime.parse(dateTime, format);
+    }
+
+
 
     public void deleteReservation(Scanner s) {
         int index;
-        Table table;
         showReservation();
         int id = getCs().getInt("Enter TableID");
-        try {
-            table = (Table) getRestaurant().getAssetFromId(AssetType.TABLE, id);
-        } catch (Restaurant.AssetNotRegisteredException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
+        Table table = (Table) getRestaurant().getDataFromId(DataType.TABLE, id);
         table.showReservationList();
         int remove = getCs().getInt("Enter Reservation ID To Delete");
         table.getReservationList().remove(remove - 1);
@@ -226,10 +154,10 @@ public class TableManager extends BaseManager {
         System.out.println("Successfully Removed.");
     }
 
-    public Table checkReservation(LocalDateTime combineDate, int pax) throws Restaurant.AssetNotRegisteredException {
+    public Table checkReservation(LocalDateTime combineDate, int pax) {
         DateTimeFormatter session = DateTimeFormatter.ofPattern("a");
 
-        for (RestaurantAsset t : getRestaurant().getAsset(AssetType.TABLE)) {
+        for (RestaurantData t : getRestaurant().getData(DataType.TABLE)) {
             if (t instanceof Table) {
                 if (pax <= 2 && (t.getId() / 10 == 2)) {
                     if (((Table) t).getReservationList().size() == 0) {
@@ -288,13 +216,13 @@ public class TableManager extends BaseManager {
         return null;
     }
 
-    public void searchReservation(Scanner s) throws Restaurant.AssetNotRegisteredException {
+    public void searchReservation(Scanner s) {
         int contact;
         boolean check = false;
 
         System.out.println("Enter contact number to check for reservation.");
         contact = s.nextInt();
-        for (RestaurantAsset t : getRestaurant().getAsset(AssetType.TABLE)) {
+        for (RestaurantData t : getRestaurant().getData(DataType.TABLE)) {
             if (t instanceof Table) {
                 if (((Table) t).findReservation(contact)) {
                     check = true;
@@ -307,20 +235,17 @@ public class TableManager extends BaseManager {
     }
 
     public void showReservation() {
-        try {
-            for (RestaurantAsset t : getRestaurant().getAsset(AssetType.TABLE)) {
-                if (t instanceof Table) {
-                    int count = 1;
-                    if (((Table) t).getReservationList().size() != 0) {
-                        System.out.println("For Table " + t.getId());
-                        for (Table.Reservation r : ((Table) t).getReservationList()) {
-                            System.out.println(count++ + ". " + r.toStringTwo());
-                        }
+
+        for (RestaurantData t : getRestaurant().getData(DataType.TABLE)) {
+            if (t instanceof Table) {
+                int count = 1;
+                if (((Table) t).getReservationList().size() != 0) {
+                    System.out.println("For Table " + t.getId());
+                    for (Table.Reservation r : ((Table) t).getReservationList()) {
+                        System.out.println(count++ + ". " + r.toStringTwo());
                     }
                 }
             }
-        } catch (Restaurant.AssetNotRegisteredException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -337,19 +262,63 @@ public class TableManager extends BaseManager {
     //
     //
 
+    private List<String> getDisplay(int sortOption) {
+        List<? extends RestaurantData> masterList = new ArrayList<>(getRestaurant().getData(dataType));
+        List<String> ret = new ArrayList<>();
+        int totalSize = masterList.size();
+        if (totalSize == 0) {
+            ret.add("The restaurant apparently has no tables at all.");
+            return ret;
+        }
+
+        masterList.sort((item1, item2) -> {
+            switch (sortOption) {
+                case 2: return Integer.compare(((Table) item1).getCapacity(), ((Table) item2).getCapacity());
+                case 3: return Boolean.compare(((Table) item1).isOccupied(), ((Table) item2).isOccupied());
+            }
+
+            return Integer.compare(item1.getId(), item2.getId());
+        });
+
+        for (int index = 0; index < (totalSize / 2); index++) {
+            RestaurantData data = masterList.get(index);
+            if (data instanceof Table) {
+                ret.add(data.toTableString());
+            }
+        }
+
+        for (int index = (totalSize / 2); index < totalSize; index++) {
+            RestaurantData data = masterList.get(index);
+            if (data instanceof Table) {
+                ret.set(index - (totalSize / 2), ret.get(index - (totalSize / 2)) + " // " + data.toTableString());
+            }
+        }
+
+        ret.add(0, "Table ID // Capacity // Table Occupancy // Table ID // Capacity // Table Occupancy");
+        return ret;
+    }
+
     @Override
     public String[] getMainCLIOptions() {
         return new String[]{
-                "Show table",
-                "Set reservation"
+                "View table status"
         };
     }
 
     @Override
     public Runnable[] getOptionRunnables() {
         return new Runnable[] {
-                this::showReservation,
-                this::addReservation
+                this::viewTable
         };
+    }
+
+    public void viewTable() {
+        int choice = 1;
+        List<String> displayList;
+
+        do {
+            displayList = getDisplay(choice);
+            getCs().printDisplayTable("Table Status", displayList, true, true);
+        } while ((choice = getCs().printChoices("Select a sort option", "Command // Function", Arrays.asList("Sort by ID", "Sort by capacity", "Sort by occupancy"), new String[] {"Go back"})) != -1);
     }
 }

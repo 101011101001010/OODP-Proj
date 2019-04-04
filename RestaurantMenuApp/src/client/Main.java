@@ -1,12 +1,14 @@
 package client;
 
-import tables.TableManager;
+import enums.DataType;
 import menu.MenuManager;
 import order.OrderManager;
 import staff.StaffManager;
+import tables.TableManager;
 import tools.ConsoleHelper;
 import tools.FileIO;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,101 +16,120 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-	private Map<Integer, Class<? extends BaseManager>> classMap;
-	private Map<Integer, Integer> commandMap;
-	private Restaurant restaurant;
-	private int commandIndex;
-	private List<String[]> mainCLIOptions;
+    private Map<String, Class<? extends BaseManager>> classMap;
+    private Map<String, Integer> commandMap;
+    private Restaurant restaurant;
+    private int commandIndex;
+    private List<String[]> mainCLIOptions;
 
-	private Main() {
-		this.restaurant = new Restaurant();
-		classMap = new HashMap<>();
-		commandMap = new HashMap<>();
-		mainCLIOptions = new ArrayList<>();
-		commandIndex = 1;
-	}
+    private Main() {
+        this.restaurant = new Restaurant();
+        classMap = new HashMap<>();
+        commandMap = new HashMap<>();
+        mainCLIOptions = new ArrayList<>();
+        commandIndex = 1;
+    }
 
-	/**
-	 * Initialises the entry command line interface with options defined in other CLI classes.
-	 * Entry-point runnables are also obtained from the CLI classes to map the commands to.
-	 */
-	private void initCLI() throws Exception {
-		(new FileIO()).checkFiles();
-		BaseManager manager;
+    /**
+     * Initialises the entry command line interface with options defined in other CLI classes.
+     * Entry-point runnables are also obtained from the CLI classes to map the commands to.
+     */
+    private void initCLI() {
+        try {
+            (new FileIO()).checkFiles();
+        } catch (IOException e) {
+            System.out.println("File check failed: " + e.getMessage());
+        }
 
-		manager = new MenuManager(restaurant);
-		manager.init();
-		map(manager);
+        try {
+            map(new MenuManager(restaurant));
+            map(new OrderManager(restaurant));
+            map(new TableManager(restaurant));
+            map(new StaffManager(restaurant));
+        } catch (BaseManager.ManagerInitFailedException e) {
+            System.out.println(e.getMessage());
+        }
 
-		manager = new TableManager(restaurant);
-		manager.init();
-		map(manager);
+        for (DataType dataType : DataType.values()) {
+            if (!restaurant.checkDataTypeExists(dataType)) {
+                System.out.println("Class not registered for data type: " + dataType);
+            }
+        } start();
+    }
 
-		manager = new OrderManager(restaurant);
-		map(manager);
+    /**
+     * Starts the entry-point command line interface.
+     * Handles the commands entered by users and map these commands to the runnables in the other CLI classes.
+     */
+    private void start() {
+        String command;
+        BaseManager manager;
+        ConsoleHelper cs = new ConsoleHelper();
 
-		manager = new StaffManager(restaurant);
-		manager.init();
-		map(manager);
+        int staffIndex;
+        do {
+            List<String> staffDisplay = (new StaffManager(restaurant)).getStaffNames();
+            cs.setMaxLength(60);
+            cs.printChoicesSimple("Command // Staff Account", staffDisplay, new String[]{"Exit program"});
+            if ((staffIndex = cs.getInt("Select staff account to begin", staffDisplay.size()) - 1) == -2) {
+                return;
+            }
 
-		start();
-	}
+            restaurant.setSessionStaffId(restaurant.getDataFromIndex(DataType.STAFF, staffIndex).getId());
+            cs.clearCmd();
 
-	/**
-	 * Starts the entry-point command line interface.
-	 * Handles the commands entered by users and map these commands to the runnables in the other CLI classes.
-	 */
-	private void start() {
-		int command;
-		BaseManager manager;
-		ConsoleHelper cs = new ConsoleHelper();
-		cs.sendWelcome(mainCLIOptions);
+            do {
+                cs.sendWelcome(mainCLIOptions);
+                command = cs.getString("Select a function");
 
-		while ((command = cs.getInt("Enter command")) != -1) {
-			while (!classMap.containsKey(command)) {
-				System.out.println("Invalid command.");
-				if ((command = cs.getInt("Enter command")) != -1) {
-					return;
-				}
-			}
+                if (command.equalsIgnoreCase("-1")) {
+                    break;
+                }
 
-			try {
-				manager = classMap.get(command).getDeclaredConstructor(Restaurant.class).newInstance(restaurant);
-				manager.getOptionRunnables()[commandMap.get(command)].run();
-			} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-				System.out.println("Unable to invoke command.");
-			} catch (Exception e) {
-				System.out.print("* An exception has occurred: ");
-				System.out.println(e.getMessage());
-			}
+                if (command.equalsIgnoreCase("-2")) {
+                    return;
+                }
 
-			cs.sendWelcome(mainCLIOptions);
-		}
-	}
+                try {
+                    cs.clearCmd();
+                    manager = classMap.get(command).getDeclaredConstructor(Restaurant.class).newInstance(restaurant);
+                    manager.getOptionRunnables()[commandMap.get(command)].run();
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                    System.out.println("Command failed to execute.");
+                } catch (NullPointerException e) {
+                    System.out.println("Invalid command.");
+                }
+            } while (!command.equalsIgnoreCase("-1"));
 
-	/**
-	 * Maps input commands to console displays and their respective managers.
-	 * @param manager - Manager to map commands to.
-	 */
-	private void map(BaseManager manager) throws Exception {
-		if (manager.getMainCLIOptions().length != manager.getOptionRunnables().length) {
-			throw (new Exception("CLI options and runnables mismatch for " + manager.getClass().getCanonicalName() + "."));
-		}
+            cs.clearCmd();
+        } while (true);
+    }
 
-		mainCLIOptions.add(manager.getMainCLIOptions());
-		for (int count = 0; count < manager.getOptionRunnables().length; count++) {
-			classMap.put(commandIndex, manager.getClass());
-			commandMap.put(commandIndex, count);
-			commandIndex++;
-		}
-	}
+    /**
+     * Maps input commands to console displays and their respective managers.
+     * @param manager - Manager to map commands to.
+     */
+    private void map(BaseManager manager) throws BaseManager.ManagerInitFailedException {
+        if (manager.getMainCLIOptions().length != manager.getOptionRunnables().length) {
+            System.out.println("CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
+            return;
+        }
 
-	public static void main(String[] args) {
-		try {
-			(new Main()).initCLI();
-		} catch (Exception e) {
-			System.out.print("* A fatal exception has occurred: ");
-			System.out.println(e.getMessage());
-		}
-	}
+        manager.init();
+        mainCLIOptions.add(manager.getMainCLIOptions());
+        for (int count = 0; count < manager.getOptionRunnables().length; count++) {
+            classMap.put(Integer.toString(commandIndex), manager.getClass());
+            commandMap.put(Integer.toString(commandIndex), count);
+            commandIndex++;
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            (new Main()).initCLI();
+        } catch (Exception e) {
+            System.out.println("* An unexpected exception has occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

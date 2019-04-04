@@ -25,35 +25,6 @@ public class OrderItem {
 		return item;
 	}
 
-	/*
-	public String print(PromotionManager pm, MenuManager mm)
-	{
-		if(promotion)
-		{
-			for(int i =0; i<pm.getItemList().size();i++)
-			{
-				PromotionItem item = pm.getItemList().get(i);
-				if(item.getItemId() == itemID)
-				{
-					return item.getName() + " " + this.price;
-				}
-			}
-		}
-		else
-		{
-			for(int i =0; i<mm.getItems().size();i++)
-			{
-				MenuItem item = mm.getItems().get(i);
-				if(item.getItemId() == itemID)
-				{
-					return item.getName()+ " " + this.price;
-				}
-			}
-		}
-		return null;
-	}
-	*/
-
 	public int getCount() {
 		return count;
 	}

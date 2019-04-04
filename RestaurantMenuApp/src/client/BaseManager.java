@@ -1,6 +1,11 @@
 package client;
 
+import enums.DataType;
 import tools.ConsoleHelper;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class BaseManager {
     private Restaurant restaurant;
@@ -17,6 +22,21 @@ public abstract class BaseManager {
 
     protected ConsoleHelper getCs() {
         return cs;
+    }
+
+    protected List<String> getDisplayData(DataType dataType) {
+        List<? extends RestaurantData> masterList = new ArrayList<>(getRestaurant().getData(dataType));
+        List<String> ret = new ArrayList<>();
+
+        if (masterList.size() == 0) {
+            ret.add("Database is empty for " + dataType + ".");
+            return ret;
+        }
+
+        masterList.sort(Comparator.comparingInt(RestaurantData::getId));
+        for (RestaurantData o : masterList) {
+            ret.add(o.toTableString());
+        } return ret;
     }
 
     public abstract void init() throws ManagerInitFailedException;

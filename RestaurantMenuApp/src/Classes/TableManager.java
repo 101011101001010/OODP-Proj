@@ -8,9 +8,7 @@ import client.enums.Op;
 import tools.FileIO;
 import tools.Pair;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -19,12 +17,6 @@ public class TableManager extends BaseManager {
 
     public static ArrayList<Table> tableList = new ArrayList<>();
     private static Map<Integer, Integer> map;
-    private LocalDate now = LocalDate.now();
-    private LocalTime amOpeningHour = formattingtime("11:00am");
-    private LocalTime amClosingHour = formattingtime("03:00pm");
-    private LocalTime pmOpeningHour = formattingtime("06:00pm");
-    private LocalTime pmClosingHour = formattingtime("10:00pm");
-    private DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
 
     public TableManager(Restaurant restaurant) {
         super(restaurant);
@@ -60,7 +52,6 @@ public class TableManager extends BaseManager {
 
     public void checkVacancy() {
         for (Table t : tableList) {
-            t.checkNoShow();
             System.out.println(t.toString());
         }
     }
@@ -82,68 +73,44 @@ public class TableManager extends BaseManager {
 
     public void addReservation(Scanner s) {
         LocalDateTime combineDate;
-
-        String name, date, time, session;
-        int pax=0, index, contact;
+        LocalDateTime now = LocalDateTime.now();
+        String name, date;
+        int pax = 0, index=-1, contact;
         boolean done = false;
-        String test1 = "0504201909:30pm";
-        String test2 = "0504201910:30pm";
-        String test3 = "0504201909:45pm";
-        String test4 = "0504201909:15pm";
-        String test5 = "0504201907:30pm";
-        tableList.get(25).isReserved(12345, "A", formattingdatetime(test1), 10);
-        tableList.get(26).isReserved(67890, "B", formattingdatetime(test2), 10);
-        tableList.get(27).isReserved(54321, "C", formattingdatetime(test3), 10);
-        tableList.get(28).isReserved(9876, "D", formattingdatetime(test4), 10);
-        tableList.get(29).isReserved(24680, "E", formattingdatetime(test5), 10);
+        String test1 = "0204201909:30pm";
+        String test2 = "0204201910:30pm";
+        String test3 = "0204201909:45pm";
+        String test4 = "0204201909:15pm";
+        String test5 = "0204201907:30pm";
+        tableList.get(25).isReserved(12345, "A", formatting(test1), 10);
+        tableList.get(26).isReserved(67890, "B", formatting(test2), 10);
+        tableList.get(27).isReserved(54321, "C", formatting(test3), 10);
+        tableList.get(28).isReserved(9876, "D", formatting(test4), 10);
+        tableList.get(29).isReserved(24680, "E", formatting(test5), 10);
         showReservation();
         do{
             System.out.println("Enter reserving date(ddmmyyyy) : ");
             date = s.next();
-            if((formattingdate(date)).minus(Period.ofMonths(1)).isAfter(now))
-                System.out.println("Reservation date can only be made at most 1 month in advance. " +
-                        "Please enter again.");
-            if((formattingdate(date)).isBefore(now) || (formattingdate(date)).isEqual(now))
-                System.out.println("Reservation date can only be made from tomorrow onwards. " +
-                        "Please enter again.");
-        }while ((formattingdate(date)).minus(Period.ofMonths(1)).isAfter(now)
-                || (formattingdate(date)).isBefore(now)
-                || (formattingdate(date)).isEqual(now));
-
-        do{
             System.out.println("Enter reserving time(hh:mm(am/pm))");
-            time = s.next();
-            if(formattingtime(time).isBefore(amOpeningHour))
-                System.out.println("We open at " + amOpeningHour.format(tf) + ". Please enter again.");
-            else if(formattingtime(time).isAfter(amClosingHour.minusHours(1)) &&
-                    formattingtime(time).isBefore(pmOpeningHour))
-                System.out.println("Our last order is at " + amClosingHour.format(tf) +
-                        " and we will open at " + pmOpeningHour.format(tf) +
-                        ". Please enter again. Please enter again.");
-            else if (formattingtime(time).isAfter(pmClosingHour.minusHours(1)))
-                System.out.println("Our last order is at " + pmClosingHour.minusHours(1).format(tf) +
-                        " and we closes at " + pmClosingHour.format(tf) + ". Please enter again.");
-        }while (formattingtime(time).isBefore(amOpeningHour)
-                ||  formattingtime(time).isAfter(pmClosingHour.minusHours(1))
-                ||  (formattingtime(time).isAfter(amClosingHour.minusHours(1)) &&
-                formattingtime(time).isBefore(pmOpeningHour)));
+            date = date + s.next();
+            combineDate = formatting(date);
+            if(combineDate.minus(Period.ofDays(30)).isAfter(now))
+                System.out.println("Reservation can only be made in at most 1 month in advance. Please enter again.");
+        }while (combineDate.minus(Period.ofMonths(1)).isAfter(now));
 
-        combineDate = formattingdatetime(date+time);
-        if (formattingtime(time).isBefore(amClosingHour))
-            session = "am";
-        else
-            session = "pm";
         while(!done) {
             try {
                 do {
                     System.out.println("Enter number of people.");
+
                     pax = s.nextInt();
+
                     if (pax > 10)
                         System.out.println("Tables are limited to a maximum number of 10 people, please enter again.");
                     else if (pax < 1)
                         System.out.println("Unable to book a table with less than a person, please enter again.");
                     else
-                        done = true;
+                    done = true;
                 } while (pax > 10 || pax < 1);
 
             } catch (Exception e) {
@@ -151,18 +118,18 @@ public class TableManager extends BaseManager {
                 System.out.println("Please enter a number");
             }
         }
-        index = checkReservation(combineDate, pax, session);
+		index = checkReservation(combineDate, pax);
 
-        if(index != -1){
-            System.out.println("Enter Your Name.");
-            name = s.next();
-            System.out.println("Enter Your Contact.");
-            contact = s.nextInt();
-            tableList.get(index).getReservationList().add(new Table.Reservations(contact, name, combineDate, pax, session));
-            Collections.sort(tableList.get(index).getReservationList());
-        }
-        else
-            System.out.println("Sorry, Booking Full.");
+		if(index != -1){
+		    System.out.println(index);
+			System.out.println("Enter Your Name.");
+			name = s.next();
+			System.out.println("Enter Your Contact.");
+			contact = s.nextInt();
+			tableList.get(index).getReservationList().add(new Table.Reservations(contact, name, combineDate, pax));
+		}
+		else
+		    System.out.println("Sorry, Booking Full.");
     }
     public void deleteReservation (Scanner s){
         int index;
@@ -175,57 +142,50 @@ public class TableManager extends BaseManager {
         showReservation();
         System.out.println("Successfully Removed.");
     }
-    public int checkReservation(LocalDateTime combineDate, int pax, String session) {
+    public int checkReservation(LocalDateTime combineDate, int pax) {
+        DateTimeFormatter session = DateTimeFormatter.ofPattern("a");
         for (Table t : tableList) {
             if (pax <= 2 && (t.getTableID() / 10 == 2)) {
-                if (t.getReservationList().size()==0)
-                    return map.get(t.getTableID());
                 for (Table.Reservations r : t.getReservationList()) {
                     if (!compareDate(combineDate, r.getDate()))
                         return map.get(t.getTableID());
-                    else if (!session.equals(r.getSession())) {
+                    else if (!combineDate.format(session).equals(r.getDate().format(session))) {
                         return map.get(t.getTableID());
                     }
                 }
             }
             if ((pax == 3 || pax == 4) && (t.getTableID() / 10 == 4)) {
-                if (t.getReservationList().size()==0)
-                    return map.get(t.getTableID());
                 for (Table.Reservations r : t.getReservationList()) {
                     if (!compareDate(combineDate, r.getDate()))
                         return map.get(t.getTableID());
-                    else if (!session.equals(r.getSession())) {
+                    else if (!combineDate.format(session).equals(r.getDate().format(session))) {
                         return map.get(t.getTableID());
                     }
                 }
             }
             if (pax>=5 && pax<=8 && (t.getTableID() / 10 == 8)) {
-                if (t.getReservationList().size()==0)
-                    return map.get(t.getTableID());
                 for (Table.Reservations r : t.getReservationList()) {
                     if (!compareDate(combineDate, r.getDate()))
                         return map.get(t.getTableID());
-                    else if (!session.equals(r.getSession())) {
+                    else if (!combineDate.format(session).equals(r.getDate().format(session))) {
                         return map.get(t.getTableID());
                     }
                 }
             }
             if (pax>=9 && (t.getTableID() / 10 == 10)) {
-                if (t.getReservationList().size()==0)
-                    return map.get(t.getTableID());
                 for (Table.Reservations r : t.getReservationList()) {
                     if (!compareDate(combineDate, r.getDate()))
                         return map.get(t.getTableID());
-                    else if (!session.equals(r.getSession())) {
+                    else if (!combineDate.format(session).equals(r.getDate().format(session))) {
                         return map.get(t.getTableID());
                     }
                 }
             }
         }
-        return -1;
+            return -1;
     }
 
-    public void findReservation (Scanner s){
+    public void searchReservation (Scanner s){
         int contact;
         boolean check =false;
 
@@ -234,6 +194,7 @@ public class TableManager extends BaseManager {
         for (Table t : tableList){
             if (t.findReservation(contact)){
                 check = true;
+                break;
             }
         }
         if (!check)
@@ -253,15 +214,8 @@ public class TableManager extends BaseManager {
             }
         }
     }
-    private LocalDate formattingdate (String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-        return LocalDate.parse(date, formatter);
-    }
-    private LocalTime formattingtime (String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mma");
-        return LocalTime.parse(time, formatter);
-    }
-    private LocalDateTime formattingdatetime (String datetime) {
+    private LocalDateTime formatting (String datetime) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
         return LocalDateTime.parse(datetime, formatter);
     }
@@ -309,22 +263,14 @@ public class TableManager extends BaseManager {
     @Override
     public String[] getMainCLIOptions() {
         return new String[] {
-                "Show Table Vacancy",
-                "Add Reservation",
-                "Delete Reservation",
-                "Show Reservation",
-                "Find Reservation"
+                "Show Table",
+                "Set Table",
+                "Set reservation"
         };
     }
 
     @Override
     public Runnable[] getOptionRunnables() {
-        return new Runnable[]{
-                this::checkVacancy,
-                this::addReservation,
-                this::deleteReservation,
-                this::showReservation,
-                this::findReservation
-        };
+        return new Runnable[0];
     }
 }

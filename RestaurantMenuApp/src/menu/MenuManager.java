@@ -2,9 +2,8 @@ package menu;
 
 import client.BaseManager;
 import client.Restaurant;
-import client.RestaurantAsset;
-import enums.AssetType;
-import enums.FileName;
+import client.RestaurantData;
+import enums.DataType;
 import tools.*;
 
 import java.io.IOException;
@@ -20,126 +19,145 @@ public class MenuManager extends BaseManager {
 
 	@Override
 	public void init() throws ManagerInitFailedException {
+		try {
+			getRestaurant().registerClass(AlaCarteItem.class, DataType.ALACARTE);
+			getRestaurant().registerClass(PromotionPackage.class, DataType.PROMO_PACKAGE);
+		} catch (Restaurant.ClassNotRegisteredException e) {
+			throw (new ManagerInitFailedException(this, "Class registration failed: " + e.getMessage()));
+		}
+
 		FileIO f = new FileIO();
 		List<String> foodData;
 		List<String> promoData;
 
 		try {
-			foodData = f.read(FileName.ALACARTE);
-			promoData = f.read(FileName.PROMO_PACKAGE);
+			foodData = f.read(DataType.ALACARTE);
+			promoData = f.read(DataType.PROMO_PACKAGE);
 		} catch (IOException e) {
 			throw (new ManagerInitFailedException(this, "Unable to load menu items from file: " + e.getMessage()));
 		}
 
-		String splitStr = " // ";
-
-		if (!getRestaurant().mapClassToAssetType(AlaCarteItem.class, AssetType.ALACARTE) || !getRestaurant().mapClassToAssetType(PromotionPackage.class, AssetType.PROMO_PACKAGE)) {
-			throw (new ManagerInitFailedException(this, "Failed to register class and asset to restaurant."));
-		}
+		getRestaurant().setCounter(DataType.PROMO_PACKAGE, 99999);
 
 		for (String data : foodData) {
-			String[] datas = data.split(splitStr);
+			String[] datas = data.split(" // ");
 
 			if (datas.length != 5) {
 				continue;
 			}
 
-			int id = Integer.parseInt(datas[0]); // risky without try/catch
-
+			int id;
 			try {
-				getRestaurant().addFromFile(new AlaCarteItem(id, datas[1], new BigDecimal(datas[2]), datas[3], datas[4]));
-			} catch (Restaurant.AssetNotRegisteredException | IOException e) {
-				throw (new ManagerInitFailedException(this, e.getMessage()));
+				id = Integer.parseInt(datas[0]);
+				getRestaurant().load(new AlaCarteItem(id, datas[1], new BigDecimal(datas[2]), datas[3], datas[4]));
+			} catch (NumberFormatException e) {
+				throw (new ManagerInitFailedException(this, "Invalid file data: " + e.getMessage()));
 			}
 
-			if (id > getRestaurant().getCounter(AssetType.ALACARTE)) {
-				getRestaurant().setCounter(AssetType.ALACARTE, id);
+			if (id > getRestaurant().getCounter(DataType.ALACARTE)) {
+				getRestaurant().setCounter(DataType.ALACARTE, id);
 			}
 		}
 
 		for (String data : promoData) {
-			String[] datas = data.split(splitStr);
+			String[] datas = data.split(" // ");
 
 			if (datas.length != 4) {
 				continue;
 			}
 
-			int id = Integer.parseInt(datas[0]);
 			List<AlaCarteItem> alaCarteItems = new ArrayList<>();
-
 			for (String s : datas[3].split("--")) {
-				int sId = Integer.parseInt(s);
-				MenuItem item;
-
+				int sId;
 				try {
-					item = (MenuItem) getRestaurant().getAssetFromId(AssetType.ALACARTE, sId);
-				} catch (Restaurant.AssetNotRegisteredException e) {
-					throw (new ManagerInitFailedException(this, e.getMessage()));
+					sId = Integer.parseInt(s);
+				} catch (NumberFormatException e) {
+					throw (new ManagerInitFailedException(this, "Invalid file data: " + e.getMessage()));
 				}
 
+				MenuItem item = (MenuItem) getRestaurant().getDataFromId(DataType.ALACARTE, sId);
 				if (item instanceof AlaCarteItem) {
 					alaCarteItems.add((AlaCarteItem) item);
 				}
 			}
 
+			int id;
 			try {
-				getRestaurant().addFromFile(new PromotionPackage(id, datas[1], new BigDecimal(datas[2]), alaCarteItems));
-			} catch (Restaurant.AssetNotRegisteredException | IOException e) {
-				throw (new ManagerInitFailedException(this, e.getMessage()));
+				id = Integer.parseInt(datas[0]);
+				getRestaurant().load(new PromotionPackage(id, datas[1], new BigDecimal(datas[2]), alaCarteItems));
+			} catch (NumberFormatException e) {
+				throw (new ManagerInitFailedException(this, "Invalid file data: " + e.getMessage()));
 			}
 
-			if (id > getRestaurant().getCounter(AssetType.PROMO_PACKAGE)) {
-				getRestaurant().setCounter(AssetType.PROMO_PACKAGE, id);
+			if (id > getRestaurant().getCounter(DataType.PROMO_PACKAGE)) {
+				getRestaurant().setCounter(DataType.PROMO_PACKAGE, id);
 			}
 		}
 	}
 
-	private List<String> getDisplay(AssetType assetType, int sortOption) throws InvalidAssetTypeException, Restaurant.AssetNotRegisteredException {
-		if (!assetType.equals(AssetType.ALACARTE) && !assetType.equals(AssetType.PROMO_PACKAGE)) {
-			throw (new InvalidAssetTypeException(assetType));
-		}
+	private Set<String> getAlaCarteCategories() {
+		List<? extends RestaurantData> dataList = getRestaurant().getData(DataType.ALACARTE);
+		Set<String> ret = new TreeSet<>();
 
-		List<? extends RestaurantAsset> masterList = new ArrayList<>(getRestaurant().getAsset(assetType));
-		List<String> ret = new ArrayList<>();
-		if (masterList.size() == 0) {
-			ret.add("There is no " + (assetType.equals(AssetType.ALACARTE)? "ala-carte item" : "promotion package") + " on the menu.");
-			return ret;
-		}
-
-		masterList.sort((item1, item2) -> {
-			switch (sortOption) {
-				case 2: return ((MenuItem) item1).getName().compareTo(((MenuItem) item2).getName());
-				case 3: return ((MenuItem) item1).getPrice().compareTo(((MenuItem) item2).getPrice());
-				case 4:
-					if (item1 instanceof AlaCarteItem) {
-						return ((AlaCarteItem) item1).getCategory().compareTo(((AlaCarteItem) item2).getCategory());
-					}
+		for (RestaurantData data : dataList) {
+			if (data instanceof AlaCarteItem) {
+				ret.add(((AlaCarteItem) data).getCategory());
 			}
-
-			return Integer.compare(item1.getId(), item2.getId());
-		});
-
-		ret.add((assetType.equals(AssetType.ALACARTE)? "ID // Name // Price // Description // Category" : "ID // Name // Price // Sub-Items"));
-		for (RestaurantAsset o : masterList) {
-			ret.add(o.toTableString());
 		} return ret;
 	}
 
-	private List<String> getItemNames(AssetType assetType) throws Restaurant.AssetNotRegisteredException, InvalidAssetTypeException {
-		if (!assetType.equals(AssetType.ALACARTE) && !assetType.equals(AssetType.PROMO_PACKAGE)) {
-			throw (new InvalidAssetTypeException(assetType));
+	private List<String> getAlaCarteDisplayData(String category) {
+		List<? extends RestaurantData> dataList = getRestaurant().getData(DataType.ALACARTE);
+		List<String> ret = new ArrayList<>();
+
+		if (dataList.size() == 0) {
+			ret.add("Database is empty for " + DataType.ALACARTE.name() + ".");
 		}
 
-		List<String> ret = new ArrayList<>();
-		for (RestaurantAsset o : getRestaurant().getAsset(assetType)) {
-			ret.add(((MenuItem) o).getName());
+		for (RestaurantData data : dataList) {
+			if ((data instanceof AlaCarteItem) && (((AlaCarteItem) data).getCategory().equalsIgnoreCase(category))) {
+				ret.add(((AlaCarteItem) data).getName() + "\n" + ((AlaCarteItem) data).getDescription() + " // " + ((AlaCarteItem) data).getPrice());
+			}
+		}
+		Collections.sort(ret);
+
+		int startIndex = (int) Math.ceil(1.0 * ret.size() / 2);
+		for (int index = startIndex; index < ret.size(); index++) {
+			ret.set(index - startIndex, ret.get(index - startIndex) + " // " + ret.get(index));
+		}
+
+		for (int index = ret.size() - 1; index >= startIndex; index--) {
+			ret.remove(index);
+		}
+
+		for (int index = 1; index < ret.size(); index += 2) {
+			ret.add(index, "");
 		}
 
 		return ret;
 	}
 
-	private void addNewItem(String name, BigDecimal price, String description, String category) throws IOException, Restaurant.AssetNotRegisteredException {
-		addNewItem(new AlaCarteItem(getRestaurant().incrementAndGetCounter(AssetType.ALACARTE), name, price, description, category));
+	public List<String> getItemNames(DataType dataType) {
+		List<String> ret = new ArrayList<>();
+		for (RestaurantData o : getRestaurant().getData(dataType)) {
+			ret.add(((MenuItem) o).getName());
+		} return ret;
+	}
+
+	private boolean existsInPackage(AlaCarteItem item) {
+		for (RestaurantData data : getRestaurant().getData(DataType.PROMO_PACKAGE)) {
+			if (data instanceof PromotionPackage) {
+				for (AlaCarteItem alaCarteItem : ((PromotionPackage) data).getAlaCarteItems()) {
+					if (alaCarteItem.getId() == item.getId()) {
+						return true;
+					}
+				}
+			}
+		} return false;
+	}
+
+	private void addNewItem(String name, BigDecimal price, String description, String category) throws IOException {
+		addNewItem(new AlaCarteItem(getRestaurant().incrementAndGetCounter(DataType.ALACARTE), name, price, description, category));
 	}
 
 	private void addNewItem(String name, List<Integer> alaCarteItemIndices) throws Exception {
@@ -151,26 +169,21 @@ public class MenuManager extends BaseManager {
 		List<AlaCarteItem> alaCarteItemList = new ArrayList<>();
 
 		for (int index : alaCarteItemIndices) {
-			MenuItem item = (MenuItem) getRestaurant().getAssetFromIndex(AssetType.ALACARTE, index);
-
-			if (item instanceof AlaCarteItem) {
-				alaCarteItemList.add((AlaCarteItem) item);
-				price = price.add(item.getPrice());
-			} else {
-				throw (new Exception("Object instance is wrong?"));
-			}
+			MenuItem item = (MenuItem) getRestaurant().getDataFromIndex(DataType.ALACARTE, index);
+			alaCarteItemList.add((AlaCarteItem) item);
+			price = price.add(item.getPrice());
 		}
 
 		price = price.multiply(new BigDecimal(0.8));
-		addNewItem(new PromotionPackage(getRestaurant().incrementAndGetCounter(AssetType.PROMO_PACKAGE), name, price, alaCarteItemList));
+		addNewItem(new PromotionPackage(getRestaurant().incrementAndGetCounter(DataType.PROMO_PACKAGE), name, price, alaCarteItemList));
 	}
 
-	private void addNewItem(MenuItem item) throws IOException, Restaurant.AssetNotRegisteredException {
-		getRestaurant().addNew(item);
+	private void addNewItem(MenuItem item) throws IOException {
+		getRestaurant().save(item);
 	}
 
-	private void updateItem(int index, String name, BigDecimal price, String description, String category) throws Restaurant.FileIDMismatchException, IOException, Restaurant.AssetNotRegisteredException {
-		AlaCarteItem item = (AlaCarteItem) getRestaurant().getAsset(AssetType.ALACARTE).get(index);
+	private void updateItem(int index, String name, BigDecimal price, String description, String category) throws Restaurant.FileIDMismatchException, IOException {
+		AlaCarteItem item = (AlaCarteItem) getRestaurant().getData(DataType.ALACARTE).get(index);
 		name = (name.isBlank()? item.getName() : name);
 		price = ((price == null)? item.getPrice() : price);
 		description = (description.isBlank()? item.getDescription() : description);
@@ -180,15 +193,15 @@ public class MenuManager extends BaseManager {
 		updateItem(item, tempItem);
 	}
 
-	private void updateItem(int index, String name) throws Restaurant.FileIDMismatchException, IOException, Restaurant.AssetNotRegisteredException {
-		PromotionPackage item = (PromotionPackage) getRestaurant().getAsset(AssetType.PROMO_PACKAGE).get(index);
+	private void updateItem(int index, String name) throws Restaurant.FileIDMismatchException, IOException {
+		PromotionPackage item = (PromotionPackage) getRestaurant().getData(DataType.PROMO_PACKAGE).get(index);
 		name = (name.isBlank()? item.getName() : name);
 
 		PromotionPackage tempItem = new PromotionPackage(item.getId(), name, item.getPrice(), item.getAlaCarteItems());
 		updateItem(item, tempItem);
 	}
 
-	private void updateItem(MenuItem item, MenuItem tempItem) throws Restaurant.AssetNotRegisteredException, Restaurant.FileIDMismatchException, IOException {
+	private void updateItem(MenuItem item, MenuItem tempItem) throws Restaurant.FileIDMismatchException, IOException {
 		getRestaurant().update(tempItem);
 
 		if (item instanceof AlaCarteItem) {
@@ -198,9 +211,19 @@ public class MenuManager extends BaseManager {
 		}
 	}
 
-	private void removeItem(AssetType assetType, int index) throws Restaurant.AssetNotRegisteredException, Restaurant.FileIDMismatchException, IOException {
-		MenuItem item = (MenuItem) getRestaurant().getAsset(assetType).get(index);
+	private boolean removeItem(DataType dataType, int index) throws Restaurant.FileIDMismatchException, IOException {
+		MenuItem item = (MenuItem) getRestaurant().getData(dataType).get(index);
+
+		if (dataType.equals(DataType.ALACARTE)) {
+			return !existsInPackage((AlaCarteItem) item);
+		}
+
+		if (getRestaurant().getData(DataType.ORDER).size() > 0) {
+			return false;
+		}
+
 		getRestaurant().remove(item);
+		return true;
 	}
 
 	@Override
@@ -218,46 +241,44 @@ public class MenuManager extends BaseManager {
 	public Runnable[] getOptionRunnables() {
 		return new Runnable[] {
 				this::viewMenu,
-				() -> addMenuItem(AssetType.ALACARTE),
-				() -> addMenuItem(AssetType.PROMO_PACKAGE),
-				() -> manageMenuItems(AssetType.ALACARTE),
-				() -> manageMenuItems(AssetType.PROMO_PACKAGE)
+				() -> addMenuItem(DataType.ALACARTE),
+				() -> addMenuItem(DataType.PROMO_PACKAGE),
+				() -> manageMenuItems(DataType.ALACARTE),
+				() -> manageMenuItems(DataType.PROMO_PACKAGE)
 		};
 	}
 
 	private void viewMenu() {
-		int choice = 4;
 		List<String> displayList;
+		Set<String> categoryList = getAlaCarteCategories();
+		System.out.println();
 
-		do {
-			try {
-				displayList = getDisplay(AssetType.ALACARTE, choice);
-			} catch (InvalidAssetTypeException | Restaurant.AssetNotRegisteredException e) {
-				System.out.println(e.getMessage());
-				return;
-			}
+		for (String category : categoryList) {
+			displayList = getAlaCarteDisplayData(category);
+			getCs().printTitle(category, true);
+			getCs().printColumns(displayList, false, false, false, false, true);
+			getCs().printDivider('=');
+		}
 
-			getCs().printDisplayTable("Menu: Ala-Carte Items", displayList);
+		displayList = getDisplayData(DataType.PROMO_PACKAGE);
+		displayList.add(0, "ID // Package // Price // Items in Package");
+		for (int index = 2; index < displayList.size(); index += 2) {
+			displayList.add(index, "");
+		}
 
-			try {
-				displayList = getDisplay(AssetType.PROMO_PACKAGE, choice);
-			} catch (InvalidAssetTypeException | Restaurant.AssetNotRegisteredException e) {
-				System.out.println(e.getMessage());
-				return;
-			}
-
-			getCs().printDisplayTable("Menu: Promotional Packages", displayList);
-		} while ((choice = getCs().printChoices("Command // Corresponding Function", Arrays.asList("Sort by ID", "Sort by name", "Sort by price", "Sort by category"), new String[] {"Go back"})) != -1);
+		getCs().printDisplayTable("Promotion Packages", displayList, false, false);
+		getCs().printInstructions(new String[] {"Enter -1 to go back"});
+		getCs().getInt("Enter -1 to go back", -1, -1);
 	}
 
-	private void addMenuItem(AssetType assetType) {
+	private void addMenuItem(DataType dataType) {
 		getCs().printInstructions(new String[] {"Note:", "Enter '/quit' in name to return to main menu."});
 		String name = getCs().getString("Enter item name");
 		if (name.equalsIgnoreCase("/quit")) {
 			return;
 		}
 
-		if (assetType.equals(AssetType.ALACARTE)) {
+		if (dataType.equals(DataType.ALACARTE)) {
 			BigDecimal price = new BigDecimal(getCs().getDouble("Enter item's price"));
 			String description = getCs().getString("Enter item description");
 			String category = getCs().getString("Enter item category");
@@ -265,75 +286,59 @@ public class MenuManager extends BaseManager {
 			try {
 				addNewItem(name, price, description, category);
 				System.out.println("Item has been added successfully.");
-			} catch (Restaurant.AssetNotRegisteredException | IOException e) {
-				System.out.println(e.getMessage());
+			} catch (IOException e) {
+				System.out.println("Failed to add item: " + e.getMessage());
+			}
+		} else {
+			List<String> alaCarteItemList = getItemNames(DataType.ALACARTE);
+			List<Integer> alaCarteItemIndices = new ArrayList<>();
+			String[] footerOptions = new String[]{"Go back"};
+			getCs().printChoicesSimple("Index // Ala-Carte Items", alaCarteItemList, footerOptions);
+			getCs().printInstructions(new String[]{"Select an ala-carte item to add to the package."});
+			int itemIndex = getCs().getInt("Enter choice", alaCarteItemList.size(), 0 - footerOptions.length);
+
+			if (itemIndex == -1) {
+				return;
 			}
 
-			return;
-		}
-
-		List<String> alaCarteItemList;
-
-		try {
-			alaCarteItemList = getItemNames(AssetType.ALACARTE);
-		} catch (Restaurant.AssetNotRegisteredException | InvalidAssetTypeException e) {
-			System.out.println(e.getMessage());
-			return;
-		}
-
-		List<Integer> alaCarteItemIndices = new ArrayList<>();
-		String[] footerOptions = new String[] {"Go back"};
-		getCs().printChoicesSimple("Index // Ala-Carte Items", alaCarteItemList, footerOptions);
-		getCs().printInstructions(new String[] {"Select an ala-carte item to add to the package."});
-		int itemIndex = getCs().getInt("Enter choice", alaCarteItemList.size(), 0 - footerOptions.length);
-
-		if (itemIndex == -1) {
-			return;
-		}
-
-		alaCarteItemIndices.add(itemIndex - 1);
-		String cont;
-		while (!(cont = getCs().getString("Add another item to package? [Y = YES | N = NO]")).equalsIgnoreCase("N")) {
-			if (cont.equalsIgnoreCase("Y")) {
-				itemIndex = getCs().getInt("Enter choice", alaCarteItemList.size(), 0 - footerOptions.length);
-				if (itemIndex == -1) {
-					return;
+			alaCarteItemIndices.add(itemIndex - 1);
+			String cont;
+			while (!(cont = getCs().getString("Add another item to package? [Y = YES | N = NO]")).equalsIgnoreCase("N")) {
+				if (cont.equalsIgnoreCase("Y")) {
+					itemIndex = getCs().getInt("Enter choice", alaCarteItemList.size(), 0 - footerOptions.length);
+					if (itemIndex == -1) {
+						return;
+					}
+					alaCarteItemIndices.add(itemIndex - 1);
 				}
-				alaCarteItemIndices.add(itemIndex - 1);
 			}
-		}
 
-		try {
-			addNewItem(name, alaCarteItemIndices);
-			System.out.println("Item has been added to menu successfully.");
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			try {
+				addNewItem(name, alaCarteItemIndices);
+				System.out.println("Item has been added to menu successfully.");
+			} catch (Exception e) {
+				System.out.println("Failed to add item: " + e.getMessage());
+			}
 		}
 	}
 
-	private void manageMenuItems(AssetType assetType) {
-		List<String> nameList;
-
-		try {
-			nameList = getItemNames(assetType);
-		} catch (Restaurant.AssetNotRegisteredException | InvalidAssetTypeException e) {
-			System.out.println(e.getMessage());
-			return;
-		}
-
-		int itemIndex = getCs().printChoices("Index // " + (assetType.equals(AssetType.ALACARTE)? "Ala-Carte Items" : "Promotional Packages"), nameList, new String[]{"Go back"}) - 1;
+	private void manageMenuItems(DataType dataType) {
+		List<String> nameList = getItemNames(dataType);
+		int itemIndex = getCs().printChoices("Select an item to manage", "Index // " + (dataType.equals(DataType.ALACARTE)? "Ala-Carte Items" : "Promotional Packages"), nameList, new String[]{"Go back"}) - 1;
 		if (itemIndex == -2) {
 			return;
 		}
 
-		String[] actions = assetType.equals(AssetType.ALACARTE)? new String[] {"Change name.", "Change price.", "Change description.", "Change category", "Remove item from menu."} : new String[] {"Change name.", "Remove package from menu."};
+		String[] actions = dataType.equals(DataType.ALACARTE)?
+				new String[] {"Change name.", "Change price.", "Change description.", "Change category", "Remove item from menu."} :
+				new String[] {"Change name.", "Remove package from menu."};
 
-		int action = getCs().printChoices("Index // Action", actions, new String[]{"Go back"});
+		int action = getCs().printChoices("Select an action", "Index // Action", actions, new String[]{"Go back"});
 		if (action == -1) {
 			return;
 		}
 
-		if ((action == 1) || ((action == 3 || action == 4) && assetType.equals(AssetType.ALACARTE))) {
+		if ((action == 1) || ((action == 3 || action == 4) && dataType.equals(DataType.ALACARTE))) {
 			String what = (action == 1)? "name" : (action == 3)? "description" : "category";
 			getCs().printInstructions(new String[] {"Note:", "Enter '/quit' to return to main menu."});
 			String input = getCs().getString("Enter the new " + what);
@@ -343,7 +348,7 @@ public class MenuManager extends BaseManager {
 			}
 
 			try {
-				if (assetType.equals(AssetType.ALACARTE)) {
+				if (dataType.equals(DataType.ALACARTE)) {
 					updateItem(itemIndex, (action == 1) ? input : "", null, (action == 3) ? input : "", (action == 4) ? input : "");
 				} else {
 					updateItem(itemIndex, input);
@@ -351,40 +356,37 @@ public class MenuManager extends BaseManager {
 
 				System.out.println("Item has been updated successfully.");
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				System.out.println("Failed to update item: " + e.getMessage());
 				return;
 			}
 		}
 
-		if (action == 2 && assetType.equals(AssetType.ALACARTE)) {
+		if (action == 2 && dataType.equals(DataType.ALACARTE)) {
 			BigDecimal price = new BigDecimal(getCs().getDouble("Enter the new price"));
 
 			try {
 				updateItem(itemIndex, "", price, "", "");
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				System.out.println("Failed to update item: " + e.getMessage());
 				return;
 			}
 		}
 
-		if ((action == 2 && assetType.equals(AssetType.PROMO_PACKAGE)) || (action == 5 && assetType.equals(AssetType.ALACARTE))) {
+		if ((action == 2 && dataType.equals(DataType.PROMO_PACKAGE)) || (action == 5 && dataType.equals(DataType.ALACARTE))) {
 			getCs().printInstructions(new String[]{"Warning: This action cannot be undone.", "Y = Yes", "Any other input = NO"});
 			if (getCs().getString("Confirm remove?").equalsIgnoreCase("Y")) {
 				try {
-					removeItem(assetType, itemIndex);
-					System.out.println("Item has been removed from menu successfully.");
-				} catch (Restaurant.AssetNotRegisteredException | IOException | Restaurant.FileIDMismatchException e) {
-					System.out.println(e.getMessage());
+					if (removeItem(dataType, itemIndex)) {
+						System.out.println("Item has been removed from menu successfully.");
+					} else {
+						System.out.println("Failed to remove item: Please check that there is no active order and that the item is not part of a package.");
+					}
+				} catch (IOException | Restaurant.FileIDMismatchException e) {
+					System.out.println("Failed to remove item: " + e.getMessage());
 				}
 			} else {
 				System.out.println("Remove operation aborted.");
 			}
-		}
-	}
-
-	private class InvalidAssetTypeException extends Exception {
-		private InvalidAssetTypeException(AssetType assetType) {
-			super("Invalid asset type: " + assetType);
 		}
 	}
 }

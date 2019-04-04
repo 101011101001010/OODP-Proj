@@ -1,7 +1,6 @@
 package client;
 
-import enums.AssetType;
-import enums.FileName;
+import enums.DataType;
 import tools.FileIO;
 
 import java.io.IOException;
@@ -10,174 +9,137 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Restaurant {
-    private HashMap<AssetType, List<? extends RestaurantAsset>> assetListMap;
-    private HashMap<AssetType, Integer> idCounterMap;
-    private HashMap<Class<?>, AssetType> classMap;
+    private HashMap<DataType, List<? extends RestaurantData>> dataMap;
+    private HashMap<DataType, Integer> idCounterMap;
+    private HashMap<Class<?>, DataType> classMap;
+    private int sessionStaffId;
 
-    /**
-     * Initialises the restaurant's variables.
-     */
     Restaurant() {
-        assetListMap = new HashMap<>();
+        dataMap = new HashMap<>();
         idCounterMap = new HashMap<>();
         classMap = new HashMap<>();
     }
 
-    /**
-     * Maps a RestaurantAsset sub-class to an asset type.
-     * @param newClass name of sub-class to map
-     * @param assetType asset type to map to
-     * @param <T> sub-class of RestaurantAsset
-     * @return true if class has been mapped successfully or already mapped
-     */
-    public <T extends RestaurantAsset> boolean mapClassToAssetType(Class<T> newClass, AssetType assetType) {
-        if (classMap.containsKey(newClass) && assetListMap.containsKey(assetType) && idCounterMap.containsKey(assetType)) {
-            return true;
-        }
-
-        List<T> newList = new ArrayList<>();
-        assetListMap.put(assetType, newList);
-        idCounterMap.put(assetType, -1);
-        classMap.put(newClass, assetType);
-        return (classMap.containsKey(newClass) && assetListMap.containsKey(assetType) && idCounterMap.containsKey(assetType));
+    void setSessionStaffId(int sessionStaffId) {
+        this.sessionStaffId = sessionStaffId;
     }
 
-    /**
-     * Gets assets stored in the restaurant's inventory
-     * @param assetType the asset type to retrieve
-     * @return list of assets of the supplied asset type
-     * @throws AssetNotRegisteredException if no sub-class is mapped to the supplied asset type
-     */
-    public List<? extends RestaurantAsset> getAsset(AssetType assetType) throws AssetNotRegisteredException {
-        if (assetListMap.containsKey(assetType)) {
-            return assetListMap.get(assetType);
-        }
-
-        throw (new AssetNotRegisteredException());
+    public int getSessionStaffId() {
+        return sessionStaffId;
     }
 
-    public void setCounter(AssetType assetType, int count) {
-        if (idCounterMap.containsKey(assetType)) {
-            idCounterMap.put(assetType, count);
-        }
-    }
-
-    public int incrementAndGetCounter(AssetType assetType) {
-        if (idCounterMap.containsKey(assetType)) {
-            idCounterMap.put(assetType, idCounterMap.get(assetType) + 1);
-            return idCounterMap.get(assetType);
-        }
-
-        return -1;
-    }
-
-    public int getCounter(AssetType assetType) {
-        if (idCounterMap.containsKey(assetType)) {
-            return idCounterMap.get(assetType);
-        }
-
-        return -1;
-    }
-
-    private <T extends RestaurantAsset> void add(T o, boolean isNew) throws AssetNotRegisteredException, IOException {
-        if (o == null) {
+    public <T extends RestaurantData> void registerClass(Class<T> targetClass, DataType dataType) throws ClassNotRegisteredException {
+        if (checkDataTypeExists(dataType)) {
             return;
         }
 
-        if (!classMap.containsKey(o.getClass())) {
-            throw (new AssetNotRegisteredException());
+        classMap.put(targetClass, dataType);
+        dataMap.put(dataType, new ArrayList<T>());
+        idCounterMap.put(dataType, -1);
+
+        if (!checkDataTypeExists(dataType)) {
+            throw (new ClassNotRegisteredException(targetClass));
         }
-
-        AssetType assetType = classMap.get(o.getClass());
-        FileName fileName = FileName.valueOf(assetType.name());
-
-        if (isNew) {
-            (new FileIO()).writeLine(fileName, o.toPrintString());
-        }
-
-        ((List<T>) assetListMap.get(assetType)).add(o);
     }
 
-    public <T extends RestaurantAsset> void addNew(T toAdd) throws AssetNotRegisteredException, IOException {
-        add(toAdd, true);
+    public <T extends RestaurantData> boolean checkDataTypeExists(DataType dataType) {
+        return (dataMap.containsKey(dataType));
     }
 
-    public <T extends RestaurantAsset> void addFromFile(T toAdd) throws AssetNotRegisteredException, IOException {
-        add(toAdd, false);
+    public List<? extends RestaurantData> getData(DataType dataType) {
+        return dataMap.getOrDefault(dataType, null);
     }
 
-    private <T extends RestaurantAsset> void updateOrRemove(T o, boolean update) throws AssetNotRegisteredException, IOException, FileIDMismatchException {
-        if (o == null) {
-            return;
-        }
+    public void setCounter(DataType dataType, int count) {
+        idCounterMap.put(dataType, count);
+    }
 
-        if (!classMap.containsKey(o.getClass())) {
-            throw (new AssetNotRegisteredException());
-        }
+    public int incrementAndGetCounter(DataType dataType) {
+        idCounterMap.put(dataType, idCounterMap.get(dataType) + 1);
+        return idCounterMap.get(dataType);
+    }
 
-        AssetType assetType = classMap.get(o.getClass());
+    public int getCounter(DataType dataType) {
+        return idCounterMap.get(dataType);
+    }
+
+    public <T extends RestaurantData> void save(T data) throws IOException {
+        DataType dataType = classMap.get(data.getClass());
+        (new FileIO()).writeLine(dataType, data.toPrintString());
+        ((List<T>) dataMap.get(dataType)).add(data);
+    }
+
+    public <T extends RestaurantData> void load(T data) {
+        DataType dataType = classMap.get(data.getClass());
+        ((List<T>) dataMap.get(dataType)).add(data);
+    }
+
+    public <T extends RestaurantData> void update(T data) throws IOException, FileIDMismatchException {
+        DataType dataType = classMap.get(data.getClass());
         FileIO f = new FileIO();
         int index = 0;
-
-        for (RestaurantAsset asset : getAsset(assetType)) {
-            if (asset.getId() == o.getId()) {
+        for (RestaurantData asset : getData(dataType)) {
+            if (asset.getId() == data.getId()) {
                 break;
-            }
-
-            index++;
+            } index++;
         }
 
-        FileName fileName = FileName.valueOf(assetType.name());
-        int fileId = Integer.parseInt(f.read(fileName).get(index).split(" // ")[0]);
-        if (fileId != o.getId()) {
-            throw (new FileIDMismatchException(fileId, o.getId()));
+        int fileId = Integer.parseInt(f.read(dataType).get(index).split(" // ")[0]);
+        if (fileId != data.getId()) {
+            throw (new FileIDMismatchException(fileId, data.getId()));
         }
 
-        if (update) {
-            f.updateLine(fileName, index, o.toPrintString());
-        } else {
-            f.removeLine(fileName, index);
-            assetListMap.get(assetType).remove(o);
+        f.updateLine(dataType, index, data.toPrintString());
+    }
+
+    public <T extends RestaurantData> void remove(T data) throws IOException, FileIDMismatchException {
+        DataType dataType = classMap.get(data.getClass());
+        FileIO f = new FileIO();
+        int index = 0;
+        for (RestaurantData asset : getData(dataType)) {
+            if (asset.getId() == data.getId()) {
+                break;
+            } index++;
         }
+
+        int fileId = Integer.parseInt(f.read(dataType).get(index).split(" // ")[0]);
+        if (fileId != data.getId()) {
+            throw (new FileIDMismatchException(fileId, data.getId()));
+        }
+
+        f.removeLine(dataType, index);
+        dataMap.get(dataType).remove(data);
     }
 
-    public <T extends RestaurantAsset> void update(T toUpdate) throws AssetNotRegisteredException, IOException, FileIDMismatchException {
-        updateOrRemove(toUpdate, true);
-    }
-
-    public <T extends RestaurantAsset> void remove(T toRemove) throws AssetNotRegisteredException, IOException, FileIDMismatchException {
-        updateOrRemove(toRemove, false);
-    }
-
-    public RestaurantAsset getAssetFromId(AssetType assetType, int id) throws AssetNotRegisteredException, IndexOutOfBoundsException {
-        for (RestaurantAsset o : getAsset(assetType)) {
+    public RestaurantData getDataFromId(DataType assetType, int id) throws IndexOutOfBoundsException {
+        for (RestaurantData o : getData(assetType)) {
             if (o.getId() == id) {
                 return o;
             }
         }
 
-        throw (new IndexOutOfBoundsException("Item ID is invalid."));
+        throw (new IndexOutOfBoundsException("Item ID is invalid: " + id));
     }
 
-    public RestaurantAsset getAssetFromIndex(AssetType assetType, int index) throws AssetNotRegisteredException, IndexOutOfBoundsException {
-        List<? extends RestaurantAsset> assetList = getAsset(assetType);
+    public RestaurantData getDataFromIndex(DataType assetType, int index) throws IndexOutOfBoundsException {
+        List<? extends RestaurantData> assetList = getData(assetType);
 
         if (index < assetList.size()) {
             return assetList.get(index);
         }
 
-        throw (new IndexOutOfBoundsException("Index is invalid."));
-    }
-
-    public class AssetNotRegisteredException extends Exception {
-        AssetNotRegisteredException() {
-            super("Asset is not registered to restaurant.");
-        }
+        throw (new IndexOutOfBoundsException("Index is invalid: " + index));
     }
 
     public class FileIDMismatchException extends Exception {
         FileIDMismatchException(int fileId, int updateId) {
-            super("ID mismatch when attempting to update file. (" + fileId + " VS " + updateId + ")");
+            super("ID mismatch when attempting to update file: " + fileId + " VS " + updateId + "");
+        }
+    }
+
+    public class ClassNotRegisteredException extends Exception {
+        public ClassNotRegisteredException(Class c) {
+            super("Class is not registered to restaurant: " + c.getSimpleName());
         }
     }
 }

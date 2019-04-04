@@ -1,11 +1,11 @@
 package menu;
 
-import client.RestaurantAsset;
+import client.RestaurantData;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class MenuItem extends RestaurantAsset {
+public class MenuItem extends RestaurantData {
     private String name;
     private BigDecimal price;
 
