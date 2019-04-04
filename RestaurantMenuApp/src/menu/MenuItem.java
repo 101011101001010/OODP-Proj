@@ -33,10 +33,10 @@ public class MenuItem extends RestaurantAsset {
     }
 
     public String toPrintString() {
-        return (getId() + " // " + getName() + " // " + getPrice());
+        return (getId() + " // " + name + " // " + price);
     }
 
     public String toTableString() {
-        return toPrintString();
+        return (getId() + " // " + name + " // " + price);
     }
 }

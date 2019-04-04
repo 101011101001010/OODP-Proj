@@ -1,129 +1,161 @@
 package Classes;
 
-import client.Restaurant;
 import client.RestaurantAsset;
+import order.Order;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-
+import java.util.List;
 
 public class Table extends RestaurantAsset {
-	private int tableID;
-	private int pax;
-	private int occupied;
-	private int orderID;
-	private ArrayList<Reservations> reservationList = new ArrayList<>();
+    // private int tableID;
+    private int capacity;
+    private int occupied;
+    private Order order;
+    private List<Reservation> reservationList = new ArrayList<>();
 
-	static class Reservations{
-		private int contact;
-		private String name;
-		private LocalDateTime date;
-		private int pax;
+    public Table(int tableId, int capacity) {
+        super(tableId);
+        this.capacity = capacity;
+        this.occupied = 0;
+        this.order = null;
+        this.reservationList = new ArrayList<>();
+    }
 
+    public Table(int tableId, int capacity, int occupied, Order order) {
+        super(tableId);
+        this.capacity = capacity;
+        this.occupied = occupied;
+        this.order = order;
+        this.reservationList = reservationList;
+    }
 
-		public Reservations (int contact,String name, LocalDateTime date, int pax){
-			this.contact = contact;
-			this.name = name;
-			this.date = date;
-			this.pax = pax;
-		}
-		public LocalDateTime getDate(){
-			return date;
-		}
-		public String getName(){
-			return name;
-		}
-		public int getContact(){
-			return contact;
-		}
-		public int getPax(){
-			return pax;
-		}
-		public String toStringTwo(){
-			//DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
-			//LocalDateTime date = LocalDateTime.parse(getDate(),format);
-			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime() +
-					", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
-		}
-	}
+    public int getCapacity() {
+        return capacity;
+    }
 
-	public Table(int tableID)
-	{
-		this.occupied = 0;
-		this.orderID = -1;
-		this.pax = 0;
-		this.tableID = tableID;
+    public int isOccupied() {
+        return occupied;
+    }
 
-	}
+    public boolean checkOccupied() {
+        if (occupied != 0) {
+            return true;
+        }
 
-	public int getTableID() {
-		return tableID;
-	}
-	public int getOrderID() {
-		return orderID;
-	}
+        return false;
+    }
 
-	public  void setOccupied(int occupied){
-		this.occupied = occupied;
-	}
+    public Order attachOrder(int orderId, int staffId) {
+        occupied = 1;
+        order = new Order(getId(), orderId, staffId);
+        return order;
+    }
 
-	public int isOccupied() {
-		return occupied;
-	}
+    public Order getOrder() {
+        return order;
+    }
 
-	public void setOrderID(int orderID){
-		this.orderID = orderID;
-	}
+    public boolean hasOrder() {
+        return (order != null);
+    }
 
-	public void setPax(int pax){
-		this.pax = pax;
-	}
+    public void clear() {
+        occupied = 0;
+        order = null;
+    }
 
-	public ArrayList<Reservations> getReservationList(){
-		return reservationList;
-	}
-	public void showReservationList (){
-		int index=1;
-		System.out.println("For Table " + getTableID());
-		for (Reservations r : reservationList){
-				System.out.println(index++ + ". " + r.toStringTwo());
-		}
+    public List<Reservation> getReservationList() {
+        return reservationList;
+    }
 
-	}
-	public boolean findReservation(int contact){
+    public void showReservationList() {
+        int index = 1;
+        System.out.println("For Table " + getId());
+        for (Reservation r : reservationList) {
+            System.out.println(index++ + ". " + r.toStringTwo());
+        }
+    }
 
-		for (Reservations r : reservationList){
-			if(r.getContact() == contact){
-				System.out.println("Reservation Found At Table " + tableID);
-				System.out.println(r.toStringTwo());
-				return true;
-			}
-		}
-		return false;
-	}
+    public boolean findReservation(int contact) {
+        for (Reservation r : reservationList) {
+            if (r.getContact() == contact) {
+                System.out.println("Reservation Found At Table " + getId());
+                System.out.println(r.toStringTwo());
+                return true;
+            }
+        }
 
-	public String toString(){
-		String check=null;
-		if (isOccupied()==-1)
-			check = "Reserved.";
-		if (isOccupied()==0)
-			check = "not occupied.";
-		if (isOccupied()==1)
-			check = "occupied.";
-		return "Table " + getTableID() + " is " + check;
-	}
+        return false;
+    }
 
-	@Override
-	public String toDisplayString() {
-		return null;
-	}
+    public String toString() {
+        String check = "not occupied.";
+
+        if (isOccupied() == -1) {
+            check = "reserved.";
+        }
+
+        if (isOccupied() == 1) {
+            check = "occupied.";
+        }
+
+        return "Table " + getId() + " is " + check;
+    }
+
+    @Override
+    public String toPrintString() {
+        return getId() + " // " + capacity + " // " + occupied;
+    }
+
+    @Override
+    public String toTableString() {
+        return null;
+    }
 
 
-	public void isReserved(int contact,String name, LocalDateTime date, int pax){
-		reservationList.add(new Reservations(contact, name, date, pax));
-	}
+    public void addReservation(int contact, String name, LocalDateTime date, int pax) {
+        reservationList.add(new Reservation(contact, name, date, pax));
+    }
 
+    public class Reservation {
+        private int contact;
+        private String name;
+        private LocalDateTime date;
+        private int pax;
+
+        public Reservation(int contact, String name, LocalDateTime date, int pax) {
+            this.contact = contact;
+            this.name = name;
+            this.date = date;
+            this.pax = pax;
+        }
+
+        public LocalDateTime getDate() {
+            return date;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getContact() {
+            return contact;
+        }
+
+        public int getPax() {
+            return pax;
+        }
+
+        public String toStringTwo() {
+            //DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
+            //LocalDateTime date = LocalDateTime.parse(getDate(),format);
+            return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime() +
+                    ", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
+        }
+
+        public String toPrintString() {
+            return getId() + " // " + contact + " // " + name + " // " + date + " // " + pax;
+        }
+    }
 }
-

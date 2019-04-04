@@ -1,9 +1,11 @@
 package enums;
 
-public enum AssetType {
+public enum FileName {
     ALACARTE,
     PROMO_PACKAGE,
     TABLE,
     STAFF,
-    ORDER
+    ORDER,
+    RESERVATION,
+    REVENUE
 }

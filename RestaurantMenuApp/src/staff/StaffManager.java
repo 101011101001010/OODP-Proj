@@ -4,6 +4,7 @@ import client.BaseManager;
 import client.Restaurant;
 import client.RestaurantAsset;
 import enums.AssetType;
+import enums.FileName;
 import tools.FileIO;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class StaffManager extends BaseManager {
     private final AssetType assetType = AssetType.STAFF;
+    private final FileName fileName = FileName.STAFF;
 
     public StaffManager(Restaurant restaurant) {
         super(restaurant);
@@ -24,17 +26,16 @@ public class StaffManager extends BaseManager {
         List<String> fileData;
 
         try {
-            fileData = f.read(assetType);
+            fileData = f.read(fileName);
         } catch (IOException e) {
             throw (new ManagerInitFailedException(this, "Unable to load staff from file: " + e.getMessage()));
         }
-
-        String splitStr = " // ";
 
         if (!getRestaurant().mapClassToAssetType(Staff.class, AssetType.STAFF)) {
             throw (new ManagerInitFailedException(this, "Failed to register class and asset to restaurant."));
         }
 
+        String splitStr = " // ";
         for (String data : fileData) {
             String[] datas = data.split(splitStr);
 

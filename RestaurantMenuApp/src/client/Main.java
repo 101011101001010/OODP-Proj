@@ -1,5 +1,6 @@
 package client;
 
+import Classes.TableManager;
 import menu.MenuManager;
 import order.OrderManager;
 import staff.StaffManager;
@@ -11,8 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-public class Main {
 
+public class Main {
 	private Map<Integer, Class<? extends BaseManager>> classMap;
 	private Map<Integer, Integer> commandMap;
 	private Restaurant restaurant;
@@ -36,6 +37,10 @@ public class Main {
 		BaseManager manager;
 
 		manager = new MenuManager(restaurant);
+		manager.init();
+		map(manager);
+
+		manager = new TableManager(restaurant);
 		manager.init();
 		map(manager);
 

@@ -1,6 +1,7 @@
 package client;
 
 import enums.AssetType;
+import enums.FileName;
 import tools.FileIO;
 
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class Restaurant {
         return -1;
     }
 
-    public <T extends RestaurantAsset> void add(T o, boolean isNew) throws AssetNotRegisteredException, IOException {
+    private <T extends RestaurantAsset> void add(T o, boolean isNew) throws AssetNotRegisteredException, IOException {
         if (o == null) {
             return;
         }
@@ -88,9 +89,10 @@ public class Restaurant {
         }
 
         AssetType assetType = classMap.get(o.getClass());
+        FileName fileName = FileName.valueOf(assetType.name());
 
         if (isNew) {
-            (new FileIO()).writeLine(assetType, o.toPrintString());
+            (new FileIO()).writeLine(fileName, o.toPrintString());
         }
 
         ((List<T>) assetListMap.get(assetType)).add(o);
@@ -125,15 +127,16 @@ public class Restaurant {
             index++;
         }
 
-        int fileId = Integer.parseInt(f.read(assetType).get(index).split(" // ")[0]);
+        FileName fileName = FileName.valueOf(assetType.name());
+        int fileId = Integer.parseInt(f.read(fileName).get(index).split(" // ")[0]);
         if (fileId != o.getId()) {
             throw (new FileIDMismatchException(fileId, o.getId()));
         }
 
         if (update) {
-            f.updateLine(assetType, index, o.toPrintString());
+            f.updateLine(fileName, index, o.toPrintString());
         } else {
-            f.removeLine(assetType, index);
+            f.removeLine(fileName, index);
             assetListMap.get(assetType).remove(o);
         }
     }
@@ -146,7 +149,7 @@ public class Restaurant {
         updateOrRemove(toRemove, false);
     }
 
-    public RestaurantAsset getItemFromId(AssetType assetType, int id) throws AssetNotRegisteredException, IndexOutOfBoundsException {
+    public RestaurantAsset getAssetFromId(AssetType assetType, int id) throws AssetNotRegisteredException, IndexOutOfBoundsException {
         for (RestaurantAsset o : getAsset(assetType)) {
             if (o.getId() == id) {
                 return o;
@@ -156,7 +159,7 @@ public class Restaurant {
         throw (new IndexOutOfBoundsException("Item ID is invalid."));
     }
 
-    public RestaurantAsset getItemFromIndex(AssetType assetType, int index) throws AssetNotRegisteredException, IndexOutOfBoundsException {
+    public RestaurantAsset getAssetFromIndex(AssetType assetType, int index) throws AssetNotRegisteredException, IndexOutOfBoundsException {
         List<? extends RestaurantAsset> assetList = getAsset(assetType);
 
         if (index < assetList.size()) {

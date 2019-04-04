@@ -4,6 +4,7 @@ import client.BaseManager;
 import client.Restaurant;
 import client.RestaurantAsset;
 import enums.AssetType;
+import enums.FileName;
 import tools.*;
 
 import java.io.IOException;
@@ -24,8 +25,8 @@ public class MenuManager extends BaseManager {
 		List<String> promoData;
 
 		try {
-			foodData = f.read(AssetType.ALACARTE);
-			promoData = f.read(AssetType.PROMO_PACKAGE);
+			foodData = f.read(FileName.ALACARTE);
+			promoData = f.read(FileName.PROMO_PACKAGE);
 		} catch (IOException e) {
 			throw (new ManagerInitFailedException(this, "Unable to load menu items from file: " + e.getMessage()));
 		}
@@ -71,7 +72,7 @@ public class MenuManager extends BaseManager {
 				MenuItem item;
 
 				try {
-					item = (MenuItem) getRestaurant().getItemFromId(AssetType.ALACARTE, sId);
+					item = (MenuItem) getRestaurant().getAssetFromId(AssetType.ALACARTE, sId);
 				} catch (Restaurant.AssetNotRegisteredException e) {
 					throw (new ManagerInitFailedException(this, e.getMessage()));
 				}
@@ -150,7 +151,7 @@ public class MenuManager extends BaseManager {
 		List<AlaCarteItem> alaCarteItemList = new ArrayList<>();
 
 		for (int index : alaCarteItemIndices) {
-			MenuItem item = (MenuItem) getRestaurant().getItemFromIndex(AssetType.ALACARTE, index);
+			MenuItem item = (MenuItem) getRestaurant().getAssetFromIndex(AssetType.ALACARTE, index);
 
 			if (item instanceof AlaCarteItem) {
 				alaCarteItemList.add((AlaCarteItem) item);
@@ -304,7 +305,7 @@ public class MenuManager extends BaseManager {
 
 		try {
 			addNewItem(name, alaCarteItemIndices);
-			System.out.println("Item has been added successfully.");
+			System.out.println("Item has been added to menu successfully.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -347,6 +348,8 @@ public class MenuManager extends BaseManager {
 				} else {
 					updateItem(itemIndex, input);
 				}
+
+				System.out.println("Item has been updated successfully.");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 				return;
@@ -369,6 +372,7 @@ public class MenuManager extends BaseManager {
 			if (getCs().getString("Confirm remove?").equalsIgnoreCase("Y")) {
 				try {
 					removeItem(assetType, itemIndex);
+					System.out.println("Item has been removed from menu successfully.");
 				} catch (Restaurant.AssetNotRegisteredException | IOException | Restaurant.FileIDMismatchException e) {
 					System.out.println(e.getMessage());
 				}
