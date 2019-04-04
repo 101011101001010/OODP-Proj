@@ -1,6 +1,6 @@
 package client;
 
-import Classes.TableManager;
+import tables.TableManager;
 import menu.MenuManager;
 import order.OrderManager;
 import staff.StaffManager;

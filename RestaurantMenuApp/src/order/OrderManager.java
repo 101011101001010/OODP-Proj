@@ -1,5 +1,5 @@
 package order;
-import Classes.Table;
+import tables.Table;
 import client.BaseManager;
 import client.Restaurant;
 import client.RestaurantAsset;

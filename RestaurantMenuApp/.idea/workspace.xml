@@ -3,43 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d468f3d0-5a99-4b92-950c-3da6594ba4da" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataStorage/promo_package.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/promo_package.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataStorage/reservations.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataStorage/revenue_report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/AlaCarteItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/MenuItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/MenuManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Order.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/OrderItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/OrderManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/PromoItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Reservation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/ReservationManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Staff.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/StaffManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Table$Reservations.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/Table.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/Table.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Classes/TableManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Classes/TableManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/client/BaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/BaseManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/client/MainV2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/client/Restaurant.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/Restaurant.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/client/RestaurantAsset.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/RestaurantAsset.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/client/enums/AssetType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/client/enums/Op.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tools/FileIO$FileNames.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/tools/FileIO.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/tools/FileIO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Table.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/TableManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/TableManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tables/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/TableManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tables/TableManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Restaurant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/enums/AssetType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/enums/AssetType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menu/MenuManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/Order.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/order/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/OrderManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/staff/StaffManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/staff/StaffManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/FileIO.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -56,10 +23,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
+        <entry file="file://$PROJECT_DIR$/src/tables/TableManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="846">
-              <caret line="276" selection-start-line="276" selection-end-line="276" />
+            <state relative-caret-position="294">
+              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -67,7 +34,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Classes/RevenueReader.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="18">
@@ -80,13 +47,79 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/tables/Table.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1341#1342#0" expanded="true" />
+                <element signature="e#1379#1380#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="16" selection-start-column="16" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1496#1497#0" expanded="true" />
+                <element signature="e#1563#1564#0" expanded="true" />
+                <element signature="e#9321#9322#0" expanded="true" />
+                <element signature="e#9359#9360#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1062">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#788#789#0" expanded="true" />
+                <element signature="e#823#824#0" expanded="true" />
+                <element signature="e#856#857#0" expanded="true" />
+                <element signature="e#891#892#0" expanded="true" />
+                <element signature="e#924#925#0" expanded="true" />
+                <element signature="e#962#963#0" expanded="true" />
+                <element signature="e#991#992#0" expanded="true" />
+                <element signature="e#1025#1026#0" expanded="true" />
+                <element signature="e#1635#1636#0" expanded="true" />
+                <element signature="e#1665#1666#0" expanded="true" />
+                <element signature="e#1695#1696#0" expanded="true" />
+                <element signature="e#1725#1726#0" expanded="true" />
+                <element signature="e#1770#1771#0" expanded="true" />
+                <element signature="e#1810#1811#0" expanded="true" />
+                <element signature="e#1841#1842#0" expanded="true" />
+                <element signature="e#1872#1873#0" expanded="true" />
+                <element signature="e#1914#1915#0" expanded="true" />
+                <element signature="e#1952#1953#0" expanded="true" />
+                <element signature="e#1986#1987#0" expanded="true" />
+                <element signature="e#2016#2017#0" expanded="true" />
+                <element signature="e#2074#2075#0" expanded="true" />
+                <element signature="e#2112#2113#0" expanded="true" />
+                <element signature="e#3078#3079#0" expanded="true" />
+                <element signature="e#3105#3106#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -151,7 +184,6 @@
         <option value="$PROJECT_DIR$/src/enums/AssetType.java" />
         <option value="$PROJECT_DIR$/src/staff/StaffManager.java" />
         <option value="$PROJECT_DIR$/src/client/Restaurant.java" />
-        <option value="$PROJECT_DIR$/src/Classes/Table.java" />
         <option value="$PROJECT_DIR$/src/client/Main.java" />
         <option value="$PROJECT_DIR$/src/tools/FileIO.java" />
         <option value="$PROJECT_DIR$/src/menu/PromotionPackage.java" />
@@ -161,8 +193,10 @@
         <option value="$PROJECT_DIR$/src/order/OrderManager.java" />
         <option value="$PROJECT_DIR$/src/order/Order.java" />
         <option value="$PROJECT_DIR$/DataStorage/revenue.txt" />
-        <option value="$PROJECT_DIR$/src/Classes/TableManager.java" />
         <option value="$PROJECT_DIR$/src/Classes/RevenueReader.java" />
+        <option value="$PROJECT_DIR$/src/tables/TableManager.java" />
+        <option value="$PROJECT_DIR$/src/Classes/Table.java" />
+        <option value="$PROJECT_DIR$/src/Classes/TableManager.java" />
       </list>
     </option>
   </component>
@@ -242,6 +276,12 @@
               <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
               <item name="RestaurantMenuApp" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="tables" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RestaurantMenuApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RestaurantMenuApp" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="tools" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -252,7 +292,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554341218489" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554341438426" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
@@ -429,24 +469,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#961#962#0" expanded="true" />
-            <element signature="e#992#993#0" expanded="true" />
-            <element signature="e#1281#1282#0" expanded="true" />
-            <element signature="e#1309#1310#0" expanded="true" />
-            <element signature="e#1364#1365#0" expanded="true" />
-            <element signature="e#1548#1549#0" expanded="true" />
-            <element signature="e#2557#2558#0" expanded="true" />
-            <element signature="e#2635#2636#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DataStorage/revenue_report.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -613,19 +635,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/reservation.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="846">
-          <caret line="276" selection-start-line="276" selection-end-line="276" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Classes/RevenueReader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -633,6 +642,79 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1788#1803#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/reservation.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tables/TableManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tables/Table.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1341#1342#0" expanded="true" />
+            <element signature="e#1379#1380#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="16" selection-start-column="16" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1496#1497#0" expanded="true" />
+            <element signature="e#1563#1564#0" expanded="true" />
+            <element signature="e#9321#9322#0" expanded="true" />
+            <element signature="e#9359#9360#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1062">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#788#789#0" expanded="true" />
+            <element signature="e#823#824#0" expanded="true" />
+            <element signature="e#856#857#0" expanded="true" />
+            <element signature="e#891#892#0" expanded="true" />
+            <element signature="e#924#925#0" expanded="true" />
+            <element signature="e#962#963#0" expanded="true" />
+            <element signature="e#991#992#0" expanded="true" />
+            <element signature="e#1025#1026#0" expanded="true" />
+            <element signature="e#1635#1636#0" expanded="true" />
+            <element signature="e#1665#1666#0" expanded="true" />
+            <element signature="e#1695#1696#0" expanded="true" />
+            <element signature="e#1725#1726#0" expanded="true" />
+            <element signature="e#1770#1771#0" expanded="true" />
+            <element signature="e#1810#1811#0" expanded="true" />
+            <element signature="e#1841#1842#0" expanded="true" />
+            <element signature="e#1872#1873#0" expanded="true" />
+            <element signature="e#1914#1915#0" expanded="true" />
+            <element signature="e#1952#1953#0" expanded="true" />
+            <element signature="e#1986#1987#0" expanded="true" />
+            <element signature="e#2016#2017#0" expanded="true" />
+            <element signature="e#2074#2075#0" expanded="true" />
+            <element signature="e#2112#2113#0" expanded="true" />
+            <element signature="e#3078#3079#0" expanded="true" />
+            <element signature="e#3105#3106#0" expanded="true" />
           </folding>
         </state>
       </provider>
