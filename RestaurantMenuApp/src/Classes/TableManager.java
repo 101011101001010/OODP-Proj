@@ -1,5 +1,6 @@
 package Classes;
 
+
 import client.BaseManager;
 import client.Restaurant;
 import client.enums.AssetType;
@@ -109,7 +110,7 @@ public class TableManager extends BaseManager {
                     else if (pax < 1)
                         System.out.println("Unable to book a table with less than a person, please enter again.");
                     else
-                        done = true;
+                    done = true;
                 } while (pax > 10 || pax < 1);
 
             } catch (Exception e) {
@@ -117,18 +118,18 @@ public class TableManager extends BaseManager {
                 System.out.println("Please enter a number");
             }
         }
-        index = checkReservation(combineDate, pax);
+		index = checkReservation(combineDate, pax);
 
-        if(index != -1){
-            System.out.println(index);
-            System.out.println("Enter Your Name.");
-            name = s.next();
-            System.out.println("Enter Your Contact.");
-            contact = s.nextInt();
-            tableList.get(index).getReservationList().add(new Table.Reservations(contact, name, combineDate, pax));
-        }
-        else
-            System.out.println("Sorry, Booking Full.");
+		if(index != -1){
+		    System.out.println(index);
+			System.out.println("Enter Your Name.");
+			name = s.next();
+			System.out.println("Enter Your Contact.");
+			contact = s.nextInt();
+			tableList.get(index).getReservationList().add(new Table.Reservations(contact, name, combineDate, pax));
+		}
+		else
+		    System.out.println("Sorry, Booking Full.");
     }
     public void deleteReservation (Scanner s){
         int index;
@@ -181,7 +182,7 @@ public class TableManager extends BaseManager {
                 }
             }
         }
-        return -1;
+            return -1;
     }
 
     public void searchReservation (Scanner s){
@@ -250,6 +251,7 @@ public class TableManager extends BaseManager {
         FileIO f = new FileIO();
         List<String> tableData = f.read(FileIO.FileNames.TABLE_FILE);
         String splitStr = " // ";
+
         if (tableData==null)
             return  (new Pair<>(Op.FAILED, "Failed to read files."));
         if (!getRestaurant().registerClassToAsset(Table.class, AssetType.TABLE))
