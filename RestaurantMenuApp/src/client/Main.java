@@ -39,6 +39,7 @@ public class Main {
             (new FileIO()).checkFiles();
         } catch (IOException e) {
             System.out.println("File check failed: " + e.getMessage());
+            return;
         }
 
         try {
@@ -48,6 +49,7 @@ public class Main {
             map(new StaffManager(restaurant));
         } catch (BaseManager.ManagerInitFailedException e) {
             System.out.println(e.getMessage());
+            return;
         }
 
         for (DataType dataType : DataType.values()) {
