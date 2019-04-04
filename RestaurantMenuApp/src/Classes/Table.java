@@ -123,9 +123,14 @@ public class Table extends RestaurantAsset {
 		return check;
 	}
 	public void checkNoShow(){
-		for (Reservations r : reservationList)
-			if(r.getDate().plusSeconds(30).isBefore(LocalDateTime.now()))
-				reservationList.remove(r);
+		if (reservationList.size()!=0) {
+			for (int i = 0; i<reservationList.size(); i++) {
+				if (reservationList.get(i).getDate().plusSeconds(30).isBefore(LocalDateTime.now())){
+					System.out.println(reservationList.get(i).toStringTwo());
+					getReservationList().remove(i);
+				}
+			}
+		}
 	}
 
 	public String toString(){
