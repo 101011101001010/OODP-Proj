@@ -20,11 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="149" column="60" lean-forward="true" selection-start-line="149" selection-start-column="60" selection-end-line="149" selection-end-column="60" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="275">
+              <caret line="11" column="31" lean-forward="true" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -32,11 +29,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="950">
-              <caret line="44" column="23" lean-forward="true" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
+            <state relative-caret-position="383">
+              <caret line="119" column="29" lean-forward="true" selection-start-line="119" selection-start-column="29" selection-end-line="119" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#948#949#0" expanded="true" />
+                <element signature="e#944#945#0" expanded="true" />
                 <element signature="e#967#968#0" expanded="true" />
                 <element signature="e#1395#1396#0" expanded="true" />
                 <element signature="e#1460#1461#0" expanded="true" />
@@ -129,8 +126,8 @@
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/Classes/RevenueReader.java" />
         <option value="$PROJECT_DIR$/src/tables/TableManager.java" />
-        <option value="$PROJECT_DIR$/src/Classes/Table.java" />
         <option value="$PROJECT_DIR$/src/Classes/TableManager.java" />
+        <option value="$PROJECT_DIR$/src/Classes/Table.java" />
       </list>
     </option>
   </component>
@@ -147,6 +144,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -222,7 +220,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -273,7 +270,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21208054" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.44198895" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -585,11 +582,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="950">
-          <caret line="44" column="23" lean-forward="true" selection-start-line="44" selection-start-column="23" selection-end-line="44" selection-end-column="23" />
+        <state relative-caret-position="383">
+          <caret line="119" column="29" lean-forward="true" selection-start-line="119" selection-start-column="29" selection-end-line="119" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#948#949#0" expanded="true" />
+            <element signature="e#944#945#0" expanded="true" />
             <element signature="e#967#968#0" expanded="true" />
             <element signature="e#1395#1396#0" expanded="true" />
             <element signature="e#1460#1461#0" expanded="true" />
@@ -599,11 +596,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="149" column="60" lean-forward="true" selection-start-line="149" selection-start-column="60" selection-end-line="149" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="275">
+          <caret line="11" column="31" lean-forward="true" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
         </state>
       </provider>
     </entry>

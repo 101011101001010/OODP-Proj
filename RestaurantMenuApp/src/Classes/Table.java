@@ -112,15 +112,15 @@ public class Table extends RestaurantAsset {
 
 	}
 	public boolean findReservation(int contact){
-
+		boolean check = false;
 		for (Reservations r : reservationList){
 			if(r.getContact() == contact){
 				System.out.println("Reservation Found At Table " + tableID);
 				System.out.println(r.toStringTwo());
-				return true;
+				check = true;
 			}
 		}
-		return false;
+		return check;
 	}
 
 	public String toString(){

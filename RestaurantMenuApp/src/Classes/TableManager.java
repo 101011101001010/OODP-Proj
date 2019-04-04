@@ -233,7 +233,6 @@ public class TableManager extends BaseManager {
         for (Table t : tableList){
             if (t.findReservation(contact)){
                 check = true;
-                break;
             }
         }
         if (!check)
