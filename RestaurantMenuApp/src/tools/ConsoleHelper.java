@@ -110,7 +110,7 @@ public class ConsoleHelper {
         printColumns(list, true, false, true, false, false);
         printFooter();
 
-        return getInt(message, options.size(), (0 - footerOptions.length));
+        return getInt(message, (1 - footerOptions.length), options.size());
     }
 
     public void clearCmd() {
@@ -372,17 +372,14 @@ public class ConsoleHelper {
         System.out.println("|");
     }
 
-    public int getInt(String message, int... bounds) {
-        int upperBound = (bounds.length >= 1)? bounds[0] : Integer.MAX_VALUE;
-        int lowerBound = (bounds.length >= 2)? bounds[1] : -1;
-
+    public int getInt(String message, int lowerBound, int upperBound) {
         while (true) {
             System.out.print(message + ": ");
             try {
                 int input = scanner.nextInt();
                 scanner.nextLine();
 
-                if (input >= lowerBound && input <= upperBound && input != 0) {
+                if (input >= lowerBound && input <= upperBound) {
                     return input;
                 } else {
                     System.out.println("Invalid input. Please try again.");

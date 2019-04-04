@@ -267,8 +267,8 @@ public class MenuManager extends BaseManager {
 		}
 
 		getCs().printDisplayTable("Promotion Packages", displayList, false, false);
-		getCs().printInstructions(new String[] {"Enter -1 to go back"});
-		getCs().getInt("Enter -1 to go back", -1, -1);
+		getCs().printInstructions(new String[] {"Enter 0 to go back"});
+		getCs().getInt("Enter 0 to go back", 0, 0);
 	}
 
 	private void addMenuItem(DataType dataType) {
@@ -295,7 +295,7 @@ public class MenuManager extends BaseManager {
 			String[] footerOptions = new String[]{"Go back"};
 			getCs().printChoicesSimple("Index // Ala-Carte Items", alaCarteItemList, footerOptions);
 			getCs().printInstructions(new String[]{"Select an ala-carte item to add to the package."});
-			int itemIndex = getCs().getInt("Enter choice", alaCarteItemList.size(), 0 - footerOptions.length);
+			int itemIndex = getCs().getInt("Enter choice", 1 - footerOptions.length, alaCarteItemList.size());
 
 			if (itemIndex == -1) {
 				return;
@@ -305,7 +305,7 @@ public class MenuManager extends BaseManager {
 			String cont;
 			while (!(cont = getCs().getString("Add another item to package? [Y = YES | N = NO]")).equalsIgnoreCase("N")) {
 				if (cont.equalsIgnoreCase("Y")) {
-					itemIndex = getCs().getInt("Enter choice", alaCarteItemList.size(), 0 - footerOptions.length);
+					itemIndex = getCs().getInt("Enter choice", 1 - footerOptions.length, alaCarteItemList.size());
 					if (itemIndex == -1) {
 						return;
 					}

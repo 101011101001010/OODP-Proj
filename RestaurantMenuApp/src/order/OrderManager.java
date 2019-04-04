@@ -172,7 +172,7 @@ public class OrderManager extends BaseManager {
     }
 
     private void addNewOrder() {
-        int pax = getCs().getInt("Enter number of pax", 10, 1);
+        int pax = getCs().getInt("Enter number of pax", 1, 10);
         List<Table> emptyTableList = getEmptyTables(pax);
         List<String> emptyTableDisplay = new ArrayList<>();
         for (Table table : emptyTableList) {
@@ -180,8 +180,8 @@ public class OrderManager extends BaseManager {
         }
 
         getCs().printChoicesSimple("Command // Empty Tables", emptyTableDisplay, new String[]{"Go back"});
-        int tableIndex = getCs().getInt("Select table", emptyTableDisplay.size()) - 1;
-        if (tableIndex == -2) {
+        int tableIndex = getCs().getInt("Select table", 0, emptyTableDisplay.size()) - 1;
+        if (tableIndex == -1) {
             return;
         }
 
@@ -222,11 +222,11 @@ public class OrderManager extends BaseManager {
             displayList = (new MenuManager(getRestaurant()).getItemNames(dataType));
 
             int itemIndex = getCs().printChoices("Select an item to add", "Index // Menu Item", displayList, footer) - 1;
-            if (itemIndex == -2) {
+            if (itemIndex == -1) {
                 return;
             }
 
-            int itemCount = getCs().getInt("Enter the item count");
+            int itemCount = getCs().getInt("Enter the item count", 0, 100);
             Table table = activeTableList.get(tableIndex);
             //int tableId = table.getId();
             //table = (Table) getRestaurant().getDataFromId(DataType.TABLE, tableId);

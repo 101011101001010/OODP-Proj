@@ -169,7 +169,7 @@ public class StaffManager extends BaseManager {
     private void manageStaff() {
         List<String> nameList = getStaffNames();
         int staffIndex = getCs().printChoices("Select a staff to manage", "Index // Staff Name", nameList, new String[]{"Go back"}) - 1;
-        if (staffIndex == -2) {
+        if (staffIndex == -1) {
             return;
         }
 

@@ -145,10 +145,10 @@ public class TableManager extends BaseManager {
     public void deleteReservation(Scanner s) {
         int index;
         showReservation();
-        int id = getCs().getInt("Enter TableID");
+        int id = getCs().getInt("Enter TableID", 20, 104);
         Table table = (Table) getRestaurant().getDataFromId(DataType.TABLE, id);
         table.showReservationList();
-        int remove = getCs().getInt("Enter Reservation ID To Delete");
+        int remove = getCs().getInt("Enter Reservation ID To Delete", 1, Integer.MAX_VALUE);
         table.getReservationList().remove(remove - 1);
         showReservation();
         System.out.println("Successfully Removed.");
