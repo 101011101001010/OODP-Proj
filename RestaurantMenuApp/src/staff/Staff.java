@@ -1,8 +1,8 @@
 package staff;
 
-import client.RestaurantAsset;
+import client.RestaurantData;
 
-public class Staff extends RestaurantAsset {
+public class Staff extends RestaurantData {
     private String name;
     private String title;
     private String gender;

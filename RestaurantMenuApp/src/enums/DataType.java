@@ -1,6 +1,6 @@
 package enums;
 
-public enum FileName {
+public enum DataType {
     ALACARTE,
     PROMO_PACKAGE,
     TABLE,

@@ -1,35 +1,46 @@
 package tools;
 
+import java.io.IOException;
 import java.util.*;
 
 public class ConsoleHelper {
     private Scanner scanner;
-    private int MAX_LENGTH = 100;
+    private int MAX_LENGTH = 80;
 
     public ConsoleHelper() {
         this.scanner = new Scanner(System.in);
     }
 
     public void sendWelcome(List<String[]> mainCLIOptions) {
+        MAX_LENGTH = 60;
         printTitle("Restaurant Reservation and Point of Sale System", true);
-        printColumns(new String[] {"Command // Function"}, true, false, false, true, true);
+        //printColumns(new String[] {"ID // Text Commands // Function Call"}, true, false, false, true, true);
 
+        //String format = "  %1$-50s  ";
         List<String> list;
         int optionsIndex = 1;
 
-        for (String[] options : mainCLIOptions) {
+        for (int i = 0; i < mainCLIOptions.size(); i++) {
+            String[] options = mainCLIOptions.get(i);
+
             list = new ArrayList<>(Arrays.asList(options));
             for (int index = 0; index < list.size(); index++) {
                 list.set(index, optionsIndex + " // " + list.get(index));
                 optionsIndex++;
             }
 
-            list.add(0, "Command // Function");
-            printColumns(list, true, false, true, true , false);
+            list.add(0, "ID // Function Call");
+
+            if (i == 0) {
+                printColumns(list, true, false, true, true, true);
+            } else {
+                printColumns(list, true, false, true, true, false);
+            }
         }
 
-        printColumns(new String[] {"Command // Functions", "-1 // Exit Program"}, true, false, true, false, false);
+        printColumns(new String[] {"ID // Function Call", "-1 // Switch staff account", "-2 // Exit program"}, true, false, true, false, false);
         printFooter();
+        MAX_LENGTH = 80;
     }
 
     public void printInstructions(String[] body) {
@@ -40,9 +51,9 @@ public class ConsoleHelper {
         System.out.println();
     }
 
-    public void printDisplayTable(String title, List<String> body) {
+    public void printDisplayTable(String title, List<String> body, boolean horizontalDivider, boolean verticalDivider) {
         printTitle(title, true);
-        printColumns(body, true, true, true, false, true);
+        printColumns(body, verticalDivider, horizontalDivider, true, false, true);
         printDivider('=');
     }
 
@@ -73,11 +84,11 @@ public class ConsoleHelper {
         printFooter();
     }
 
-    public int printChoices(String header, String[] options, String[] footerOptions) {
-        return printChoices(header, Arrays.asList(options), footerOptions);
+    public int printChoices(String message, String header, String[] options, String[] footerOptions) {
+        return printChoices(message, header, Arrays.asList(options), footerOptions);
     }
 
-    public int printChoices(String header, List<String> options, String[] footerOptions) {
+    public int printChoices(String message, String header, List<String> options, String[] footerOptions) {
         System.out.println();
         printDivider('=');
         List<String> list = new ArrayList<>(Collections.singletonList(header));
@@ -99,10 +110,20 @@ public class ConsoleHelper {
         printColumns(list, true, false, true, false, false);
         printFooter();
 
-        return getInt("Enter choice", options.size(), (0 - footerOptions.length));
+        return getInt(message, options.size(), (0 - footerOptions.length));
     }
 
-    private void printTitle(String title, boolean center) {
+    public void clearCmd() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException ignored) {};
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.MAX_LENGTH = maxLength;
+    }
+
+    public void printTitle(String title, boolean center) {
         int pad = ((MAX_LENGTH) - title.length());
         System.out.println();
         printDivider('=');
@@ -120,16 +141,16 @@ public class ConsoleHelper {
         printDivider('=');
     }
 
-    private void printFooter() {
+    public void printFooter() {
         printDivider('=');
         System.out.println();
     }
 
-    private void printColumns(String[] stringList, boolean vDivider, boolean hDivider, boolean headerDivider, boolean bottomDivider, boolean displayFirstRow) {
+    public void printColumns(String[] stringList, boolean vDivider, boolean hDivider, boolean headerDivider, boolean bottomDivider, boolean displayFirstRow) {
         printColumns(Arrays.asList(stringList), vDivider, hDivider, headerDivider, bottomDivider, displayFirstRow);
     }
 
-    private void printColumns(List<String> stringList, boolean vDivider, boolean hDivider, boolean headerDivider, boolean bottomDivider, boolean displayFirstRow) {
+    public void printColumns(List<String> stringList, boolean vDivider, boolean hDivider, boolean headerDivider, boolean bottomDivider, boolean displayFirstRow) {
         if (stringList == null) {
             return;
         }
@@ -297,12 +318,12 @@ public class ConsoleHelper {
             }
 
             if ((headerDivider && entry == 0 && entry != stringList.size() - 1) || (hDivider && entry != stringList.size() - 1)) {
-                printColumnDivider(cellLengths);
+                printColumnDivider(cellLengths, vDivider);
             }
         }
 
         if (bottomDivider) {
-            printColumnDivider(cellLengths);
+            printColumnDivider(cellLengths, vDivider);
         }
     }
 
@@ -332,11 +353,11 @@ public class ConsoleHelper {
         }
     }
 
-    private void printDivider(char c) {
+    public void printDivider(char c) {
         System.out.println("|" + (c + "").repeat(MAX_LENGTH + 4) + "|");
     }
 
-    private void printColumnDivider(List<Integer> columnLengths) {
+    private void printColumnDivider(List<Integer> columnLengths, boolean vDivider) {
         System.out.print("|");
 
         for (int column = 0; column < columnLengths.size(); column++) {
@@ -344,7 +365,7 @@ public class ConsoleHelper {
             System.out.print("-".repeat(length + 4));
 
             if (column != (columnLengths.size() - 1)) {
-                System.out.print("|");
+                System.out.print(vDivider? "|" : '-');
             }
         }
 
@@ -364,11 +385,11 @@ public class ConsoleHelper {
                 if (input >= lowerBound && input <= upperBound && input != 0) {
                     return input;
                 } else {
-                    System.out.println("ERROR: Invalid input. Please try again.");
+                    System.out.println("Invalid input. Please try again.");
                 }
             } catch (InputMismatchException e) {
                 scanner.nextLine();
-                System.out.println("ERROR: Invalid input. Please try again.");
+                System.out.println("Invalid input. Please try again.");
             }
         }
     }

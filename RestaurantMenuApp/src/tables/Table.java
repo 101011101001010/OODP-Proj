@@ -1,28 +1,29 @@
 package tables;
 
-import client.RestaurantAsset;
+import client.RestaurantData;
 import order.Order;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Table extends RestaurantAsset {
+public class Table extends RestaurantData {
     // private int tableID;
     private int capacity;
-    private int occupied;
+    private boolean occupied;
     private Order order;
     private List<Reservation> reservationList = new ArrayList<>();
 
     public Table(int tableId, int capacity) {
         super(tableId);
         this.capacity = capacity;
-        this.occupied = 0;
+        this.occupied = false;
         this.order = null;
         this.reservationList = new ArrayList<>();
     }
 
-    public Table(int tableId, int capacity, int occupied, Order order) {
+    public Table(int tableId, int capacity, boolean occupied, Order order) {
         super(tableId);
         this.capacity = capacity;
         this.occupied = occupied;
@@ -34,22 +35,19 @@ public class Table extends RestaurantAsset {
         return capacity;
     }
 
-    public int isOccupied() {
+    public boolean isOccupied() {
         return occupied;
     }
 
-    public boolean checkOccupied() {
-        if (occupied != 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public Order attachOrder(int orderId, int staffId) {
-        occupied = 1;
+    public Order attachOrder(String orderId, int staffId) {
+        occupied = true;
         order = new Order(getId(), orderId, staffId);
         return order;
+    }
+
+    public void attachOrder(Order order) {
+        occupied = true;
+        this.order = order;
     }
 
     public Order getOrder() {
@@ -61,7 +59,7 @@ public class Table extends RestaurantAsset {
     }
 
     public void clear() {
-        occupied = 0;
+        occupied = false;
         order = null;
     }
 
@@ -89,20 +87,6 @@ public class Table extends RestaurantAsset {
         return false;
     }
 
-    public String toString() {
-        String check = "not occupied.";
-
-        if (isOccupied() == -1) {
-            check = "reserved.";
-        }
-
-        if (isOccupied() == 1) {
-            check = "occupied.";
-        }
-
-        return "Table " + getId() + " is " + check;
-    }
-
     @Override
     public String toPrintString() {
         return getId() + " // " + capacity + " // " + occupied;
@@ -110,7 +94,7 @@ public class Table extends RestaurantAsset {
 
     @Override
     public String toTableString() {
-        return null;
+        return getId() + " // " + capacity + " // " + occupied;
     }
 
 
@@ -148,14 +132,13 @@ public class Table extends RestaurantAsset {
         }
 
         public String toStringTwo() {
-            //DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
-            //LocalDateTime date = LocalDateTime.parse(getDate(),format);
-            return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime() +
-                    ", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
+            return "Reservation date :" + date.format(format) + ", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
         }
 
         public String toPrintString() {
-            return getId() + " // " + contact + " // " + name + " // " + date + " // " + pax;
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
+            return getId() + " // " + contact + " // " + name + " // " + date.format(format) + " // " + pax;
         }
     }
 }

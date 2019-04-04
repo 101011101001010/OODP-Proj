@@ -2,19 +2,17 @@ package staff;
 
 import client.BaseManager;
 import client.Restaurant;
-import client.RestaurantAsset;
-import enums.AssetType;
-import enums.FileName;
+import client.RestaurantData;
+import enums.DataType;
 import tools.FileIO;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class StaffManager extends BaseManager {
-    private final AssetType assetType = AssetType.STAFF;
-    private final FileName fileName = FileName.STAFF;
 
     public StaffManager(Restaurant restaurant) {
         super(restaurant);
@@ -22,17 +20,19 @@ public class StaffManager extends BaseManager {
 
     @Override
     public void init() throws ManagerInitFailedException {
+        try {
+            getRestaurant().registerClass(Staff.class, DataType.STAFF);
+        } catch (Restaurant.ClassNotRegisteredException e) {
+            throw (new ManagerInitFailedException(this, "Class registration failed: " + e.getMessage()));
+        }
+
         FileIO f = new FileIO();
         List<String> fileData;
 
         try {
-            fileData = f.read(fileName);
+            fileData = f.read(DataType.STAFF);
         } catch (IOException e) {
             throw (new ManagerInitFailedException(this, "Unable to load staff from file: " + e.getMessage()));
-        }
-
-        if (!getRestaurant().mapClassToAssetType(Staff.class, AssetType.STAFF)) {
-            throw (new ManagerInitFailedException(this, "Failed to register class and asset to restaurant."));
         }
 
         String splitStr = " // ";
@@ -43,22 +43,22 @@ public class StaffManager extends BaseManager {
                 continue;
             }
 
-            int id = Integer.parseInt(datas[0]);
-
+            int id;
             try {
-                getRestaurant().addFromFile(new Staff(id, datas[1], datas[2], datas[3]));
-            } catch (Restaurant.AssetNotRegisteredException | IOException e) {
-                throw (new ManagerInitFailedException(this, e.getMessage()));
+                id = Integer.parseInt(datas[0]);
+            } catch (InputMismatchException e) {
+                throw (new ManagerInitFailedException(this, "Invalid file data: " + e.getMessage()));
             }
 
-            if (id > getRestaurant().getCounter(assetType)) {
-                getRestaurant().setCounter(assetType, id);
+            getRestaurant().load(new Staff(id, datas[1], datas[2], datas[3]));
+            if (id > getRestaurant().getCounter(DataType.STAFF)) {
+                getRestaurant().setCounter(DataType.STAFF, id);
             }
         }
     }
 
-    private List<String> getDisplay(int sortOption) throws Restaurant.AssetNotRegisteredException {
-        List<? extends RestaurantAsset> masterList = new ArrayList<>(getRestaurant().getAsset(assetType));
+    public List<String> getDisplay(int sortOption) {
+        List<? extends RestaurantData> masterList = new ArrayList<>(getRestaurant().getData(DataType.STAFF));
         List<String> ret = new ArrayList<>();
         if (masterList.size() == 0) {
             ret.add("There is no staff on the roster.");
@@ -76,40 +76,29 @@ public class StaffManager extends BaseManager {
         });
 
         ret.add("ID // Name // Title // Gender");
-        for (RestaurantAsset o : masterList) {
+        for (RestaurantData o : masterList) {
             ret.add(o.toTableString());
         }
 
         return ret;
     }
 
-    private List<String> getStaffNames() throws Restaurant.AssetNotRegisteredException {
+    public List<String> getStaffNames() {
         List<String> nameList = new ArrayList<>();
 
-        for (RestaurantAsset o : getRestaurant().getAsset(assetType)) {
+        for (RestaurantData o : getRestaurant().getData(DataType.STAFF)) {
             nameList.add(((Staff) o).getName());
         }
 
         return nameList;
     }
 
-
-    public boolean isValidStaff(int staffId) throws Restaurant.AssetNotRegisteredException {
-        for (RestaurantAsset o : getRestaurant().getAsset(assetType)) {
-            if (o.getId() == staffId) {
-                return true;
-            }
-        }
-
-        return false;
+    private void addNewStaff(String name, String title, String gender) throws IOException {
+        getRestaurant().save(new Staff(getRestaurant().incrementAndGetCounter(DataType.STAFF), name, title, gender));
     }
 
-    private void addNewStaff(String name, String title, String gender) throws IOException, Restaurant.AssetNotRegisteredException {
-        getRestaurant().addNew(new Staff(getRestaurant().incrementAndGetCounter(assetType), name, title, gender));
-    }
-
-    private void updateStaffInfo(int index, String name, String title, String gender) throws Restaurant.AssetNotRegisteredException, IOException, Restaurant.FileIDMismatchException {
-        Staff staff = (Staff) getRestaurant().getAsset(assetType).get(index);
+    private void updateStaffInfo(int index, String name, String title, String gender) throws IOException, Restaurant.FileIDMismatchException {
+        Staff staff = (Staff) getRestaurant().getData(DataType.STAFF).get(index);
         name = (name.isBlank()? staff.getName() : name);
         title = (title.isBlank()? staff.getTitle() : title);
         gender = (gender.isBlank()? staff.getGender() : gender);
@@ -117,8 +106,13 @@ public class StaffManager extends BaseManager {
         staff.update(name, title, gender);
     }
 
-    private void removeStaff(int index) throws Restaurant.AssetNotRegisteredException, IOException, Restaurant.FileIDMismatchException {
-        getRestaurant().remove(getRestaurant().getAsset(assetType).get(index));
+    private boolean removeStaff(int index) throws IOException, Restaurant.FileIDMismatchException {
+        if (getRestaurant().getDataFromIndex(DataType.STAFF, index).getId() != getRestaurant().getSessionStaffId()) {
+            getRestaurant().remove(getRestaurant().getData(DataType.STAFF).get(index));
+            return true;
+        }
+
+       return false;
     }
 
     @Override
@@ -144,14 +138,9 @@ public class StaffManager extends BaseManager {
         List<String> displayList;
 
         do {
-            try {
-                displayList = getDisplay(choice);
-            } catch (Restaurant.AssetNotRegisteredException e) {
-                System.out.println(e.getMessage());
-                return;
-            }
-            getCs().printDisplayTable("Staff Roster", displayList);
-        } while ((choice = getCs().printChoices("Command // Corresponding Function", Arrays.asList("Sort by ID", "Sort by name", "Sort by title", "Sort by gender"), new String[] {"Go back"})) != -1);
+            displayList = getDisplay(choice);
+            getCs().printDisplayTable("Staff Roster", displayList, true, true);
+        } while ((choice = getCs().printChoices("Select a sort option", "Command // Corresponding Function", Arrays.asList("Sort by ID", "Sort by name", "Sort by title", "Sort by gender"), new String[] {"Go back"})) != -1);
     }
 
     private void addStaff() {
@@ -172,26 +161,19 @@ public class StaffManager extends BaseManager {
         try {
             addNewStaff(name, title, gender);
             System.out.println("Staff has been added successfully.");
-        } catch (Restaurant.AssetNotRegisteredException | IOException e) {
-            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Failed to add staff: " + e.getMessage());
         }
     }
 
     private void manageStaff() {
-        List<String> nameList;
-        try {
-            nameList = getStaffNames();
-        } catch (Restaurant.AssetNotRegisteredException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        int staffIndex = getCs().printChoices("Index // Staff Name", nameList, new String[]{"Go back"}) - 1;
+        List<String> nameList = getStaffNames();
+        int staffIndex = getCs().printChoices("Select a staff to manage", "Index // Staff Name", nameList, new String[]{"Go back"}) - 1;
         if (staffIndex == -2) {
             return;
         }
 
-        int action = getCs().printChoices("Index // Action", new String[] {"Change name.", "Change title.", "Change gender.", "Remove STAFF from roster."}, new String[]{"Go back"});
+        int action = getCs().printChoices("Select an action", "Index // Action", new String[] {"Change name.", "Change title.", "Change gender.", "Remove STAFF from roster."}, new String[]{"Go back"});
         if (action == -1) {
             return;
         }
@@ -200,9 +182,13 @@ public class StaffManager extends BaseManager {
             getCs().printInstructions(new String[]{"Warning: This action cannot be undone.", "Y = Yes", "Any other input = NO"});
             if (getCs().getString("Confirm remove?").equalsIgnoreCase("Y")) {
                 try {
-                    removeStaff(staffIndex);
-                } catch (Restaurant.AssetNotRegisteredException | IOException | Restaurant.FileIDMismatchException e) {
-                    System.out.println(e.getMessage());
+                    if (removeStaff(staffIndex)) {
+                        System.out.println("Staff has been removed successfully.");
+                    } else {
+                        System.out.println("The staff account is currently logged in.");
+                    }
+                } catch (IOException | Restaurant.FileIDMismatchException e) {
+                    System.out.println("Failed to remove staff: " + e.getMessage());
                 }
             } else {
                 System.out.println("Remove operation aborted.");
@@ -218,8 +204,8 @@ public class StaffManager extends BaseManager {
 
             try {
                 updateStaffInfo(staffIndex, (action == 1) ? input : "", (action == 2) ? input : "", (action == 3) ? input : "");
-            } catch (Restaurant.AssetNotRegisteredException | IOException | Restaurant.FileIDMismatchException e) {
-                System.out.println(e.getMessage());
+            } catch (IOException | Restaurant.FileIDMismatchException e) {
+                System.out.println("Failed to update staff: " + e.getMessage());
             }
         }
     }

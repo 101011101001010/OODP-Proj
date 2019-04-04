@@ -1,9 +1,9 @@
 package client;
 
-public abstract class RestaurantAsset {
+public abstract class RestaurantData {
     private int id;
 
-    public RestaurantAsset(int id) {
+    public RestaurantData(int id) {
         this.id = id;
     }
 

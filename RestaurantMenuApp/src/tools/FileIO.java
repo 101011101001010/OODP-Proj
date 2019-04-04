@@ -1,7 +1,6 @@
 package tools;
 
-import enums.AssetType;
-import enums.FileName;
+import enums.DataType;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,8 +20,8 @@ public class FileIO {
             Files.createDirectories(path);
         }
 
-        for (FileName fileName : FileName.values()) {
-            path = Paths.get(FILE_DIR + fileName.name().toLowerCase() + FILE_EXT);
+        for (DataType dataType : DataType.values()) {
+            path = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
 
             if (!Files.exists(path)) {
                 Files.createFile(path);
@@ -30,25 +29,25 @@ public class FileIO {
         }
     }
 
-    public List<String> read(FileName fileName) throws IOException {
-        return Files.readAllLines(Paths.get(FILE_DIR + fileName.name().toLowerCase() + FILE_EXT));
+    public List<String> read(DataType dataType) throws IOException {
+        return Files.readAllLines(Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT));
     }
 
-    public void writeLine(FileName fileName, String data) throws IOException {
-        Path filePath = Paths.get(FILE_DIR + fileName.name().toLowerCase() + FILE_EXT);
+    public void writeLine(DataType dataType, String data) throws IOException {
+        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
         data += "\n";
         Files.write(filePath, data.getBytes(), StandardOpenOption.APPEND);
     }
 
-    public void updateLine(FileName fileName, int line, String data) throws IOException {
-        Path filePath = Paths.get(FILE_DIR + fileName.name().toLowerCase() + FILE_EXT);
+    public void updateLine(DataType dataType, int line, String data) throws IOException {
+        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
         List<String> fileData = Files.readAllLines(filePath);
         fileData.set(line, data);
         Files.write(filePath, fileData);
     }
 
-    public void removeLine(FileName fileName, int line) throws IOException {
-        Path filePath = Paths.get(FILE_DIR + fileName.name().toLowerCase() + FILE_EXT);
+    public void removeLine(DataType dataType, int line) throws IOException {
+        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
         List<String> fileData = Files.readAllLines(filePath);
         fileData.remove(line);
         Files.write(filePath, fileData);

@@ -1,12 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="test" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d468f3d0-5a99-4b92-950c-3da6594ba4da" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tables/Table.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Classes/TableManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tables/TableManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/alacarte.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/alacarte.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/promo_package.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/promo_package.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/revenue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/revenue.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/staff.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/staff.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataStorage/table.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataStorage/table.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/.idea/Classes.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/RevenueReader$RevenueObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/RevenueReader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/Table$Reservation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/Table.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Classes/TableManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/META-INF/OODP-Proj_RestaurantMenuApp.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/client/BaseManager$ManagerInitFailedException.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/BaseManager$ManagerInitFailedException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/client/BaseManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/BaseManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/client/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/client/Restaurant$AssetNotRegisteredException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/client/Restaurant$FileIDMismatchException.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/Restaurant$FileIDMismatchException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/client/Restaurant.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/client/Restaurant.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/client/RestaurantAsset.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/enums/AssetType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/enums/FileName.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/menu/MenuItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/menu/MenuItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/menu/MenuManager$InvalidAssetTypeException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/menu/MenuManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/menu/MenuManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/order/Order.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/order/Order.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/order/OrderItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/order/OrderItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/order/OrderManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/order/OrderManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/staff/Staff.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/staff/Staff.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/staff/StaffManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/staff/StaffManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/tools/ConsoleHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/tools/ConsoleHelper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/tools/FileIO.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/tools/FileIO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/BaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/BaseManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Restaurant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/RestaurantAsset.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/RestaurantData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/enums/AssetType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/enums/FileName.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/enums/DataType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/menu/MenuManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menu/MenuManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/order/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/order/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/OrderItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/order/OrderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/order/OrderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/staff/Staff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/staff/Staff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/staff/StaffManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/staff/StaffManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tables/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tables/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tables/TableManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tables/TableManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/ConsoleHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/ConsoleHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tools/FileIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/FileIO.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,17 +71,14 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DataStorage/reservation.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/tables/TableManager.java">
+        <entry file="file://$PROJECT_DIR$/src/menu/MenuManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+            <state relative-caret-position="462">
+              <caret line="264" column="26" selection-start-line="264" selection-start-column="26" selection-end-line="264" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#338#339#0" expanded="true" />
+                <element signature="e#362#363#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -37,77 +87,77 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Classes/RevenueReader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
+            <state relative-caret-position="22">
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1787#1802#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="22">
               <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1788#1803#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/tables/Table.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1341#1342#0" expanded="true" />
-                <element signature="e#1379#1380#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="16" selection-start-column="16" selection-end-column="16" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1496#1497#0" expanded="true" />
-                <element signature="e#1563#1564#0" expanded="true" />
-                <element signature="e#9321#9322#0" expanded="true" />
-                <element signature="e#9359#9360#0" expanded="true" />
+                <element signature="e#710#711#0" expanded="true" />
+                <element signature="e#730#731#0" expanded="true" />
+                <element signature="e#757#758#0" expanded="true" />
+                <element signature="e#777#778#0" expanded="true" />
+                <element signature="e#804#805#0" expanded="true" />
+                <element signature="e#827#828#0" expanded="true" />
+                <element signature="e#850#851#0" expanded="true" />
+                <element signature="e#869#870#0" expanded="true" />
+                <element signature="e#1380#1381#0" expanded="true" />
+                <element signature="e#1401#1402#0" expanded="true" />
+                <element signature="e#1428#1429#0" expanded="true" />
+                <element signature="e#1449#1450#0" expanded="true" />
+                <element signature="e#1491#1492#0" expanded="true" />
+                <element signature="e#1522#1523#0" expanded="true" />
+                <element signature="e#1550#1551#0" expanded="true" />
+                <element signature="e#1572#1573#0" expanded="true" />
+                <element signature="e#1611#1612#0" expanded="true" />
+                <element signature="e#1640#1641#0" expanded="true" />
+                <element signature="e#1671#1672#0" expanded="true" />
+                <element signature="e#1692#1693#0" expanded="true" />
+                <element signature="e#1747#1748#0" expanded="true" />
+                <element signature="e#1776#1777#0" expanded="true" />
+                <element signature="e#2557#2558#0" expanded="true" />
+                <element signature="e#2575#2576#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
+        <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1062">
-              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+            <state relative-caret-position="22">
+              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#788#789#0" expanded="true" />
-                <element signature="e#823#824#0" expanded="true" />
-                <element signature="e#856#857#0" expanded="true" />
-                <element signature="e#891#892#0" expanded="true" />
-                <element signature="e#924#925#0" expanded="true" />
-                <element signature="e#962#963#0" expanded="true" />
-                <element signature="e#991#992#0" expanded="true" />
-                <element signature="e#1025#1026#0" expanded="true" />
-                <element signature="e#1635#1636#0" expanded="true" />
-                <element signature="e#1665#1666#0" expanded="true" />
-                <element signature="e#1695#1696#0" expanded="true" />
-                <element signature="e#1725#1726#0" expanded="true" />
-                <element signature="e#1770#1771#0" expanded="true" />
-                <element signature="e#1810#1811#0" expanded="true" />
-                <element signature="e#1841#1842#0" expanded="true" />
-                <element signature="e#1872#1873#0" expanded="true" />
-                <element signature="e#1914#1915#0" expanded="true" />
-                <element signature="e#1952#1953#0" expanded="true" />
-                <element signature="e#1986#1987#0" expanded="true" />
-                <element signature="e#2016#2017#0" expanded="true" />
-                <element signature="e#2074#2075#0" expanded="true" />
-                <element signature="e#2112#2113#0" expanded="true" />
-                <element signature="e#3078#3079#0" expanded="true" />
-                <element signature="e#3105#3106#0" expanded="true" />
+                <element signature="e#1496#1497#0" expanded="true" />
+                <element signature="e#1563#1564#0" expanded="true" />
+                <element signature="e#9241#9242#0" expanded="true" />
+                <element signature="e#9279#9280#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/tools/ConsoleHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="550">
+              <caret line="42" column="23" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#13353#13354#0" expanded="true" />
+                <element signature="e#13432#13433#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -133,16 +183,24 @@
       <find>checkOcc</find>
       <find>start</find>
       <find>runnables</find>
-      <find>getDisplay</find>
       <find>.name()</find>
       <find>getDi</find>
       <find>toPrint</find>
       <find>getInt</find>
+      <find>getDisplay</find>
+      <find>assetType</find>
+      <find>AssetType</find>
+      <find>getDis</find>
+      <find>sort op</find>
+      <find>printChoice</find>
+      <find>hDivider</find>
     </findStrings>
     <replaceStrings>
       <replace>AlaCarteItem</replace>
       <replace>MenuItem</replace>
       <replace>Main</replace>
+      <replace>dataType</replace>
+      <replace>DataType</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -151,13 +209,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/base/enums/AssetType.java" />
-        <option value="$PROJECT_DIR$/src/base/Restaurant.java" />
         <option value="$PROJECT_DIR$/src/base/RestaurantAsset.java" />
         <option value="$PROJECT_DIR$/src/base/enums/Op.java" />
         <option value="$PROJECT_DIR$/src/tools/Pair.java" />
         <option value="$PROJECT_DIR$/src/tools/FileIOHandler.java" />
-        <option value="$PROJECT_DIR$/src/tools/ConsoleHelper.java" />
         <option value="$PROJECT_DIR$/src/base/BaseManager.java" />
         <option value="$PROJECT_DIR$/src/base/MainV2.java" />
         <option value="$PROJECT_DIR$/src/Classes/MenuItem.java" />
@@ -172,39 +227,45 @@
         <option value="$PROJECT_DIR$/src/Classes/OrderManager.java" />
         <option value="$PROJECT_DIR$/src/Classes/Staff.java" />
         <option value="$PROJECT_DIR$/src/Classes/StaffManager.java" />
-        <option value="$PROJECT_DIR$/DataStorage/staff.txt" />
         <option value="$PROJECT_DIR$/src/Classes/ReservationManager.java" />
         <option value="$PROJECT_DIR$/src/Classes/MenuManager.java" />
         <option value="$PROJECT_DIR$/src/client/RestaurantAsset.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/staff/Staff.java" />
         <option value="$PROJECT_DIR$/src/menu/AlaCarteItem.java" />
-        <option value="$PROJECT_DIR$/src/client/BaseManager.java" />
-        <option value="$PROJECT_DIR$/src/enums/FileName.java" />
         <option value="$PROJECT_DIR$/src/enums/AssetType.java" />
-        <option value="$PROJECT_DIR$/src/staff/StaffManager.java" />
-        <option value="$PROJECT_DIR$/src/client/Restaurant.java" />
-        <option value="$PROJECT_DIR$/src/client/Main.java" />
         <option value="$PROJECT_DIR$/src/tools/FileIO.java" />
         <option value="$PROJECT_DIR$/src/menu/PromotionPackage.java" />
         <option value="$PROJECT_DIR$/src/menu/MenuItem.java" />
-        <option value="$PROJECT_DIR$/src/menu/MenuManager.java" />
-        <option value="$PROJECT_DIR$/DataStorage/order.txt" />
-        <option value="$PROJECT_DIR$/src/order/OrderManager.java" />
-        <option value="$PROJECT_DIR$/src/order/Order.java" />
-        <option value="$PROJECT_DIR$/DataStorage/revenue.txt" />
-        <option value="$PROJECT_DIR$/src/Classes/RevenueReader.java" />
-        <option value="$PROJECT_DIR$/src/tables/TableManager.java" />
-        <option value="$PROJECT_DIR$/src/Classes/Table.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/Classes/TableManager.java" />
+        <option value="$PROJECT_DIR$/src/enums/FileName.java" />
+        <option value="$PROJECT_DIR$/src/enums/DataType.java" />
+        <option value="$PROJECT_DIR$/DataStorage/promo_package.txt" />
+        <option value="$PROJECT_DIR$/src/tables/Table.java" />
+        <option value="$PROJECT_DIR$/DataStorage/order.txt" />
+        <option value="$PROJECT_DIR$/DataStorage/staff.txt" />
+        <option value="$PROJECT_DIR$/DataStorage/revenue.txt" />
+        <option value="$PROJECT_DIR$/DataStorage/table.txt" />
+        <option value="$PROJECT_DIR$/src/order/OrderItem.java" />
+        <option value="$PROJECT_DIR$/src/order/Order.java" />
+        <option value="$PROJECT_DIR$/src/client/Restaurant.java" />
+        <option value="$PROJECT_DIR$/src/client/BaseManager.java" />
+        <option value="$PROJECT_DIR$/src/client/Main.java" />
+        <option value="$PROJECT_DIR$/src/staff/StaffManager.java" />
+        <option value="$PROJECT_DIR$/src/order/OrderManager.java" />
+        <option value="$PROJECT_DIR$/src/tables/TableManager.java" />
+        <option value="$PROJECT_DIR$/src/tools/ConsoleHelper.java" />
+        <option value="$PROJECT_DIR$/src/menu/MenuManager.java" />
         <option value="$PROJECT_DIR$/src/Classes/RevenueReader.java" />
+        <option value="$PROJECT_DIR$/src/Classes/RevenueReader.java" />
+        <option value="$PROJECT_DIR$/src/Classes/Table.java" />
+        <option value="$PROJECT_DIR$/src/Classes/TableManager.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-7" />
-    <option name="width" value="1208" />
+    <option name="width" value="974" />
     <option name="height" value="1057" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -215,7 +276,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -290,13 +351,17 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554341438426" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554391914614" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -341,7 +406,7 @@
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20948827" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21375267" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -349,13 +414,13 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.22096318" />
-      <window_info anchor="bottom" x="0" y="23" width="1920" height="1027" id="Run" maximized="true" order="2" type="WINDOWED" visible="true" weight="0.3290461" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.22079314" />
+      <window_info anchor="bottom" x="2" y="32" width="1916" height="1016" id="Run" maximized="true" order="2" type="WINDOWED" weight="0.3290461" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39978564" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3290461" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.33226153" />
@@ -386,13 +451,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Classes/Reservation.java" />
     <entry file="file://$PROJECT_DIR$/src/Classes/ReservationManager.java" />
-    <entry file="file://$PROJECT_DIR$/DataStorage/staff.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/lang/Runnable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="249">
@@ -412,51 +470,130 @@
     <entry file="file://$PROJECT_DIR$/DataStorage/case_menu_items.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/BaseManager.java">
+    <entry file="file://$PROJECT_DIR$/DataStorage/revenue_report.txt" />
+    <entry file="file://$PROJECT_DIR$/DataStorage/reservations.txt" />
+    <entry file="file://$PROJECT_DIR$/DataStorage/alacarte.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="23" column="52" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+        <state relative-caret-position="216">
+          <caret line="12" column="65" lean-forward="true" selection-start-line="12" selection-start-column="65" selection-end-line="12" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Classes/OrderManager.java" />
+    <entry file="file://$PROJECT_DIR$/src/enums/AssetType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/RestaurantData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding>
+            <element signature="e#111#112#0" expanded="true" />
+            <element signature="e#139#140#0" expanded="true" />
+            <element signature="e#165#166#0" expanded="true" />
+            <element signature="e#190#191#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/menu/MenuItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="38" column="35" selection-start-line="38" selection-start-column="35" selection-end-line="38" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#880#881#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/menu/PromotionPackage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="23" column="53" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/staff/Staff.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="36" column="89" lean-forward="true" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/promo_package.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="57" selection-start-column="57" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/reservation.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/menu/AlaCarteItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tables/Table.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2">
+          <caret line="41" column="35" selection-start-line="41" selection-start-column="35" selection-end-line="41" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2254#2255#0" expanded="true" />
+            <element signature="e#2324#2325#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/revenue.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/order.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DataStorage/staff.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DataStorage/table.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/staff/Staff.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="89" lean-forward="true" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="89" />
-          <folding>
-            <element signature="e#723#724#0" expanded="true" />
-            <element signature="e#819#820#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="550">
+          <caret line="25" column="18" selection-start-line="25" selection-start-column="18" selection-end-line="25" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/staff/StaffManager.java">
+    <entry file="file://$PROJECT_DIR$/src/order/Order.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1386">
-          <caret line="49" column="78" selection-start-line="49" selection-start-column="78" selection-end-line="50" selection-end-column="77" />
+        <state relative-caret-position="376">
+          <caret line="101" column="34" selection-start-line="101" selection-start-column="34" selection-end-line="101" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#878#879#0" expanded="true" />
+            <element signature="e#908#909#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/revenue_report.txt">
+    <entry file="file://$PROJECT_DIR$/src/order/OrderItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/reservations.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="35" column="36" selection-start-line="35" selection-start-column="36" selection-end-line="35" selection-end-column="36" />
+        <state relative-caret-position="506">
+          <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -465,230 +602,189 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/tools/FileIO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+        <state relative-caret-position="266">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/RestaurantAsset.java">
+    <entry file="file://$PROJECT_DIR$/src/client/BaseManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-          <folding>
-            <element signature="e#113#114#0" expanded="true" />
-            <element signature="e#141#142#0" expanded="true" />
-            <element signature="e#167#168#0" expanded="true" />
-            <element signature="e#192#193#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/promo_package.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/menu/PromotionPackage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="23" column="53" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/menu/AlaCarteItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/menu/MenuItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="38" column="35" selection-start-line="38" selection-start-column="35" selection-end-line="38" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#715#716#0" expanded="true" />
-            <element signature="e#780#781#0" expanded="true" />
-            <element signature="e#882#883#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/menu/MenuManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="351" column="70" selection-start-line="351" selection-start-column="70" selection-end-line="351" selection-end-column="70" />
+        <state relative-caret-position="332">
+          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="33" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/enums/FileName.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/enums/AssetType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/Restaurant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="761">
-          <caret line="138" column="33" selection-start-line="138" selection-start-column="33" selection-end-line="138" selection-end-column="33" />
+        <state relative-caret-position="353">
+          <caret line="50" column="5" lean-forward="true" selection-start-line="50" selection-start-column="5" selection-end-line="50" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1403#1404#0" expanded="true" />
+            <element signature="e#1462#1463#0" expanded="true" />
+            <element signature="e#1522#1523#0" expanded="true" />
+            <element signature="e#1571#1572#0" expanded="true" />
+            <element signature="e#1796#1797#0" expanded="true" />
+            <element signature="e#1845#1846#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/enums/DataType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-306">
+          <caret line="54" column="86" selection-start-line="54" selection-start-column="86" selection-end-line="54" selection-end-column="86" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/util/Objects.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="371" selection-start-line="371" selection-end-line="371" />
+          <folding>
+            <element signature="e#13945#13946#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="457" selection-start-line="457" selection-end-line="457" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/staff/StaffManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="141" column="77" selection-start-line="141" selection-start-column="77" selection-end-line="141" selection-end-column="77" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#386#387#0" expanded="true" />
+            <element signature="e#419#420#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/order/OrderManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="169" column="75" selection-start-line="169" selection-start-column="75" selection-end-line="169" selection-end-column="75" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#518#519#0" expanded="true" />
+            <element signature="e#551#552#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tables/TableManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1990">
+          <caret line="320" column="71" selection-start-line="320" selection-start-column="67" selection-end-line="320" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#516#517#0" expanded="true" />
+            <element signature="e#549#550#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/tools/ConsoleHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="353" column="21" selection-start-line="353" selection-start-column="15" selection-end-line="353" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/order.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/order/OrderManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="115" column="69" selection-start-line="115" selection-start-column="69" selection-end-line="115" selection-end-column="69" />
+        <state relative-caret-position="550">
+          <caret line="42" column="23" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#13353#13354#0" expanded="true" />
+            <element signature="e#13432#13433#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/order/OrderItem.java">
+    <entry file="file://$PROJECT_DIR$/src/menu/MenuManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        <state relative-caret-position="462">
+          <caret line="264" column="26" selection-start-line="264" selection-start-column="26" selection-end-line="264" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#338#339#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/order/Order.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="97" column="145" selection-start-line="97" selection-start-column="145" selection-end-line="97" selection-end-column="145" />
-          <folding>
-            <element signature="e#743#744#0" expanded="true" />
-            <element signature="e#773#774#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/alacarte.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="65" lean-forward="true" selection-start-line="12" selection-start-column="65" selection-end-line="12" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/revenue.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="9" selection-start-column="9" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Classes/RevenueReader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        <state relative-caret-position="22">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1788#1803#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DataStorage/reservation.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tables/TableManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tables/Table.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1341#1342#0" expanded="true" />
-            <element signature="e#1379#1380#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Classes/OrderManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="16" selection-start-column="16" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1496#1497#0" expanded="true" />
-            <element signature="e#1563#1564#0" expanded="true" />
-            <element signature="e#9321#9322#0" expanded="true" />
-            <element signature="e#9359#9360#0" expanded="true" />
+            <element signature="e#1787#1802#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Classes/Table.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1062">
+        <state relative-caret-position="22">
           <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#788#789#0" expanded="true" />
-            <element signature="e#823#824#0" expanded="true" />
-            <element signature="e#856#857#0" expanded="true" />
-            <element signature="e#891#892#0" expanded="true" />
-            <element signature="e#924#925#0" expanded="true" />
-            <element signature="e#962#963#0" expanded="true" />
-            <element signature="e#991#992#0" expanded="true" />
-            <element signature="e#1025#1026#0" expanded="true" />
-            <element signature="e#1635#1636#0" expanded="true" />
-            <element signature="e#1665#1666#0" expanded="true" />
-            <element signature="e#1695#1696#0" expanded="true" />
-            <element signature="e#1725#1726#0" expanded="true" />
-            <element signature="e#1770#1771#0" expanded="true" />
-            <element signature="e#1810#1811#0" expanded="true" />
-            <element signature="e#1841#1842#0" expanded="true" />
-            <element signature="e#1872#1873#0" expanded="true" />
-            <element signature="e#1914#1915#0" expanded="true" />
-            <element signature="e#1952#1953#0" expanded="true" />
-            <element signature="e#1986#1987#0" expanded="true" />
-            <element signature="e#2016#2017#0" expanded="true" />
-            <element signature="e#2074#2075#0" expanded="true" />
-            <element signature="e#2112#2113#0" expanded="true" />
-            <element signature="e#3078#3079#0" expanded="true" />
-            <element signature="e#3105#3106#0" expanded="true" />
+            <element signature="e#710#711#0" expanded="true" />
+            <element signature="e#730#731#0" expanded="true" />
+            <element signature="e#757#758#0" expanded="true" />
+            <element signature="e#777#778#0" expanded="true" />
+            <element signature="e#804#805#0" expanded="true" />
+            <element signature="e#827#828#0" expanded="true" />
+            <element signature="e#850#851#0" expanded="true" />
+            <element signature="e#869#870#0" expanded="true" />
+            <element signature="e#1380#1381#0" expanded="true" />
+            <element signature="e#1401#1402#0" expanded="true" />
+            <element signature="e#1428#1429#0" expanded="true" />
+            <element signature="e#1449#1450#0" expanded="true" />
+            <element signature="e#1491#1492#0" expanded="true" />
+            <element signature="e#1522#1523#0" expanded="true" />
+            <element signature="e#1550#1551#0" expanded="true" />
+            <element signature="e#1572#1573#0" expanded="true" />
+            <element signature="e#1611#1612#0" expanded="true" />
+            <element signature="e#1640#1641#0" expanded="true" />
+            <element signature="e#1671#1672#0" expanded="true" />
+            <element signature="e#1692#1693#0" expanded="true" />
+            <element signature="e#1747#1748#0" expanded="true" />
+            <element signature="e#1776#1777#0" expanded="true" />
+            <element signature="e#2557#2558#0" expanded="true" />
+            <element signature="e#2575#2576#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Classes/TableManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1496#1497#0" expanded="true" />
+            <element signature="e#1563#1564#0" expanded="true" />
+            <element signature="e#9241#9242#0" expanded="true" />
+            <element signature="e#9279#9280#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -696,9 +792,82 @@
   </component>
   <component name="masterDetails">
     <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>test.jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>11</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>OODP-Proj_RestaurantMenuApp</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
       <state key="ProjectJDKs.UI">
         <settings>
           <last-edited>11</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>

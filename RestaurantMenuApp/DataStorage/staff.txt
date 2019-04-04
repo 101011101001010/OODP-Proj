@@ -1,7 +1,4 @@
-0 // Lee Hsien Loong // Prime Minister // M
-1 // Teo Chee Hean // Deputy Prime Minister // M
-2 // Tharman Shanmugaratnam // Deputy Prime Minister // M
-4 // Khaw Boon Wan // Coordinating Minister for Infrastructure // M
-5 // Ng Chee Meng // Minister // M
-6 // Indranee Rajah // Minister // F
-8 // Wang Huaxiong // Associate Professor // M
+0 // Owen Newton Fernando // Are you done? // M
+1 // Wang Huaxiong // AP // M
+2 // Admin // Admin // O
+3 // Nani // a // m
