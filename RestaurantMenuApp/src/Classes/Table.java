@@ -1,33 +1,33 @@
 package Classes;
 
-import client.Restaurant;
-import client.RestaurantAsset;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
-
-public class Table extends RestaurantAsset {
+public class Table {
 	private int tableID;
 	private int pax;
 	private int occupied;
 	private int orderID;
 	private ArrayList<Reservations> reservationList = new ArrayList<>();
 
-	static class Reservations{
+	static class Reservations implements Comparable<Table.Reservations>{
 		private int contact;
 		private String name;
 		private LocalDateTime date;
 		private int pax;
+		private String session;
 
-
-		public Reservations (int contact,String name, LocalDateTime date, int pax){
+		public Reservations (int contact, String name, LocalDateTime date, int pax, String session){
 			this.contact = contact;
 			this.name = name;
 			this.date = date;
 			this.pax = pax;
+			this.session = session;
 		}
 		public LocalDateTime getDate(){
 			return date;
@@ -41,17 +41,21 @@ public class Table extends RestaurantAsset {
 		public int getPax(){
 			return pax;
 		}
+		public String getSession() {
+			return session;
+		}
+
 		public String toStringTwo(){
-			//DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
-			//LocalDateTime date = LocalDateTime.parse(getDate(),format);
-			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime() +
+			DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
+			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime().format(tf) +
 					", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
 		}
+		public int compareTo(Reservations anotherReservation){
+			return getDate().compareTo(anotherReservation.getDate());
+		}
 	}
-
 	public Table(int tableID)
 	{
-		super(tableID);
 		this.occupied = 0;
 		this.orderID = -1;
 		this.pax = 0;
@@ -89,20 +93,30 @@ public class Table extends RestaurantAsset {
 		int index=1;
 		System.out.println("For Table " + getTableID());
 		for (Reservations r : reservationList){
-				System.out.println(index++ + ". " + r.toStringTwo());
+			System.out.println(index++ + ". " + r.toStringTwo());
 		}
 
 	}
 	public boolean findReservation(int contact){
-
+		boolean check = false;
 		for (Reservations r : reservationList){
 			if(r.getContact() == contact){
 				System.out.println("Reservation Found At Table " + tableID);
 				System.out.println(r.toStringTwo());
-				return true;
+				check = true;
 			}
 		}
-		return false;
+		return check;
+	}
+	public void checkNoShow(){
+		if (reservationList.size()!=0) {
+			for (int i = 0; i<reservationList.size(); i++) {
+				if (reservationList.get(i).getDate().plusSeconds(30).isBefore(LocalDateTime.now())){
+					System.out.println(reservationList.get(i).toStringTwo());
+					getReservationList().remove(i);
+				}
+			}
+		}
 	}
 
 	public String toString(){
@@ -116,14 +130,16 @@ public class Table extends RestaurantAsset {
 		return "Table " + getTableID() + " is " + check;
 	}
 
-	@Override
-	public String toDisplayString() {
-		return null;
-	}
-
 
 	public void isReserved(int contact,String name, LocalDateTime date, int pax){
-		reservationList.add(new Reservations(contact, name, date, pax));
+		String session = "03:00pm";
+		DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
+		if (date.toLocalTime().isBefore(LocalTime.parse(session, tf)))
+			session = "am";
+		else
+			session = "pm";
+
+		reservationList.add(new Reservations(contact, name, date, pax, session));
 	}
 
 }
