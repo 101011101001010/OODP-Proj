@@ -17,7 +17,7 @@ public class Table extends RestaurantAsset {
 	private int orderID;
 	private ArrayList<Reservations> reservationList = new ArrayList<>();
 
-	static class Reservations{
+	static class Reservations implements Comparable<Table.Reservations>{
 		private int contact;
 		private String name;
 		private LocalDateTime date;
@@ -51,6 +51,9 @@ public class Table extends RestaurantAsset {
 			DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
 			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime().format(tf) +
 					", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
+		}
+		public int compareTo(Reservations anotherReservation){
+			return getDate().compareTo(anotherReservation.getDate());
 		}
 	}
 

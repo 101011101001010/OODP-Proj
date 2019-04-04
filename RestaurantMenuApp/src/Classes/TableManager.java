@@ -158,6 +158,7 @@ public class TableManager extends BaseManager {
             System.out.println("Enter Your Contact.");
             contact = s.nextInt();
             tableList.get(index).getReservationList().add(new Table.Reservations(contact, name, combineDate, pax, session));
+            Collections.sort(tableList.get(index).getReservationList());
         }
         else
             System.out.println("Sorry, Booking Full.");
@@ -223,7 +224,7 @@ public class TableManager extends BaseManager {
         return -1;
     }
 
-    public void searchReservation (Scanner s){
+    public void findReservation (Scanner s){
         int contact;
         boolean check =false;
 
@@ -308,14 +309,22 @@ public class TableManager extends BaseManager {
     @Override
     public String[] getMainCLIOptions() {
         return new String[] {
-                "Show Table",
-                "Set Table",
-                "Set reservation"
+                "Show Table Vacancy",
+                "Add Reservation",
+                "Delete Reservation",
+                "Show Reservation",
+                "Find Reservation"
         };
     }
 
     @Override
     public Runnable[] getOptionRunnables() {
-        return new Runnable[0];
+        return new Runnable[]{
+                this::checkVacancy,
+                this::addReservation,
+                this::deleteReservation,
+                this::showReservation,
+                this::findReservation
+        };
     }
 }
