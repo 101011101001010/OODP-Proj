@@ -122,6 +122,11 @@ public class Table extends RestaurantAsset {
 		}
 		return check;
 	}
+	public void checkNoShow(){
+		for (Reservations r : reservationList)
+			if(r.getDate().plusSeconds(30).isBefore(LocalDateTime.now()))
+				reservationList.remove(r);
+	}
 
 	public String toString(){
 		String check=null;

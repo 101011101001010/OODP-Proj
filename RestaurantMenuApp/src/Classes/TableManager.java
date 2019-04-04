@@ -60,6 +60,7 @@ public class TableManager extends BaseManager {
 
     public void checkVacancy() {
         for (Table t : tableList) {
+            t.checkNoShow();
             System.out.println(t.toString());
         }
     }
