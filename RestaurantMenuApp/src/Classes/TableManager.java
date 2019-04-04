@@ -274,5 +274,3 @@ public class TableManager extends BaseManager {
         return new Runnable[0];
     }
 }
-
-

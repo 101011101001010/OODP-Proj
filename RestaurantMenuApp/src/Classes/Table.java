@@ -127,4 +127,3 @@ public class Table extends RestaurantAsset {
 	}
 
 }
-
