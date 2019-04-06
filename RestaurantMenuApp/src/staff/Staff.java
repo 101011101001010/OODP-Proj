@@ -12,17 +12,20 @@ public class Staff extends RestaurantData {
         this.title = title;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
 
-    public String getTitle() {
-        return title;
+    void setTitle(String title) {
+        this.title = title;
     }
 
-    void update(String name, String title) {
-        this.name = name;
-        this.title = title;
+    String getTitle() {
+        return title;
     }
 
     @Override

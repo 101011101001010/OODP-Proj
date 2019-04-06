@@ -3,7 +3,10 @@ package tools;
 import enums.DataType;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,64 +14,120 @@ public class FileIO {
     private final String FILE_DIR = System.getProperty("user.dir") + "/DataStorage/";
     private final String FILE_EXT = ".txt";
 
-    public void checkFiles() throws IOException {
-        Path path = Paths.get(FILE_DIR);
+    public FileIO() {
+        Path dirPath = Paths.get(FILE_DIR);
 
-        if (!Files.exists(path)) {
-            Files.createDirectories(path);
-        }
-
-        for (DataType dataType : DataType.values()) {
-            path = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
-
-            if (!Files.exists(path)) {
-                Files.createFile(path);
+        if (!Files.exists(dirPath)) {
+            try {
+                Files.createDirectories(dirPath);
+            } catch (IOException e) {
+                Log.notice("Failed to create directories: " + e.getMessage());
+                return;
             }
         }
 
-        path = Paths.get(FILE_DIR + "log" + FILE_EXT);
-
-        if (!Files.exists(path)) {
-            Files.createFile(path);
+        for (DataType dataType : DataType.values()) {
+            Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
+            if (!Files.exists(filePath)) {
+                try {
+                    Files.createFile(filePath);
+                } catch (IOException e) {
+                    Log.notice("Failed to create file for " + dataType.name() + ": " + e.getMessage());
+                    return;
+                }
+            }
         }
     }
 
-    public List<String> read(DataType dataType) throws IOException {
-        return Files.readAllLines(Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT));
+    public List<String> read(DataType dataType) {
+        try {
+            Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
+            return Files.readAllLines(filePath);
+        } catch (IOException e) {
+            Log.notice("File IO error when attempting to read file for " + dataType.name() + ": " + e.getMessage());
+            return null;
+        }
     }
 
-    public void writeLine(DataType dataType, String data) throws IOException {
-        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
-        data += "\n";
-        Files.write(filePath, data.getBytes(), StandardOpenOption.APPEND);
+    public boolean writeLine(DataType dataType, String text) {
+        try {
+            Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
+            text += "\n";
+            Files.write(filePath, text.getBytes(), StandardOpenOption.APPEND);
+            return true;
+        } catch (IOException e) {
+            Log.notice("File IO error when attempting to write to file for " + dataType.name() + ": " + e.getMessage());
+            return false;
+        }
     }
 
-    public void updateLine(DataType dataType, int line, String data) throws IOException {
-        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
-        List<String> fileData = Files.readAllLines(filePath);
-        fileData.set(line, data);
-        Files.write(filePath, fileData);
+    public boolean updateLine(DataType dataType, int line, String text) {
+        try {
+            Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
+            List<String> fileData = Files.readAllLines(filePath);
+            fileData.set(line, text);
+            Files.write(filePath, fileData);
+            return true;
+        } catch (IOException e) {
+            Log.notice("File IO error when attempting to update line on file for " + dataType.name() + ": " + e.getMessage());
+            return false;
+        }
     }
 
-    public void removeLine(DataType dataType, int line) throws IOException {
-        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
-        List<String> fileData = Files.readAllLines(filePath);
-        fileData.remove(line);
-        Files.write(filePath, fileData);
+    public boolean removeLine(DataType dataType, int line) {
+        try {
+            Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
+            List<String> fileData = Files.readAllLines(filePath);
+            fileData.remove(line);
+            Files.write(filePath, fileData);
+            return true;
+        } catch (IOException e) {
+            Log.notice("File IO error when attempting to update line on file for " + dataType.name() + ": " + e.getMessage());
+            return false;
+        }
     }
 
-    public void clearFile(DataType dataType) throws IOException {
-        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
-        Files.write(filePath, new ArrayList<String>());
+    public boolean clearFile(DataType dataType) {
+        try {
+            Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
+            List<String> fileData = new ArrayList<>();
+            Files.write(filePath, fileData);
+            return true;
+        } catch (IOException e) {
+            Log.notice("File IO error when attempting to clear file for " + dataType.name() + ": " + e.getMessage());
+            return false;
+        }
     }
 
-    void log(String text) {
+    static void logToFile(String text) {
+        final String FILE_DIR = System.getProperty("user.dir") + "/DataStorage/";
+        Path path = Paths.get(FILE_DIR);
+
+        if (Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                Log.notice("Failed to create directory for log: " + e.getMessage());
+                return;
+            }
+        }
+
+        path = Paths.get(FILE_DIR + "log.txt");
+
+        if (Files.exists(path)) {
+            try {
+                Files.createFile(path);
+            } catch (IOException e) {
+                Log.notice("Failed to create file for log: " + e.getMessage());
+                return;
+            }
+        }
+
         try {
             text += "\n";
-            Path filePath = Paths.get(FILE_DIR + "log" + FILE_EXT);
-            Files.write(filePath, text.getBytes(), StandardOpenOption.APPEND);
+            Files.write(path, text.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
-            Log.notice("Failed to log to file.");
+            Log.notice("Failed to log to file: " + e.getMessage());
         }
     }
 }

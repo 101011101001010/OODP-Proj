@@ -70,25 +70,17 @@ public class ConsoleHelper {
     }
 
     public void sendWelcome(List<String[]> mainCLIOptions) {
-        int optionsIndex = 1;
         final List<String> optionsList = new ArrayList<>();
 
         for (String[] options : mainCLIOptions) {
-            List<String> tempOptionList = new ArrayList<>(Arrays.asList(options));
-            for (int arrayIndex = 0; arrayIndex < tempOptionList.size(); arrayIndex++) {
-                tempOptionList.set(arrayIndex, optionsIndex + " // " + tempOptionList.get(arrayIndex));
-                optionsIndex++;
-            }
-
-            optionsList.addAll(tempOptionList);
+            optionsList.addAll(Arrays.asList(options));
             optionsList.add("---");
         }
 
-        final String title = "Scam Money Restaurant";
-        final String header = "Command // Function Call";
-        String[] footerOptions = new String[] {"0 // Switch staff account", "-1 // Exit program"};
-        optionsList.addAll(Arrays.asList(footerOptions));
-        printTable(title, header, optionsList, true);
+        optionsList.remove(optionsList.size() - 1);
+        String[] footerOptions = new String[] {"Switch staff account", "Exit program"};
+        final List<String> mainDisplay = formatChoiceList(optionsList, Arrays.asList(footerOptions));
+        printTable("Scam Money Restaurant", "Command // Function", mainDisplay, true);
     }
 
     public List<String> formatChoiceList(List<String> options, List<String> footerOptions) {
@@ -124,7 +116,7 @@ public class ConsoleHelper {
     public void clearCmd() {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException ignored) {};
+        } catch (IOException | InterruptedException ignored) {}
     }
 
     public void printInstructions(List<String> instructionList) {
@@ -242,7 +234,7 @@ public class ConsoleHelper {
             }
         }
 
-        int MAX_LENGTH = 80;
+        int MAX_LENGTH = 66;
         int maxLength = Math.max(title.length(), MAX_LENGTH);
         int totalStringSpace = maxLength - (5 * (cellLengths.size() - 1));
         int totalRowLength = cellLengths.stream().mapToInt(Integer::intValue).sum();

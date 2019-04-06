@@ -10,14 +10,12 @@ public class AlaCarteItem extends MenuItem {
 		this.category = category;
 	}
 
-	public String getCategory() {
-		return category;
+	void setCategory(String category) {
+		this.category = category;
 	}
 
-	void update(String name, BigDecimal price, String category) {
-		setName(name);
-		setPrice(price);
-		this.category = category;
+	public String getCategory() {
+		return category;
 	}
 
 	@Override

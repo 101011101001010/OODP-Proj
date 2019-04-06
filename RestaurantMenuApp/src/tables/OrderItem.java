@@ -5,15 +5,13 @@ import menu.MenuItem;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class OrderItem {
-	int count;
-	int itemID;
+class OrderItem {
+	private int count;
 	private MenuItem item;
-	BigDecimal price;
-	//boolean promotion = false;
-	BigDecimal pricePer;
+	private BigDecimal price;
+	private BigDecimal pricePer;
 
-	public OrderItem(MenuItem item, int count)
+	OrderItem(MenuItem item, int count)
 	{
 		this.item = item;
 		this.count = count;
@@ -21,27 +19,20 @@ public class OrderItem {
 		this.price = pricePer.multiply(new BigDecimal(count)).setScale(2, RoundingMode.FLOOR);
 	}
 
-	public MenuItem getItem() {
+	MenuItem getItem() {
 		return item;
 	}
 
-	public void updateCount(int count) {
+	void updateCount(int count) {
 		this.count += count;
+		this.price = pricePer.multiply(new BigDecimal(this.count)).setScale(2, RoundingMode.FLOOR);
 	}
 
-	public int getCount() {
+	int getCount() {
 		return count;
 	}
-	public void setCount(int count) {
-		this.count = count;
-	}
-	public int getItemID() {
-		return itemID;
-	}
-	public void setItemID(int itemID) {
-		this.itemID = itemID;
-	}
-	public BigDecimal getPrice() {
+
+	BigDecimal getPrice() {
 		return price;
 	}
 }

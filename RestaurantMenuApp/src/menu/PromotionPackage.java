@@ -12,12 +12,8 @@ public class PromotionPackage extends MenuItem {
 		this.alaCarteItems = alaCarteItems;
 	}
 
-	public List<AlaCarteItem> getAlaCarteItems() {
+	List<AlaCarteItem> getAlaCarteItems() {
 		return alaCarteItems;
-	}
-
-	void update(String name) {
-		setName(name);
 	}
 
 	void refreshPrice() {

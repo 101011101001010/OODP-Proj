@@ -5,26 +5,25 @@ import java.time.format.DateTimeFormatter;
 
 public class Log {
     public static void notice(String message) {
-        System.out.println();
-        System.out.println("\t[Notice] " + message);
+        message = "\n\t[Notice] " + message;
+        System.out.println(message);
     }
 
-    public static void warning(Object o, String message) {
-        System.out.println();
-        System.out.println("\t[Warning] " + message);
-        toFile("<" + o.getClass().getSimpleName() + "> [Warning] " + message);
+    public static void warning(String message) {
+        message = "\n\t[Warning] " + message;
+        System.out.println(message);
+        writeToFile(message);
     }
 
-    public static void error(Object o, String message) {
-        System.out.println();
-        System.out.println("\t[Error] " + message);
-        toFile("<" + o.getClass().getSimpleName() + "> [Error] " + message);
+    public static void error(String message) {
+        message = "\n\t[Error] " + message;
+        System.out.println(message);
+        writeToFile(message);
     }
 
-
-    private static void toFile(String text) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-        String dateTime = LocalDateTime.now().format(format);
-        (new FileIO()).log(dateTime + ": " + text);
+    public static void writeToFile(String message) {
+        DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+        String dateTime = LocalDateTime.now().format(dateTimeFormat);
+        FileIO.logToFile(dateTime + ": " + message);
     }
 }

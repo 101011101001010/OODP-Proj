@@ -1,11 +1,8 @@
 package tables;
 
 import client.RestaurantData;
-import enums.DataType;
 import menu.MenuItem;
-import tools.FileIO;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +12,8 @@ public class Order extends RestaurantData {
     private List<OrderItem> orderItemList;
     private int staffId;
     private String orderId;
-    //Date orderDate;
 
-    public Order(int tableId, String orderId, int staffId) {
+    Order(int tableId, String orderId, int staffId) {
         super(tableId);
         this.orderId = orderId;
         this.staffId = staffId;
@@ -25,27 +21,19 @@ public class Order extends RestaurantData {
         //orderDate.toLocalDate();
     }
 
-    public List<OrderItem> getOrderItemList() {
+    List<OrderItem> getOrderItemList() {
         return orderItemList;
     }
 
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
-    }
-
-    public int getStaffID() {
-        return staffId;
-    }
-
-    public String getOrderId() {
+    String getOrderId() {
         return orderId;
     }
 
-    public void addItem(MenuItem item, int count) {
+    void addItem(MenuItem item, int count) {
         orderItemList.add(new OrderItem(item, count));
     }
 
-    public void removeItem(OrderItem item) {
+    void removeItem(OrderItem item) {
         orderItemList.remove(item);
     }
 
@@ -54,7 +42,6 @@ public class Order extends RestaurantData {
         StringBuilder sb = new StringBuilder();
         String head = getId() + " // " + orderId + " // " + staffId;
         sb.append(head);
-        BigDecimal totalPrice = new BigDecimal(0);
 
         if (orderItemList.size() > 0) {
             sb.append(" // ");
@@ -79,25 +66,25 @@ public class Order extends RestaurantData {
         sb.append(head);
         BigDecimal totalPrice = new BigDecimal(0);
 
-        for (int index = 0; index < orderItemList.size(); index++) {
-            String s = orderItemList.get(index).getItem().getName() + " x " + orderItemList.get(index).getCount() + " - " + orderItemList.get(index).getPrice();
-            totalPrice = totalPrice.add(orderItemList.get(index).getPrice());
+        for (OrderItem orderItem : orderItemList) {
+            String s = orderItem.getItem().getName() + " x " + orderItem.getCount() + " - " + orderItem.getPrice();
+            totalPrice = totalPrice.add(orderItem.getPrice());
             sb.append(s);
             sb.append("\n");
         }
 
-        sb.append("Total: " + totalPrice.toString());
+        sb.append("Total: ").append(totalPrice.toString());
         return sb.toString();
     }
 
+    /*
     public List<String> toInvoiceString() {
         List<String> list = new ArrayList<>();
         BigDecimal totalPrice = new BigDecimal(0);
         list.add("Order ID: " + getOrderId());
         list.add("QTY // ITEM DESCRIPTION // TOTAL");
 
-        for (int index = 0; index < orderItemList.size(); index++) {
-            OrderItem item = orderItemList.get(index);
+        for (OrderItem item : orderItemList) {
             String s = item.getCount() + " // " + item.getItem().getName() + " // " + item.getPrice();
             list.add(s);
             totalPrice = totalPrice.add(item.getPrice());
@@ -107,16 +94,12 @@ public class Order extends RestaurantData {
 
         FileIO f = new FileIO();
         String writeData;
-        for (int i = 0; i < orderItemList.size(); i++) {
+        for (OrderItem orderItem : orderItemList) {
             writeData = getId() + ", " + orderId + ", ";
-            writeData += orderItemList.get(i).getItem().getId() + ", " + orderItemList.get(i).getCount() + ", " + orderItemList.get(i).getPrice();
-
-            try {
-                f.writeLine(DataType.REVENUE, writeData);
-            } catch (IOException ignored) {
-
-            }
+            writeData += orderItem.getItem().getId() + ", " + orderItem.getCount() + ", " + orderItem.getPrice();
+            f.writeLine(DataType.REVENUE, writeData);
         }
         return list;
     }
+    */
 }

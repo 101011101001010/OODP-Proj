@@ -13,9 +13,9 @@ public class Table extends RestaurantData {
     private boolean occupied;
     private boolean reserved;
     private Order order;
-    private List<Reservation> reservationList = new ArrayList<>();
+    private List<Reservation> reservationList;
 
-    public Table(int tableId, int capacity) {
+    Table(int tableId, int capacity) {
         super(tableId);
         this.tableId = tableId;
         this.capacity = capacity;
@@ -25,73 +25,45 @@ public class Table extends RestaurantData {
         this.reservationList = new ArrayList<>();
     }
 
-    public Table(int tableId, int capacity, boolean occupied, Order order) {
+    Table(int tableId, int capacity, boolean occupied, Order order) {
         super(tableId);
         this.capacity = capacity;
         this.occupied = occupied;
         this.reserved = false;
         this.order = order;
-        this.reservationList = reservationList;
+        this.reservationList = new ArrayList<>();
     }
 
-    public int getCapacity() {
+    int getCapacity() {
         return capacity;
     }
 
-    public boolean isOccupied() {
+    boolean isOccupied() {
         return occupied;
     }
 
-    public boolean isReserved() {
+    boolean isReserved() {
         return reserved;
     }
 
-    public Order attachOrder(String orderId, int staffId) {
+    Order attachOrder(String orderId, int staffId) {
         occupied = true;
         order = new Order(getId(), orderId, staffId);
         return order;
     }
 
-    public void attachOrder(Order order) {
+    void attachOrder(Order order) {
         occupied = true;
         this.order = order;
     }
 
-    public Order getOrder() {
+    Order getOrder() {
         return order;
     }
 
-    public boolean hasOrder() {
-        return (order != null);
-    }
-
-    public void clear() {
+    void clear() {
         occupied = false;
         order = null;
-    }
-
-    public List<Reservation> getReservationList() {
-        return reservationList;
-    }
-
-    public void showReservationList() {
-        int index = 1;
-        System.out.println("For Table " + getId());
-        for (Reservation r : reservationList) {
-            System.out.println(index++ + ". " + r.toStringTwo());
-        }
-    }
-
-    public boolean findReservation(int contact) {
-        for (Reservation r : reservationList) {
-            if (r.getContact() == contact) {
-                System.out.println("Reservation Found At Table " + getId());
-                System.out.println(r.toStringTwo());
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
@@ -101,11 +73,11 @@ public class Table extends RestaurantData {
 
     @Override
     public String toDisplayString() {
-        return getId() + " // " + reserved + " // " + occupied;
+        return getId() + " // " + occupied + " // " + reserved;
     }
 
 
-    public void addReservation(int contact, String name, LocalDateTime date, int pax) {
+    void addReservation(int contact, String name, LocalDateTime date, int pax) {
         reservationList.add(new Reservation(contact, name, date, pax));
     }
 
@@ -115,7 +87,7 @@ public class Table extends RestaurantData {
         private LocalDateTime date;
         private int pax;
 
-        public Reservation(int contact, String name, LocalDateTime date, int pax) {
+        Reservation(int contact, String name, LocalDateTime date, int pax) {
             super(tableId);
             this.contact = contact;
             this.name = name;
@@ -131,17 +103,12 @@ public class Table extends RestaurantData {
             return name;
         }
 
-        public int getContact() {
+        int getContact() {
             return contact;
         }
 
-        public int getPax() {
+        int getPax() {
             return pax;
-        }
-
-        public String toStringTwo() {
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
-            return "Reservation date :" + date.format(format) + ", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
         }
 
         public String toFileString() {

@@ -1,32 +1,25 @@
 package client;
 
-import enums.DataType;
 import tools.ConsoleHelper;
-
-import java.io.IOException;
-import java.rmi.UnexpectedException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public abstract class DataManager {
     private Restaurant restaurant;
-    private ConsoleHelper cs;
+    private ConsoleHelper cm;
 
     public DataManager(Restaurant restaurant) {
         this.restaurant = restaurant;
-        this.cs = new ConsoleHelper();
+        this.cm = new ConsoleHelper();
     }
 
     protected Restaurant getRestaurant() {
         return restaurant;
     }
 
-    protected ConsoleHelper getCs() {
-        return cs;
+    protected ConsoleHelper getCm() {
+        return cm;
     }
 
-    public abstract void init() throws IOException;
+    public abstract void init();
     public abstract String[] getMainCLIOptions();
     public abstract Runnable[] getOptionRunnables();
 }
