@@ -1,7 +1,7 @@
 package enums;
 
 public enum DataType {
-    ALACARTE,
+    ALA_CARTE_ITEM,
     PROMO_PACKAGE,
     TABLE,
     STAFF,

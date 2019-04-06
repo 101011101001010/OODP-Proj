@@ -46,7 +46,7 @@ public class Order extends RestaurantData {
     }
 
     @Override
-    public String toPrintString() {
+    public String toFileString() {
         StringBuilder sb = new StringBuilder();
         String head = getId() + " // " + orderId + " // " + staffId;
         sb.append(head);
@@ -69,7 +69,7 @@ public class Order extends RestaurantData {
     }
 
     @Override
-    public String toTableString() {
+    public String toDisplayString() {
         StringBuilder sb = new StringBuilder();
         String head = getId() + " // " + orderId + " // " + staffId + " // ";
         sb.append(head);

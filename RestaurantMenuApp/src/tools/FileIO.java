@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileIO {
@@ -51,5 +52,10 @@ public class FileIO {
         List<String> fileData = Files.readAllLines(filePath);
         fileData.remove(line);
         Files.write(filePath, fileData);
+    }
+
+    public void clearFile(DataType dataType) throws IOException {
+        Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
+        Files.write(filePath, new ArrayList<String>());
     }
 }

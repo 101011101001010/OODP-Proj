@@ -1,90 +1,60 @@
 package staff;
 
-import client.BaseManager;
+import client.DataManager;
 import client.Restaurant;
 import client.RestaurantData;
 import enums.DataType;
 import tools.FileIO;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-public class StaffManager extends BaseManager {
+public class StaffManager extends DataManager {
 
     public StaffManager(Restaurant restaurant) {
         super(restaurant);
     }
 
     @Override
-    public void init() throws ManagerInitFailedException {
-        try {
-            getRestaurant().registerClass(Staff.class, DataType.STAFF);
-        } catch (Restaurant.ClassNotRegisteredException e) {
-            throw (new ManagerInitFailedException(this, "Class registration failed: " + e.getMessage()));
-        }
+    public void init() throws IOException {
+        getRestaurant().registerClass(Staff.class, DataType.STAFF);
+        final List<String[]> fileData = (new FileIO()).read(DataType.STAFF).stream().map(data -> data.split(" // ")).filter(data -> data.length == 3).collect(Collectors.toList());
 
-        FileIO f = new FileIO();
-        List<String> fileData;
-
-        try {
-            fileData = f.read(DataType.STAFF);
-        } catch (IOException e) {
-            throw (new ManagerInitFailedException(this, "Unable to load staff from file: " + e.getMessage()));
-        }
-
-        String splitStr = " // ";
-        for (String data : fileData) {
-            String[] datas = data.split(splitStr);
-
-            if (datas.length != 4) {
-                continue;
-            }
-
-            int id;
+        for (String[] data : fileData) {
             try {
-                id = Integer.parseInt(datas[0]);
-            } catch (InputMismatchException e) {
-                throw (new ManagerInitFailedException(this, "Invalid file data: " + e.getMessage()));
-            }
+                final int id = Integer.parseInt(data[0]);
+                final String name = data[1];
+                final String title = data[2];
+                getRestaurant().load(new Staff(id, name, title));
 
-            getRestaurant().load(new Staff(id, datas[1], datas[2], datas[3]));
-            if (id > getRestaurant().getCounter(DataType.STAFF)) {
-                getRestaurant().setCounter(DataType.STAFF, id);
+                if (id > getRestaurant().getCounter(DataType.STAFF)) {
+                    getRestaurant().setCounter(DataType.STAFF, id);
+                }
+            } catch (NumberFormatException e) {
+                Logger.getAnonymousLogger().log(Level.WARNING, "Invalid file data: " + e.getMessage());
             }
         }
     }
 
-    public List<String> getDisplay(int sortOption) {
-        List<? extends RestaurantData> masterList = new ArrayList<>(getRestaurant().getData(DataType.STAFF));
-        List<String> ret = new ArrayList<>();
-        if (masterList.size() == 0) {
-            ret.add("There is no staff on the roster.");
-            return ret;
+    private List<String> getDisplayList(int sortOption) {
+        final List<? extends RestaurantData> dataList = getRestaurant().getData(DataType.STAFF);
+        final List<Staff> staffList = new ArrayList<>();
+        dataList.stream().filter(staff -> staff instanceof Staff).forEach(staff -> staffList.add((Staff) staff));
+
+        if (sortOption > 1) {
+            staffList.sort(Comparator.comparing((sortOption == 3) ? Staff::getTitle : Staff::getName));
+        } else {
+            staffList.sort(Comparator.comparingInt(RestaurantData::getId));
         }
 
-        masterList.sort((item1, item2) -> {
-            switch (sortOption) {
-                case 2: return ((Staff) item1).getName().compareTo(((Staff) item2).getName());
-                case 3: return ((Staff) item1).getTitle().compareTo(((Staff) item2).getTitle());
-                case 4: return ((Staff) item1).getGender().compareTo(((Staff) item2).getGender());
-            }
-
-            return Integer.compare(item1.getId(), item2.getId());
-        });
-
-        ret.add("ID // Name // Title // Gender");
-        for (RestaurantData o : masterList) {
-            ret.add(o.toTableString());
-        }
-
-        return ret;
+        return staffList.stream().map(Staff::toDisplayString).collect(Collectors.toList());
     }
 
     public List<String> getStaffNames() {
-        List<String> nameList = new ArrayList<>();
+        final List<String> nameList = new ArrayList<>();
 
         for (RestaurantData o : getRestaurant().getData(DataType.STAFF)) {
             nameList.add(((Staff) o).getName());
@@ -93,26 +63,39 @@ public class StaffManager extends BaseManager {
         return nameList;
     }
 
-    private void addNewStaff(String name, String title, String gender) throws IOException {
-        getRestaurant().save(new Staff(getRestaurant().incrementAndGetCounter(DataType.STAFF), name, title, gender));
+    private boolean addNewStaff(String name, String title) {
+        final List<? extends RestaurantData> dataList = getRestaurant().getData(DataType.STAFF);
+        long count = dataList.stream().filter(data -> data instanceof Staff).filter(item -> ((Staff) item).getName().equals(name)).count();
+
+        if (count > 0) {
+            Logger.getGlobal().logp(Level.INFO, "", "", "Failed to add item. Item already exists.");
+            return false;
+        }
+
+        return getRestaurant().save(new Staff(getRestaurant().incrementAndGetCounter(DataType.STAFF), name, title));
     }
 
-    private void updateStaffInfo(int index, String name, String title, String gender) throws IOException, Restaurant.FileIDMismatchException {
-        Staff staff = (Staff) getRestaurant().getData(DataType.STAFF).get(index);
+    private boolean updateStaffInfo(int index, String name, String title) {
+        final Staff staff = (Staff) getRestaurant().getData(DataType.STAFF).get(index);
         name = (name.isBlank()? staff.getName() : name);
         title = (title.isBlank()? staff.getTitle() : title);
-        gender = (gender.isBlank()? staff.getGender() : gender);
-        getRestaurant().update(staff);
-        staff.update(name, title, gender);
+        boolean result = getRestaurant().update(staff);
+
+        if (result) {
+            staff.update(name, title);
+        }
+
+        return result;
     }
 
-    private boolean removeStaff(int index) throws IOException, Restaurant.FileIDMismatchException {
+    private boolean removeStaff(int index) {
         if (getRestaurant().getDataFromIndex(DataType.STAFF, index).getId() != getRestaurant().getSessionStaffId()) {
             getRestaurant().remove(getRestaurant().getData(DataType.STAFF).get(index));
             return true;
         }
 
-       return false;
+        Logger.getGlobal().logp(Level.INFO, "", "", "The staff is currently logged in. Please try again later.");
+        return false;
     }
 
     @Override
@@ -134,78 +117,80 @@ public class StaffManager extends BaseManager {
     }
 
     private void viewStaff() {
-        int choice = 1;
+        int sortOption = 1;
+        final String title = "Staff Roster";
+        final List<String> sortOptions = Arrays.asList("Sort by ID", "Sort by name", "Sort by title");
+        final List<String> footerOptions = Collections.singletonList("Go back");
+        final List<String> options = getCs().formatChoiceList(sortOptions, footerOptions);
         List<String> displayList;
 
         do {
-            displayList = getDisplay(choice);
-            getCs().printDisplayTable("Staff Roster", displayList, true, true);
-        } while ((choice = getCs().printChoices("Select a sort option", "Command // Corresponding Function", Arrays.asList("Sort by ID", "Sort by name", "Sort by title", "Sort by gender"), new String[] {"Go back"})) != -1);
+            displayList = getDisplayList(sortOption);
+            getCs().printTable(title, "ID // Name // Title", displayList, true);
+            getCs().printTable(title, "Command / Sort Option", options, true);
+        } while ((sortOption = getCs().getInt("Select a sort option", (1 - footerOptions.size()), sortOptions.size())) != 0);
     }
 
     private void addStaff() {
-        getCs().printInstructions(new String[] {"Note:", "Enter '/quit' in name to return to main menu."});
-        String name = getCs().getString("Enter STAFF name");
-        if (name.equalsIgnoreCase("/quit")) {
+        getCs().printInstructions(Collections.singletonList("Enter -back in staff name to go back."));
+        final String name = getCs().getString("Enter staff name");
+
+        if (name.equalsIgnoreCase("-back")) {
             return;
         }
 
-        String title = getCs().getString("Enter STAFF title");
-        String gender;
+        final String title = getCs().getString("Enter staff title");
 
-        do {
-            getCs().printInstructions(new String[]{"M = Male", "F = Female", "O = Others"});
-            gender = getCs().getString("Enter gender");
-        } while (!gender.equalsIgnoreCase("M") && !gender.equalsIgnoreCase("F") && !gender.equalsIgnoreCase("O"));
-
-        try {
-            addNewStaff(name, title, gender);
+        if (addNewStaff(name, title)) {
             System.out.println("Staff has been added successfully.");
-        } catch (IOException e) {
-            System.out.println("Failed to add staff: " + e.getMessage());
         }
     }
 
     private void manageStaff() {
-        List<String> nameList = getStaffNames();
-        int staffIndex = getCs().printChoices("Select a staff to manage", "Index // Staff Name", nameList, new String[]{"Go back"}) - 1;
-        if (staffIndex == -1) {
+
+        final String title = "Manage Staff";
+        final List<String> nameList = getStaffNames();
+        final List<String> footerChoices = Collections.singletonList("Go back");
+        final String headers = "Command // Staff";
+        List<String> choiceList = getCs().formatChoiceList(nameList, footerChoices);
+        getCs().printTable(title, headers, choiceList, true);
+
+        int staffIndex = getCs().getInt("Select a staff to manage", (1 - footerChoices.size()), nameList.size());
+
+        if (staffIndex == 0) {
             return;
         }
 
-        int action = getCs().printChoices("Select an action", "Index // Action", new String[] {"Change name.", "Change title.", "Change gender.", "Remove STAFF from roster."}, new String[]{"Go back"});
-        if (action == -1) {
+        staffIndex--;
+        final List<String> actions = Arrays.asList("Change name", "Change title", "Remove staff from roster");
+        choiceList = getCs().formatChoiceList(actions, footerChoices);
+        getCs().printTable(title, "Command // Action", choiceList, true);
+        final int action = getCs().getInt("Select an action", (1 - footerChoices.size()), actions.size());
+
+        if (action == 0) {
             return;
         }
 
-        if (action == 4) {
-            getCs().printInstructions(new String[]{"Warning: This action cannot be undone.", "Y = Yes", "Any other input = NO"});
+        if (action == 3) {
+            getCs().printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
             if (getCs().getString("Confirm remove?").equalsIgnoreCase("Y")) {
-                try {
-                    if (removeStaff(staffIndex)) {
-                        System.out.println("Staff has been removed successfully.");
-                    } else {
-                        System.out.println("The staff account is currently logged in.");
-                    }
-                } catch (IOException | Restaurant.FileIDMismatchException e) {
-                    System.out.println("Failed to remove staff: " + e.getMessage());
+                if (removeStaff(staffIndex)) {
+                    System.out.println("Staff has been removed successfully.");
                 }
             } else {
                 System.out.println("Remove operation aborted.");
             }
         } else {
-            String what = (action == 1)? "name" : (action == 3)? "title" : "gender";
-            getCs().printInstructions(new String[] {"Note:", "Enter '/quit' to return to main menu."});
+            final String what = (action == 1)? "name" : "title";
+            getCs().printInstructions(Collections.singletonList("Enter -back to go back."));
+            final String input = getCs().getString("Enter the new " + what);
 
-            String input = getCs().getString("Enter the new " + what);
             if (input.equalsIgnoreCase("/quit")) {
                 return;
             }
 
-            try {
-                updateStaffInfo(staffIndex, (action == 1) ? input : "", (action == 2) ? input : "", (action == 3) ? input : "");
-            } catch (IOException | Restaurant.FileIDMismatchException e) {
-                System.out.println("Failed to update staff: " + e.getMessage());
+            if (updateStaffInfo(staffIndex, (action == 1) ? input : "", (action == 2) ? input : "")) {
+                System.out.println("Staff information has been updated successfully.");
             }
         }
     }

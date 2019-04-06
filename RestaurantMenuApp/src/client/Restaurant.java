@@ -4,9 +4,9 @@ import enums.DataType;
 import tools.FileIO;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Restaurant {
     private HashMap<DataType, List<? extends RestaurantData>> dataMap;
@@ -28,26 +28,27 @@ public class Restaurant {
         return sessionStaffId;
     }
 
-    public <T extends RestaurantData> void registerClass(Class<T> targetClass, DataType dataType) throws ClassNotRegisteredException {
-        if (checkDataTypeExists(dataType)) {
-            return;
-        }
-
-        classMap.put(targetClass, dataType);
-        dataMap.put(dataType, new ArrayList<T>());
-        idCounterMap.put(dataType, -1);
-
-        if (!checkDataTypeExists(dataType)) {
-            throw (new ClassNotRegisteredException(targetClass));
-        }
+    public <T extends RestaurantData> void registerClass(Class<T> targetClass, DataType dataType) {
+        classMap.putIfAbsent(targetClass, dataType);
+        dataMap.putIfAbsent(dataType, new ArrayList<T>());
+        idCounterMap.putIfAbsent(dataType, -1);
     }
 
-    public <T extends RestaurantData> boolean checkDataTypeExists(DataType dataType) {
+    boolean checkDataTypeExists(DataType dataType) {
         return (dataMap.containsKey(dataType));
     }
 
     public List<? extends RestaurantData> getData(DataType dataType) {
-        return dataMap.getOrDefault(dataType, null);
+        List<? extends RestaurantData> dataList = dataMap.getOrDefault(dataType, null);
+
+        if (dataList == null) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "Data list is null for " + dataType + ".");
+            return null;
+        }
+
+        dataList = new ArrayList<>(List.copyOf(dataList));
+        dataList.sort(Comparator.comparingInt(RestaurantData::getId));
+        return dataList;
     }
 
     public void setCounter(DataType dataType, int count) {
@@ -55,91 +56,165 @@ public class Restaurant {
     }
 
     public int incrementAndGetCounter(DataType dataType) {
-        idCounterMap.put(dataType, idCounterMap.get(dataType) + 1);
+        idCounterMap.put(dataType, idCounterMap.getOrDefault(dataType, -1) + 1);
         return idCounterMap.get(dataType);
     }
 
     public int getCounter(DataType dataType) {
-        return idCounterMap.get(dataType);
+        return idCounterMap.getOrDefault(dataType, -1);
     }
 
-    public <T extends RestaurantData> void save(T data) throws IOException {
-        DataType dataType = classMap.get(data.getClass());
-        (new FileIO()).writeLine(dataType, data.toPrintString());
-        ((List<T>) dataMap.get(dataType)).add(data);
-    }
+    public <T extends RestaurantData> boolean save(T data) {
+        final DataType dataType = classMap.get(data.getClass());
 
-    public <T extends RestaurantData> void load(T data) {
-        DataType dataType = classMap.get(data.getClass());
-        ((List<T>) dataMap.get(dataType)).add(data);
-    }
-
-    public <T extends RestaurantData> void update(T data) throws IOException, FileIDMismatchException {
-        DataType dataType = classMap.get(data.getClass());
-        FileIO f = new FileIO();
-        int index = 0;
-        for (RestaurantData asset : getData(dataType)) {
-            if (asset.getId() == data.getId()) {
-                break;
-            } index++;
+        try {
+            (new FileIO()).writeLine(dataType, data.toFileString());
+        } catch (IOException e) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "File IO error: " + e.getMessage());
+            return false;
         }
 
-        int fileId = Integer.parseInt(f.read(dataType).get(index).split(" // ")[0]);
-        if (fileId != data.getId()) {
-            throw (new FileIDMismatchException(fileId, data.getId()));
+        List<T> dataList = (List<T>) dataMap.getOrDefault(dataType, null);
+
+        if (dataList == null) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "Data list is null for " + dataType + ".");
+            return false;
         }
 
-        f.updateLine(dataType, index, data.toPrintString());
+        dataList.add(data);
+        return true;
     }
 
-    public <T extends RestaurantData> void remove(T data) throws IOException, FileIDMismatchException {
-        DataType dataType = classMap.get(data.getClass());
-        FileIO f = new FileIO();
-        int index = 0;
-        for (RestaurantData asset : getData(dataType)) {
-            if (asset.getId() == data.getId()) {
-                break;
-            } index++;
+    public <T extends RestaurantData> boolean load(T data) {
+        final DataType dataType = classMap.get(data.getClass());
+        List<T> dataList = (List<T>) dataMap.getOrDefault(dataType, null);
+
+        if (dataList == null) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "Data list is null for " + dataType + ".");
+            return false;
         }
 
-        int fileId = Integer.parseInt(f.read(dataType).get(index).split(" // ")[0]);
-        if (fileId != data.getId()) {
-            throw (new FileIDMismatchException(fileId, data.getId()));
-        }
-
-        f.removeLine(dataType, index);
-        dataMap.get(dataType).remove(data);
+        dataList.add(data);
+        return true;
     }
 
-    public RestaurantData getDataFromId(DataType assetType, int id) throws IndexOutOfBoundsException {
-        for (RestaurantData o : getData(assetType)) {
+    public <T extends RestaurantData> boolean bulkSave(DataType dataType) {
+        List<T> dataList = (List<T>) dataMap.getOrDefault(dataType, null);
+
+        if (dataList == null) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "Data list is null for " + dataType + ".");
+            return false;
+        }
+
+        try {
+            final FileIO f = new FileIO();
+            f.clearFile(dataType);
+
+            for (RestaurantData data : dataList) {
+                f.writeLine(dataType, data.toFileString());
+            }
+
+            return true;
+        } catch (IOException e) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "File IO error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public <T extends RestaurantData> boolean update(T data) {
+        final DataType dataType = classMap.get(data.getClass());
+        final FileIO f = new FileIO();
+        final int index = getIndexFromId(dataType, data.getId());
+
+        try {
+            if (index == -1) {
+                throw (new IndexOutOfBoundsException("Failed to get data from file."));
+            }
+
+            int fileId = Integer.parseInt(f.read(dataType).get(index).split(" // ")[0]);
+
+            if (fileId != data.getId()) {
+                throw (new FileIDMismatchException(fileId, data.getId()));
+            }
+
+            f.updateLine(dataType, index, data.toFileString());
+            return true;
+        } catch (IOException e) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "File IO error: " + e.getMessage());
+            return false;
+        } catch (FileIDMismatchException | IndexOutOfBoundsException e) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", e.getMessage());
+            return false;
+        }
+    }
+
+    public <T extends RestaurantData> boolean remove(T data) {
+        final DataType dataType = classMap.get(data.getClass());
+        final FileIO f = new FileIO();
+        final int index = getIndexFromId(dataType, data.getId());
+
+        try {
+            if (index == -1) {
+                throw (new IndexOutOfBoundsException("Failed to get data from file."));
+            }
+
+            int fileId = Integer.parseInt(f.read(dataType).get(index).split(" // ")[0]);
+
+            if (fileId != data.getId()) {
+                throw (new FileIDMismatchException(fileId, data.getId()));
+            }
+
+            f.removeLine(dataType, index);
+            Optional.ofNullable(dataMap.get(dataType)).ifPresent(list -> list.remove(data));
+            return true;
+        } catch (IOException e) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", "File IO error: " + e.getMessage());
+            return false;
+        } catch (FileIDMismatchException | IndexOutOfBoundsException e) {
+            Logger.getGlobal().logp(Level.SEVERE, "", "", e.getMessage());
+            return false;
+        }
+    }
+
+    public RestaurantData getDataFromId(DataType dataType, int id) {
+        for (RestaurantData o : getData(dataType)) {
             if (o.getId() == id) {
                 return o;
             }
         }
 
-        throw (new IndexOutOfBoundsException("Item ID is invalid: " + id));
+        Logger.getGlobal().logp(Level.SEVERE, "", "", "Item ID is invalid: " + id + " for data type '" + dataType + "'");
+        return null;
     }
 
-    public RestaurantData getDataFromIndex(DataType assetType, int index) throws IndexOutOfBoundsException {
-        List<? extends RestaurantData> assetList = getData(assetType);
+    public RestaurantData getDataFromIndex(DataType dataType, int index) {
+        final List<? extends RestaurantData> dataList = getData(dataType);
 
-        if (index < assetList.size()) {
-            return assetList.get(index);
+        if (index < dataList.size()) {
+            return dataList.get(index);
         }
 
-        throw (new IndexOutOfBoundsException("Index is invalid: " + index));
+        Logger.getGlobal().logp(Level.SEVERE, "", "", "Index is invalid: " + index + " for data type '" + dataType + "'");
+        return null;
     }
 
-    public class FileIDMismatchException extends Exception {
+    public int getIndexFromId(DataType dataType, int id) {
+        int index = 0;
+        for (RestaurantData o : getData(dataType)) {
+            if (o.getId() == id) {
+                return index;
+            }
+
+            index++;
+        }
+
+        Logger.getGlobal().logp(Level.SEVERE, "", "", "Failed to get index from ID: " + id + " for data type '" + dataType + "'");
+        return -1;
+    }
+
+    public class FileIDMismatchException extends RuntimeException {
         FileIDMismatchException(int fileId, int updateId) {
             super("ID mismatch when attempting to update file: " + fileId + " VS " + updateId + "");
-        }
-    }
-
-    public class ClassNotRegisteredException extends Exception {
-        public ClassNotRegisteredException(Class c) {
-            super("Class is not registered to restaurant: " + c.getSimpleName());
         }
     }
 }

@@ -1,43 +1,38 @@
-0 // Cream of Mushroom // 3.8 // Description // Starters
-1 // Garlic Bread // 2.8 // Description // Starters
-2 // Nuggets // 4.5 // Description // Starters
-3 // Vienna Sausages // 5.9 // Description // Starters
-4 // Classic Ceasar Salad // 7.9 // Description // Starters
-5 // Escargots // 7.9 // Description // Starters
-6 // Mexican Nachos // 7.9 // Description // Starters
-7 // Chicken & Fish // 17.9 // Description // Super Combo
-8 // Steak & Chicken // 24.5 // Description // Super Combo
-9 // Surf & Turf // 21.9 // Description // Super Combo
-10 // All Day Special // 17.9 // Description // Super Combo
-11 // Grand Sampler // 18.9 // Description // Super Combo
-12 // Aston Classic Cheeseburger // 14.9 // Description // Burger
-13 // iEat Super Burger // 15.9 // Description // Burger
-14 // Chicken Napolitana // 9.9 // Description // Spaghetti Fiesta
-15 // Beef Bolognese // 10.9 // Description // Spaghetti Fiesta
-16 // Salmon Spaghetti // 10.9 // Description // Spaghetti Fiesta
-17 // Seafood Marinara // 10.9 // Description // Spaghetti Fiesta
-18 // Carbonara // 10.9 // Description // Spaghetti Fiesta
-19 // Baked Potato // 2.8 // Description // Hot Side Dishes
-20 // BBQ Beans // 2.8 // Description // Hot Side Dishes
-21 // Corn On The Cob // 2.8 // Description // Hot Side Dishes
-22 // French Fries // 2.8 // Description // Hot Side Dishes
-23 // Garden Veggie // 2.8 // Description // Hot Side Dishes
-24 // Mac & Cheese // 2.8 // Description // Hot Side Dishes
-25 // Mashed Potato // 2.8 // Description // Hot Side Dishes
-26 // Onion Rings // 2.8 // Description // Hot Side Dishes
-27 // Potato Wedges // 2.8 // Description // Hot Side Dishes
-28 // Tasty Rice // 2.8 // Description // Hot Side Dishes
-29 // Coleslaw // 2.8 // Description // Cold Side Dishes
-30 // House Salad // 2.8 // Description // Cold Side Dishes
-31 // Pasta Salad // 2.8 // Description // Cold Side Dishes
-32 // Potato Salad // 2.8 // Description // Cold Side Dishes
-33 // Plain Water // 0.5 // Description // Beverage
-34 // Coke/Coke Light // 2.2 // Description // Beverage
-35 // Sprite // 2.2 // Description // Beverage
-36 // Orange Juice // 2.8 // Description // Beverage
-37 // Ice Lemon Tea // 2.8 // Description // Beverage
-38 // Green Tea // 2.8 // Description // Beverage
-39 // SCAM ITEM // 9999.00 // This is an item that scams your money! // SCAM
-40 // test item // 99.00 // test item // test item
-41 // hhhhhhhhhhh // 999.00 // hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii // zzz
-42 // hiiiiiiiiiiiiiiiiiiiiiiiii // 999.00 // iiiiiiiiiiiiiiiiiiiiiiuydtttttttttttttttffffffffffffffffffff // zzz
+0 // Cream of Mushroom // 3.80 // Starters
+0 // Garlic Bread // 2.80 // Starters
+0 // Nuggets (8pcs) // 4.50 // Starters
+0 // Chicken Wings (2pcs) // 4.50 // Starters
+0 // Vienna Sausages (8pcs) // 5.90 // Starters
+0 // Classic Caesar Salad // 7.90 // Starters
+0 // Escargots // 7.90 // Starters
+0 // Mexican Nachos // 7.90 // Starters
+0 // Lamb Loin Chops // 23.90 // Entree
+0 // Honey Bourbon Ribs // 17.90 // Entree
+0 // Pork Chops // 12.90 // Entree
+0 // Chicken Napolitana // 9.90 // Spaghetti Fiesta
+0 // Beef Bolognese // 10.90 // Spaghetti Fiesta
+0 // Salmon Spaghetti // 10.90 // Spaghetti Fiesta
+0 // Seafood Marinara // 10.90 // Spaghetti Fiesta
+0 // Carbonara // 10.90 // Spaghetti Fiesta
+0 // Prime Sirloin // 16.90 // Legendary Steaks
+0 // Black Pepper Steak // 16.90 // Legendary Steaks
+0 // New York Strip // 19.90 // Legendary Steaks
+0 // Prime Ribeye // 18.90 // Legendary Steaks
+0 // Prime Tenderloin // 28.50 // Legendary Steaks
+0 // Porter house // 29.90 // Legendary Steaks
+0 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks
+0 // Chargrilled Chicken // 10.90 // Grillworks Chicken
+0 // Black Pepper Chicken // 10.90 // Grillworks Chicken
+0 // Crispy Fried Chicken // 10.90 // Grillworks Chicken
+0 // Hickory BBQ Chicken // 10.90 // Grillworks Chicken
+0 // Teriyaki Chicken // 10.90 // Grillworks Chicken
+0 // Lemon Lime Chicken // 10.90 // Grillworks Chicken
+0 // Fiery Chicken // 10.90 // Grillworks Chicken
+0 // Double Up Chicken // 16.00 // Grillworks Chicken
+0 // Grilled Fish With Herb // 11.50 // Fisherman's Pride
+0 // Black Pepper Fish // 11.50 // Fisherman's Pride
+0 // Cripsy Fried Fish // 11.50 // Fisherman's Pride
+0 // Chargrilled Salmon Fillet // 18.90 // Fisherman's Pride
+0 // Astons Classic Cheeseburger // 14.90 // Burger
+0 // IEat Super Burger // 15.90 // Burger
+0 // Scam Money Item // 1000000.00 // Scam Money

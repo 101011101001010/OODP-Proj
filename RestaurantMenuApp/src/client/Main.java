@@ -7,13 +7,16 @@ import staff.StaffManager;
 import tables.TableManager;
 import tools.ConsoleHelper;
 import tools.FileIO;
+import tools.Log;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
-    private Map<Integer, Class<? extends BaseManager>> commandToClassMap;
+    private Map<Integer, Class<? extends DataManager>> commandToClassMap;
     private Map<Integer, Integer> commandToIndexMap;
     private List<String[]> mainCliOptions;
     private Restaurant restaurant;
@@ -27,82 +30,64 @@ public class Main {
         commandIndex = 1;
     }
 
-    private void checkFilesOrBreak() {
-        try {
-            (new FileIO()).checkFiles();
-        } catch (IOException e) {
-            System.out.println("File check has failed:");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void mapManagers() {
-        try {
-            map(new MenuManager(restaurant));
-            map(new OrderManager(restaurant));
-            map(new TableManager(restaurant));
-            map(new StaffManager(restaurant));
-        } catch (BaseManager.ManagerInitFailedException e) {
-            System.out.println("Manager initialisation failure:");
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void checkDataTypeExists() {
-        for (DataType dataType : DataType.values()) {
-            if (!restaurant.checkDataTypeExists(dataType)) {
-                System.out.println("Class not registered for data type: " + dataType);
-            }
-        }
+    private void mapManagers() throws IOException {
+        map(new MenuManager(restaurant));
+        map(new OrderManager(restaurant));
+        map(new TableManager(restaurant));
+        map(new StaffManager(restaurant));
     }
 
     private void start() {
-        ConsoleHelper cs = new ConsoleHelper();
+        final ConsoleHelper cs = new ConsoleHelper();
         int staffIndex = staffLogin(cs);
 
         while (staffIndex != 0) {
-            restaurant.setSessionStaffId(restaurant.getDataFromIndex(DataType.STAFF, staffIndex - 1).getId());
-            cs.sendWelcome(mainCliOptions);
-            int command = executeCommand(cs, cs.getInt("Select a function", -1, commandIndex - 1));
-            if (command == -1) {
-                return;
-            }
+            try {
+                restaurant.setSessionStaffId(restaurant.getDataFromIndex(DataType.STAFF, staffIndex - 1).getId());
+                cs.sendWelcome(List.copyOf(mainCliOptions));
+                int command = executeCommand(cs, cs.getInt("Select a function", -1, commandIndex - 1));
+                if (command == -1) {
+                    return;
+                }
 
-            staffIndex = staffLogin(cs);
+                staffIndex = staffLogin(cs);
+            } catch (RuntimeException e) {
+                Logger.getAnonymousLogger().log(Level.WARNING, "An unexpected exception has occurred: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
     private int staffLogin(ConsoleHelper cs) {
-        List<String> staffDisplay = (new StaffManager(restaurant)).getStaffNames();
-        cs.setMaxLength(60);
-        cs.printChoicesSimple("Command // Staff Account", staffDisplay, new String[]{"Exit program"});
-        return cs.getInt("Select staff account to begin", 0, staffDisplay.size());
+        final List<String> staffNameList = (new StaffManager(restaurant)).getStaffNames();
+        final List<String> choiceList = cs.formatChoiceList(staffNameList, Collections.singletonList("Exit Program"));
+        cs.printTable("", "Command // Staff Account", choiceList, true);
+        return cs.getInt("Select staff account to begin", 0, staffNameList.size());
     }
 
     private int executeCommand(ConsoleHelper cs, int command) {
         while (command != 0 && command != -1) {
             cs.clearCmd();
             Objects.requireNonNull(getManagerFromClassMap(command)).getOptionRunnables()[commandToIndexMap.get(command)].run();
-            cs.sendWelcome(mainCliOptions);
+            cs.sendWelcome(List.copyOf(mainCliOptions));
             command = cs.getInt("Select a function", -1, commandIndex - 1);
         }
 
         return command;
     }
 
-    private BaseManager getManagerFromClassMap(int command) {
+    private DataManager getManagerFromClassMap(int command) {
         try {
             return commandToClassMap.get(command).getDeclaredConstructor(Restaurant.class).newInstance(restaurant);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Failed to get manager from class map.");
-            System.out.println(e.getMessage());
+            Logger.getAnonymousLogger().log(Level.WARNING, "Failed to get manager from class map: " + e.getMessage());
             return null;
         }
     }
 
-    private void map(BaseManager manager) throws BaseManager.ManagerInitFailedException {
+    private void map(DataManager manager) throws IOException {
         if (manager.getMainCLIOptions().length != manager.getOptionRunnables().length) {
-            System.out.println("CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
+            Logger.getAnonymousLogger().log(Level.WARNING, "CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
             return;
         }
 
@@ -116,15 +101,29 @@ public class Main {
         }
     }
 
+    private void checkDataTypeExists() {
+        for (DataType dataType : DataType.values()) {
+            if (!restaurant.checkDataTypeExists(dataType)) {
+                Log.warning("No class registered for data type: " + dataType);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         try {
-            Main main = new Main();
-            main.checkFilesOrBreak();
+            final Main main = new Main();
+            (new FileIO()).checkFiles();
             main.mapManagers();
             main.checkDataTypeExists();
             main.start();
+        } catch (IOException e) {
+            System.out.println();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "File IO error: " + e.getMessage());
+            System.out.println();
         } catch (Exception e) {
-            System.out.println("* An unexpected exception has occurred: " + e.getMessage());
+            System.out.println();
+            Logger.getAnonymousLogger().log(Level.SEVERE, "*An unexpected exception has occurred: " + e.getMessage());
+            System.out.println();
             e.printStackTrace();
         }
     }

@@ -2,378 +2,19 @@ package tools;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConsoleHelper {
     private Scanner scanner;
-    private int MAX_LENGTH = 80;
 
     public ConsoleHelper() {
         this.scanner = new Scanner(System.in);
     }
 
-    public void sendWelcome(List<String[]> mainCLIOptions) {
-        MAX_LENGTH = 60;
-        printTitle("Restaurant Reservation and Point of Sale System", true);
-        //printColumns(new String[] {"ID // Text Commands // Function Call"}, true, false, false, true, true);
-
-        //String format = "  %1$-50s  ";
-        List<String> list;
-        int optionsIndex = 1;
-
-        for (int i = 0; i < mainCLIOptions.size(); i++) {
-            String[] options = mainCLIOptions.get(i);
-
-            list = new ArrayList<>(Arrays.asList(options));
-            for (int index = 0; index < list.size(); index++) {
-                list.set(index, optionsIndex + " // " + list.get(index));
-                optionsIndex++;
-            }
-
-            list.add(0, "ID // Function Call");
-
-            if (i == 0) {
-                printColumns(list, true, false, true, true, true);
-            } else {
-                printColumns(list, true, false, true, true, false);
-            }
-        }
-
-        printColumns(new String[] {"ID // Function Call", "-1 // Switch staff account", "-2 // Exit program"}, true, false, true, false, false);
-        printFooter();
-        MAX_LENGTH = 80;
-    }
-
-    public void printInstructions(String[] body) {
-        System.out.println();
-        printDivider('-');
-        printColumns(Arrays.asList(body), false, false, false, false, true);
-        printDivider('-');
-        System.out.println();
-    }
-
-    public void printDisplayTable(String title, List<String> body, boolean horizontalDivider, boolean verticalDivider) {
-        printTitle(title, true);
-        printColumns(body, verticalDivider, horizontalDivider, true, false, true);
-        printDivider('=');
-    }
-
-    public void printChoicesSimple(String header, String[] options, String[] footerOptions) {
-        printChoicesSimple(header, Arrays.asList(options), footerOptions);
-    }
-
-    public void printChoicesSimple(String header, List<String> options, String[] footerOptions) {
-        System.out.println();
-        printDivider('=');
-        List<String> list = new ArrayList<>(Collections.singletonList(header));
-        list.addAll(options);
-
-        for (int index = 1; index <= options.size(); index++) {
-            list.set(index, index + " // " + list.get(index));
-        }
-
-        printColumns(list, true, false, true, true, true);
-
-        list = new ArrayList<>(Collections.singletonList(header));
-        list.addAll(Arrays.asList(footerOptions));
-
-        for (int index = 1; index <= footerOptions.length; index++) {
-            list.set(index, (0 - index) + " // " + list.get(index));
-        }
-
-        printColumns(list, true, false, true, false, false);
-        printFooter();
-    }
-
-    public int printChoices(String message, String header, String[] options, String[] footerOptions) {
-        return printChoices(message, header, Arrays.asList(options), footerOptions);
-    }
-
-    public int printChoices(String message, String header, List<String> options, String[] footerOptions) {
-        System.out.println();
-        printDivider('=');
-        List<String> list = new ArrayList<>(Collections.singletonList(header));
-        list.addAll(options);
-
-        for (int index = 1; index <= options.size(); index++) {
-            list.set(index, index + " // " + list.get(index));
-        }
-
-        printColumns(list, true, false, true, true, true);
-
-        list = new ArrayList<>(Collections.singletonList(header));
-        list.addAll(Arrays.asList(footerOptions));
-
-        for (int index = 1; index <= footerOptions.length; index++) {
-            list.set(index, (0 - index) + " // " + list.get(index));
-        }
-
-        printColumns(list, true, false, true, false, false);
-        printFooter();
-
-        return getInt(message, (1 - footerOptions.length), options.size());
-    }
-
-    public void clearCmd() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException ignored) {};
-    }
-
-    public void setMaxLength(int maxLength) {
-        this.MAX_LENGTH = maxLength;
-    }
-
-    public void printTitle(String title, boolean center) {
-        int pad = ((MAX_LENGTH) - title.length());
-        System.out.println();
-        printDivider('=');
-        System.out.print("|  ");
-
-        if (center) {
-            System.out.print(" ".repeat(pad / 2));
-            System.out.print(title);
-            System.out.print(" ".repeat(pad - (pad / 2)));
-        } else {
-            System.out.print(title);
-            System.out.print(" ".repeat(pad));
-        }
-        System.out.println("  |");
-        printDivider('=');
-    }
-
-    public void printFooter() {
-        printDivider('=');
-        System.out.println();
-    }
-
-    public void printColumns(String[] stringList, boolean vDivider, boolean hDivider, boolean headerDivider, boolean bottomDivider, boolean displayFirstRow) {
-        printColumns(Arrays.asList(stringList), vDivider, hDivider, headerDivider, bottomDivider, displayFirstRow);
-    }
-
-    public void printColumns(List<String> stringList, boolean vDivider, boolean hDivider, boolean headerDivider, boolean bottomDivider, boolean displayFirstRow) {
-        if (stringList == null) {
-            return;
-        }
-
-        ////////// Determine each column's length based on text length. //////////
-        List<Integer> cellLengths = new ArrayList<>();
-        for (String entryString : stringList) {
-            String[] entryStrings = entryString.split(" // ");
-
-            for (int cell = 0; cell < entryStrings.length; cell++) {
-                int cellLength = entryStrings[cell].length();
-
-                if (cell >= cellLengths.size()) {
-                    cellLengths.add(cellLength);
-                } else {
-                    cellLengths.set(cell, Math.max(cellLength, cellLengths.get(cell)));
-                }
-            }
-        }
-
-        ////////// Calculate max allowable length per column and make adjustments accordingly. //////////
-        int totalStringSpace = (MAX_LENGTH) - (5 * (cellLengths.size() - 1));
-        int maxCellLength = (int) Math.floor(1.0 * totalStringSpace / cellLengths.size());
-        int cellsWithMaxLength = 0;
-
-        for (int cell = 0; cell < cellLengths.size(); cell++) {
-            int cellLength = cellLengths.get(cell);
-            cellLengths.set(cell, Math.min(cellLength, maxCellLength));
-
-            if (cellLength > maxCellLength) {
-                cellsWithMaxLength++;
-            }
-        }
-
-        int extraSpace = totalStringSpace - cellLengths.stream().mapToInt(Integer::intValue).sum();
-
-        if (cellsWithMaxLength == 0) {
-            int index = 0;
-            int largestCellLength = 0;
-            int largestCellIndex = 0;
-
-            for (int cellLength : cellLengths) {
-                if (cellLength > largestCellLength) {
-                    largestCellLength = cellLength;
-                    largestCellIndex = index;
-                }
-
-                index++;
-            }
-
-            cellLengths.set(largestCellIndex, cellLengths.get(largestCellIndex) + extraSpace);
-            extraSpace = 0;
-        }
-
-        while (extraSpace > 0) {
-            for (int index = 0; index < cellLengths.size(); index++) {
-                int size = cellLengths.get(index);
-
-                if (size >= maxCellLength) {
-                    cellLengths.set(index, size + 1);
-                    extraSpace--;
-
-                    if (extraSpace <= 0) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        ////////// String adjustments in case they're too long, then print row by row. //////////
-        /* Note: 1 list entry = 1 row */
-        for (int entry = 0; entry < stringList.size(); entry++) {
-            if (!displayFirstRow && entry == 0) {
-                continue;
-            }
-            List<List<String>> entryStringList = new ArrayList<>();
-            String[] entryStrings = stringList.get(entry).split(" // ");
-            int maxRowCount = 0;
-
-            for (int cell = 0; cell < cellLengths.size(); cell++) {
-                List<String> cellStringList = new ArrayList<>();
-                int cellLength = cellLengths.get(cell);
-
-                if (cell < entryStrings.length) {
-                    String cellString = entryStrings[cell].trim().replace("--", "\n");
-                    String[] cellStrings = cellString.split("\n");
-
-                    for (String cellRowString : cellStrings) {
-                        int strIndex = 0;
-                        int trailSpace = 0;
-                        String[] strs = cellRowString.split(" ");
-                        StringBuilder longStrings = new StringBuilder();
-
-                        for (String str : strs) {
-                            if (str.length() > cellLength) {
-                                longStrings.append(str).append(" ");
-                            } else {
-                                if (longStrings.length() > 0) {
-                                    cellStringList.addAll(subString(longStrings.toString(), cellLength, trailSpace));
-                                    trailSpace = 0;
-                                    longStrings = new StringBuilder();
-                                }
-
-                                int listSize = cellStringList.size();
-                                if ((listSize > 0) && (cellStringList.get(listSize - 1).length() + str.length() < cellLength) && (strIndex > 0)) {
-                                    cellStringList.set(listSize - 1, cellStringList.get(listSize - 1) + " " + str);
-                                } else {
-                                    cellStringList.add(str);
-                                    trailSpace = 0;
-                                }
-                            }
-
-                            strIndex++;
-                        }
-
-                        if (longStrings.length() > 0) {
-                            cellStringList.addAll(subString(longStrings.toString(), cellLength, trailSpace));
-                        }
-                    }
-
-                    if (cellStringList.size() > maxRowCount) {
-                        maxRowCount = cellStringList.size();
-                    }
-                } else {
-                    for (int row = 0; row < maxRowCount; row++) {
-                        String toAdd = " ".repeat(cellLength);
-                        cellStringList.add(toAdd);
-                    }
-                }
-
-                entryStringList.add(cellStringList);
-            }
-
-            for (int cellRow = 0; cellRow < maxRowCount; cellRow++) {
-                System.out.print("|  ");
-                for (int cell = 0; cell < cellLengths.size(); cell++) {
-                    int cellLength = cellLengths.get(cell);
-                    List<String> cellStringList = entryStringList.get(cell);
-
-                    if (cellRow < cellStringList.size()) {
-                        String printStr = cellStringList.get(cellRow);
-
-                        if (printStr.length() < cellLength) {
-                            if (printStr.matches("^-?\\d*\\.?\\d*$")) {
-                                printStr = " ".repeat(cellLength - printStr.length()) + printStr;
-                            } else {
-                                printStr += " ".repeat(cellLength - printStr.length());
-                            }
-                        }
-
-                        System.out.print(printStr);
-                    } else {
-                        System.out.print(" ".repeat(cellLength));
-                    }
-
-                    if (cell != cellLengths.size() - 1) {
-                        if (vDivider) {
-                            System.out.print("  |  ");
-                        } else {
-                            System.out.print(" ".repeat(5));
-                        }
-                    }
-                }
-                System.out.println("  |");
-            }
-
-            if ((headerDivider && entry == 0 && entry != stringList.size() - 1) || (hDivider && entry != stringList.size() - 1)) {
-                printColumnDivider(cellLengths, vDivider);
-            }
-        }
-
-        if (bottomDivider) {
-            printColumnDivider(cellLengths, vDivider);
-        }
-    }
-
-    private List<String> subString(String s, int maxLength, int trailSpace) {
-        List<String> ret = new ArrayList<>();
-
-        if (s.length() <= maxLength) {
-            ret.add(s);
-            return ret;
-        }
-
-        if (trailSpace != 0) {
-            String s1 = s.substring(0, trailSpace);
-            ret.add(s1);
-
-            String s2 = s.substring(trailSpace);
-            ret.addAll(subString(s2, maxLength, 0));
-            return ret;
-        } else {
-
-            String s1 = s.substring(0, maxLength);
-            ret.add(s1);
-
-            String s2 = s.substring(maxLength);
-            ret.addAll(subString(s2, maxLength, 0));
-            return ret;
-        }
-    }
-
-    public void printDivider(char c) {
-        System.out.println("|" + (c + "").repeat(MAX_LENGTH + 4) + "|");
-    }
-
-    private void printColumnDivider(List<Integer> columnLengths, boolean vDivider) {
-        System.out.print("|");
-
-        for (int column = 0; column < columnLengths.size(); column++) {
-            int length = columnLengths.get(column);
-            System.out.print("-".repeat(length + 4));
-
-            if (column != (columnLengths.size() - 1)) {
-                System.out.print(vDivider? "|" : '-');
-            }
-        }
-
-        System.out.println("|");
-    }
-
     public int getInt(String message, int lowerBound, int upperBound) {
+
         while (true) {
+            System.out.println();
             System.out.print(message + ": ");
             try {
                 int input = scanner.nextInt();
@@ -396,6 +37,7 @@ public class ConsoleHelper {
         double lowerBound = (bounds.length >= 2)? bounds[1] : 0;
 
         while (true) {
+            System.out.println();
             System.out.print(message + ": ");
             try {
                 double input = scanner.nextDouble();
@@ -415,11 +57,312 @@ public class ConsoleHelper {
 
     public String getString(String message) {
         String input;
-        System.out.print(message + ": ");
-        while ((input = scanner.nextLine()).isBlank()) {
-            System.out.println("ERROR: Input cannot be blank.");
+        while (true) {
+            System.out.println();
             System.out.print(message + ": ");
+
+            if (!(input = scanner.nextLine()).isBlank()) {
+                return input;
+            }
+
+            System.out.println("ERROR: Input cannot be blank.");
         }
-        return input;
+    }
+
+    public void sendWelcome(List<String[]> mainCLIOptions) {
+        int optionsIndex = 1;
+        final List<String> optionsList = new ArrayList<>();
+
+        for (String[] options : mainCLIOptions) {
+            List<String> tempOptionList = new ArrayList<>(Arrays.asList(options));
+            for (int arrayIndex = 0; arrayIndex < tempOptionList.size(); arrayIndex++) {
+                tempOptionList.set(arrayIndex, optionsIndex + " // " + tempOptionList.get(arrayIndex));
+                optionsIndex++;
+            }
+
+            optionsList.addAll(tempOptionList);
+            optionsList.add("---");
+        }
+
+        final String title = "Scam Money Restaurant";
+        final String header = "Command // Function Call";
+        String[] footerOptions = new String[] {"0 // Switch staff account", "-1 // Exit program"};
+        optionsList.addAll(Arrays.asList(footerOptions));
+        printTable(title, header, optionsList, true);
+    }
+
+    public List<String> formatChoiceList(List<String> options, List<String> footerOptions) {
+        List<String> mergedOptions = new ArrayList<>();
+        for (int index = 0; index < options.size(); index++) {
+            mergedOptions.add((index + 1) + " // " + options.get(index));
+        }
+
+        mergedOptions.add("---");
+        for (int index = 0; index < footerOptions.size(); index++) {
+            mergedOptions.add((0 - index) + " // " + footerOptions.get(index));
+        }
+
+        return mergedOptions;
+    }
+
+    public void clearCmd() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException ignored) {};
+    }
+
+    public void printInstructions(List<String> instructionList) {
+        printTable("", "", instructionList, false);
+    }
+
+    public void printTable(String title, String columnHeaders, List<String> stringList, boolean verticalDivider) {
+        if (stringList == null || stringList.size() == 0) {
+            return;
+        }
+
+        List<String> stringListCopy = new ArrayList<>(stringList);
+
+        if (columnHeaders.length() > 0) {
+            stringListCopy.add(0, columnHeaders);
+        }
+
+        final List<Integer> cellLengths = calculateCellLengths(title, stringListCopy);
+        final List<String[]> stringListProcessed = stringListCopy.stream().map(s -> s.split(" // ")).collect(Collectors.toList());
+        final int totalLength = cellLengths.stream().mapToInt(Integer::intValue).sum() + (5 * (cellLengths.size() - 1));
+
+        if (title.length() > 0) {
+            printTitle(title, totalLength);
+        } else {
+            System.out.println();
+            printDivider('=', totalLength);
+        }
+
+        boolean horizontalDivider = false;
+        for (int row = 0; row < stringListProcessed.size(); row++) {
+            String[] rowString = stringListProcessed.get(row);
+            final List<List<String>> rowStringList = processRowString(rowString, cellLengths);
+            if (rowStringList.size() == 0) {
+                continue;
+            }
+
+            int maxRowCount = rowStringList.get(0).size();
+            for (int cellRow = 0; cellRow < maxRowCount; cellRow++) {
+                if (rowStringList.size() == 1 && rowStringList.get(0).size() == 1 && rowStringList.get(0).get(0).equals("---")) {
+                    printDivider('-', cellLengths, verticalDivider);
+                    break;
+                }
+
+                System.out.print("|  ");
+
+                for (int cell = 0; cell < cellLengths.size(); cell++) {
+                    final String cellRowString = rowStringList.get(cell).get(cellRow);
+                    final int cellLength = cellLengths.get(cell);
+                    final int stringLength = cellRowString.length();
+                    final String stringPadding = " ".repeat(cellLength - stringLength);
+
+                    if (row == 0 && columnHeaders.length() > 0) {
+                        final int pad = Math.max(cellLength - stringLength, 0);
+                        System.out.print(" ".repeat(pad / 2) + cellRowString.toUpperCase() + " ".repeat(pad - (pad / 2)));
+                    } else {
+                        if (cellRowString.matches("^(-?\\d+|-?\\d+\\.\\d+)$")) {
+                            final int pad = Math.max(cellLength - stringLength, 0);
+                            System.out.print(" ".repeat(pad - (pad / 2)) + cellRowString + " ".repeat(pad / 2));
+                            //System.out.print(stringPadding + cellRowString);
+                        } else {
+                            System.out.print(cellRowString + stringPadding);
+                        }
+                    }
+
+                    if (cell != cellLengths.size() - 1) {
+                        if (verticalDivider) {
+                            System.out.print("  |  ");
+                        } else {
+                            System.out.print(" ".repeat(5));
+                        }
+                    }
+                }
+
+                System.out.println("  |");
+            }
+
+            if (maxRowCount > 1) {
+                horizontalDivider = true;
+            }
+
+            if ((columnHeaders.length() > 0 && row == 0) || (horizontalDivider && row != stringListProcessed.size() - 1)) {
+                printDivider('-', cellLengths, verticalDivider);
+            }
+        }
+
+        printDivider('=', totalLength);
+    }
+
+    private List<Integer> calculateCellLengths(String title, List<String> stringList) {
+        List<int[]> lengthPerRowList = stringList.stream().map(s -> s.split(" // ")).map(s -> Arrays.stream(s).mapToInt(String::length).toArray()).collect(Collectors.toList());
+        int maxCellCount = lengthPerRowList.stream().mapToInt(v -> v.length).max().orElse(0);
+        List<Integer> cellLengths = new ArrayList<>(Collections.nCopies(maxCellCount, 0));
+
+        for (int[] lengths : lengthPerRowList) {
+            for (int cell = 0; cell < maxCellCount; cell++) {
+                int cellLength = (cell < lengths.length)? lengths[cell] : 0;
+                cellLengths.set(cell, Math.max(cellLengths.get(cell), cellLength));
+            }
+        }
+
+        int MAX_LENGTH = 80;
+        int maxLength = Math.max(title.length(), MAX_LENGTH);
+        int totalStringSpace = maxLength - (5 * (cellLengths.size() - 1));
+        int totalRowLength = cellLengths.stream().mapToInt(Integer::intValue).sum();
+
+        if (totalRowLength > totalStringSpace) {
+            int theoreticalMaxLength = totalStringSpace / cellLengths.size();
+            int bigCellsCount = (int) cellLengths.stream().filter(i -> i > theoreticalMaxLength).count();
+            int totalSpaceForBigCells = totalStringSpace - cellLengths.stream().filter(i -> i <= theoreticalMaxLength).mapToInt(Integer::intValue).sum();
+            int maxLengthPerBigCell = totalSpaceForBigCells / bigCellsCount;
+
+            for (int cell = 0; cell < cellLengths.size(); cell++) {
+                if (cellLengths.get(cell) > theoreticalMaxLength) {
+                    cellLengths.set(cell, maxLengthPerBigCell);
+                }
+            }
+        }
+
+        totalRowLength = cellLengths.stream().mapToInt(Integer::intValue).sum();
+        int extraSpace = totalStringSpace - totalRowLength;
+        int index = 0;
+
+        while (extraSpace > 0) {
+            cellLengths.set(index, cellLengths.get(index) + 1);
+            extraSpace--;
+            index++;
+
+            if (index >= cellLengths.size()) {
+                index = 0;
+            }
+        }
+
+        return cellLengths;
+    }
+
+    private List<List<String>> processRowString(String[] rowString, List<Integer> cellLengths) {
+        final List<List<String>> ret = new ArrayList<>();
+        int maxRowCount = 0;
+
+        for (int cell = 0; cell < cellLengths.size(); cell++) {
+            final List<String> cellStringList = new ArrayList<>();
+            if (rowString.length == 1 && rowString[0].equals("---")) {
+                cellStringList.add("---");
+                ret.add(cellStringList);
+                return ret;
+            }
+
+            if (cell < rowString.length) {
+                final List<String> processedString = processCellString(rowString[cell], cellLengths.get(cell));
+                if (processedString.size() > maxRowCount) {
+                    maxRowCount = processedString.size();
+                }
+
+                cellStringList.addAll(processedString);
+            }
+
+            ret.add(cellStringList);
+        }
+
+        for (int cell = 0; cell < ret.size(); cell++) {
+            final List<String> cellStringList = ret.get(cell);
+            for (int index = cellStringList.size(); index < maxRowCount; index++) {
+                final String paddedString = " ".repeat(cellLengths.get(cell));
+                cellStringList.add(paddedString);
+            }
+        }
+
+        return ret;
+    }
+
+    private List<String> processCellString(String cellString, int cellLength) {
+        final List<String> cellWords = new ArrayList<>();
+        Arrays.stream(cellString.trim().replace("\n", "\n\\\\").split("\n")).forEach(s -> cellWords.addAll(Arrays.asList(s.split(" "))));
+        int trailSpace = 0;
+        StringBuilder longStrings = new StringBuilder();
+        final List<String> ret = new ArrayList<>();
+
+        for (String word : cellWords) {
+            if (word.length() <= cellLength) {
+                if (longStrings.length() > 0) {
+                    ret.addAll(subString(longStrings.toString(), cellLength, trailSpace));
+                    trailSpace = 0;
+                    longStrings = new StringBuilder();
+                }
+
+                int listSize = ret.size();
+                if ((listSize > 0) && (ret.get(listSize - 1).length() + word.length() < cellLength) && (!word.startsWith("\\\\"))) {
+                    ret.set(listSize - 1, ret.get(listSize - 1) + " " + word);
+                } else {
+                    ret.add(word.replace("\\\\", ""));
+                    trailSpace = Math.max(cellLength - word.length() - 1, 0);
+                }
+            } else {
+                word = word.replace("\\\\", "");
+                longStrings.append(word).append(" ");
+            }
+        }
+
+        if (longStrings.length() > 0) {
+            ret.addAll(subString(longStrings.toString(), cellLength, trailSpace));
+        }
+
+        return ret;
+    }
+
+    private List<String> subString(String s, int maxLength, int trailSpace) {
+        final List<String> ret = new ArrayList<>();
+
+        if (s.length() <= maxLength) {
+            ret.add(s);
+            return ret;
+        }
+
+        if (trailSpace != 0) {
+            String s1 = s.substring(0, trailSpace);
+            ret.add(s1);
+
+            String s2 = s.substring(trailSpace);
+            ret.addAll(subString(s2, maxLength, 0));
+            return ret;
+        } else {
+            String s1 = s.substring(0, maxLength);
+            ret.add(s1);
+
+            String s2 = s.substring(maxLength);
+            ret.addAll(subString(s2, maxLength, 0));
+            return ret;
+        }
+    }
+
+    private void printTitle(String title, int length) {
+        final int pad = Math.max(length - title.length(), 0);
+        System.out.println();
+        printDivider('=', length);
+        System.out.println("|  " + " ".repeat(pad / 2) + title.toUpperCase() + " ".repeat(pad - (pad / 2)) + "  |");
+        printDivider('=', length);
+    }
+
+    private void printDivider(char c, int length) {
+        System.out.println("|" + (c + "").repeat(length + 4) + "|");
+    }
+
+    private void printDivider(char c, List<Integer> cellLengths, boolean verticalDivider) {
+        System.out.print("|");
+
+        for (int column = 0; column < cellLengths.size(); column++) {
+            int length = cellLengths.get(column);
+            System.out.print((c + "").repeat(length + 4));
+
+            if (column != (cellLengths.size() - 1)) {
+                System.out.print(verticalDivider? "|" : c);
+            }
+        }
+
+        System.out.println("|");
     }
 }

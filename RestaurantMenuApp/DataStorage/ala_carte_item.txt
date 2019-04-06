@@ -1,0 +1,38 @@
+0 // Cream of Mushroom // 3.80 // Starters
+1 // Garlic Bread // 2.80 // Starters
+2 // Nuggets (8pcs) // 4.50 // Starters
+3 // Chicken Wings (2pcs) // 4.50 // Starters
+4 // Vienna Sausages (8pcs) // 5.90 // Starters
+5 // Classic Caesar Salad // 7.90 // Starters
+6 // Escargots // 7.90 // Starters
+7 // Mexican Nachos // 7.90 // Starters
+8 // Lamb Loin Chops // 23.90 // Entree
+9 // Honey Bourbon Ribs // 17.90 // Entree
+10 // Pork Chops // 12.90 // Entree
+11 // Chicken Napolitana // 9.90 // Spaghetti Fiesta
+12 // Beef Bolognese // 10.90 // Spaghetti Fiesta
+13 // Salmon Spaghetti // 10.90 // Spaghetti Fiesta
+14 // Seafood Marinara // 10.90 // Spaghetti Fiesta
+15 // Carbonara // 10.90 // Spaghetti Fiesta
+16 // Prime Sirloin // 16.90 // Legendary Steaks
+17 // Black Pepper Steak // 16.90 // Legendary Steaks
+18 // New York Strip // 19.90 // Legendary Steaks
+19 // Prime Ribeye // 18.90 // Legendary Steaks
+20 // Prime Tenderloin // 28.50 // Legendary Steaks
+21 // Porter house // 29.90 // Legendary Steaks
+22 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks
+23 // Chargrilled Chicken // 10.90 // Grillworks Chicken
+24 // Black Pepper Chicken // 10.90 // Grillworks Chicken
+25 // Crispy Fried Chicken // 10.90 // Grillworks Chicken
+26 // Hickory BBQ Chicken // 10.90 // Grillworks Chicken
+27 // Teriyaki Chicken // 10.90 // Grillworks Chicken
+28 // Lemon Lime Chicken // 10.90 // Grillworks Chicken
+29 // Fiery Chicken // 10.90 // Grillworks Chicken
+30 // Double Up Chicken // 16.00 // Grillworks Chicken
+31 // Grilled Fish With Herb // 11.50 // Fisherman's Pride
+32 // Black Pepper Fish // 11.50 // Fisherman's Pride
+33 // Cripsy Fried Fish // 11.50 // Fisherman's Pride
+34 // Chargrilled Salmon Fillet // 18.90 // Fisherman's Pride
+35 // Astons Classic Cheeseburger // 14.90 // Burger
+36 // IEat Super Burger // 15.90 // Burger
+37 // Scam Money Item // 1000000.00 // Scam Money

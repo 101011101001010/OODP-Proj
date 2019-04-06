@@ -32,11 +32,11 @@ public class MenuItem extends RestaurantData {
         return price;
     }
 
-    public String toPrintString() {
+    public String toFileString() {
         return (getId() + " // " + name + " // " + price);
     }
 
-    public String toTableString() {
-        return (getId() + " // " + name + " // " + price);
+    public String toDisplayString() {
+        return (name + " // " + price);
     }
 }

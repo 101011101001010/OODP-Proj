@@ -11,6 +11,6 @@ public abstract class RestaurantData {
         return id;
     }
 
-    public abstract String toPrintString();
-    public abstract String toTableString();
+    public abstract String toFileString();
+    public abstract String toDisplayString();
 }

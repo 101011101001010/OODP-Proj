@@ -1,6 +1,7 @@
 package menu;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class PromotionPackage extends MenuItem {
@@ -19,25 +20,35 @@ public class PromotionPackage extends MenuItem {
 		setName(name);
 	}
 
+	void refreshPrice() {
+		BigDecimal price = new BigDecimal(0).setScale(2, RoundingMode.FLOOR);
+
+		for (AlaCarteItem item : alaCarteItems) {
+			price = price.add(item.getPrice());
+		}
+
+		setPrice(price);
+	}
+
 	@Override
-	public String toTableString() {
-		String head = super.toTableString() + " // ";
-		StringBuilder sb = new StringBuilder(head);
+	public String toDisplayString() {
+		StringBuilder sb = new StringBuilder(getName() + "\n");
 
 		for (int index = 0; index < alaCarteItems.size(); index++) {
-			sb.append(alaCarteItems.get(index).getName());
+			sb.append("- ").append(alaCarteItems.get(index).getName());
 
 			if (index != (alaCarteItems.size() - 1)) {
-				sb.append("--");
+				sb.append("\n");
 			}
 		}
 
+		sb.append(" // ").append(getPrice());
 		return sb.toString();
 	}
 
 	@Override
-	public String toPrintString() {
-		String head = super.toPrintString() + " // ";
+	public String toFileString() {
+		String head = super.toFileString() + " // ";
 		StringBuilder sb = new StringBuilder(head);
 
 		for (int index = 0; index < alaCarteItems.size(); index++) {

@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table extends RestaurantData {
-    // private int tableID;
     private int capacity;
     private boolean occupied;
+    private boolean reserved;
     private Order order;
     private List<Reservation> reservationList = new ArrayList<>();
 
@@ -19,6 +19,7 @@ public class Table extends RestaurantData {
         super(tableId);
         this.capacity = capacity;
         this.occupied = false;
+        this.reserved = false;
         this.order = null;
         this.reservationList = new ArrayList<>();
     }
@@ -27,6 +28,7 @@ public class Table extends RestaurantData {
         super(tableId);
         this.capacity = capacity;
         this.occupied = occupied;
+        this.reserved = false;
         this.order = order;
         this.reservationList = reservationList;
     }
@@ -37,6 +39,10 @@ public class Table extends RestaurantData {
 
     public boolean isOccupied() {
         return occupied;
+    }
+
+    public boolean isReserved() {
+        return reserved;
     }
 
     public Order attachOrder(String orderId, int staffId) {
@@ -88,13 +94,13 @@ public class Table extends RestaurantData {
     }
 
     @Override
-    public String toPrintString() {
+    public String toFileString() {
         return getId() + " // " + capacity + " // " + occupied;
     }
 
     @Override
-    public String toTableString() {
-        return getId() + " // " + capacity + " // " + occupied;
+    public String toDisplayString() {
+        return getId() + " // " + reserved + " // " + occupied;
     }
 
 
