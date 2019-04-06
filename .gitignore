@@ -1,4 +1,5 @@
-
 *.iml
 RestaurantMenuApp/.idea/
 RestaurantMenuApp/bin
+.idea/
+.settings/
