@@ -125,10 +125,12 @@ public class StaffManager extends DataManager {
         List<String> displayList;
 
         do {
+            getCs().clearCmd();
             displayList = getDisplayList(sortOption);
             getCs().printTable(title, "ID // Name // Title", displayList, true);
-            getCs().printTable(title, "Command / Sort Option", options, true);
+            getCs().printTable("Command // Sort Option", options, true);
         } while ((sortOption = getCs().getInt("Select a sort option", (1 - footerOptions.size()), sortOptions.size())) != 0);
+        getCs().clearCmd();
     }
 
     private void addStaff() {
@@ -142,12 +144,12 @@ public class StaffManager extends DataManager {
         final String title = getCs().getString("Enter staff title");
 
         if (addNewStaff(name, title)) {
+            getCs().clearCmd();
             System.out.println("Staff has been added successfully.");
         }
     }
 
     private void manageStaff() {
-
         final String title = "Manage Staff";
         final List<String> nameList = getStaffNames();
         final List<String> footerChoices = Collections.singletonList("Go back");
@@ -175,9 +177,11 @@ public class StaffManager extends DataManager {
             getCs().printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
             if (getCs().getString("Confirm remove?").equalsIgnoreCase("Y")) {
                 if (removeStaff(staffIndex)) {
+                    getCs().clearCmd();
                     System.out.println("Staff has been removed successfully.");
                 }
             } else {
+                getCs().clearCmd();
                 System.out.println("Remove operation aborted.");
             }
         } else {
@@ -190,6 +194,7 @@ public class StaffManager extends DataManager {
             }
 
             if (updateStaffInfo(staffIndex, (action == 1) ? input : "", (action == 2) ? input : "")) {
+                getCs().clearCmd();
                 System.out.println("Staff information has been updated successfully.");
             }
         }

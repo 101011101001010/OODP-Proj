@@ -92,9 +92,25 @@ public class ConsoleHelper {
     }
 
     public List<String> formatChoiceList(List<String> options, List<String> footerOptions) {
+        if (options == null) {
+            return null;
+        }
+
+        if (footerOptions == null) {
+            footerOptions= Collections.singletonList("Go back");
+        }
+
         List<String> mergedOptions = new ArrayList<>();
-        for (int index = 0; index < options.size(); index++) {
-            mergedOptions.add((index + 1) + " // " + options.get(index));
+        int optionsIndex = 1;
+
+        for (String option : options) {
+            if (option.equals("---") || option.startsWith("\\SUB")) {
+                mergedOptions.add(option);
+                continue;
+            }
+
+            mergedOptions.add(optionsIndex + " // " + option);
+            optionsIndex++;
         }
 
         mergedOptions.add("---");
@@ -113,6 +129,10 @@ public class ConsoleHelper {
 
     public void printInstructions(List<String> instructionList) {
         printTable("", "", instructionList, false);
+    }
+
+    public void printTable(String columnHeaders, List<String> stringList, boolean verticalDivider) {
+        printTable("", columnHeaders, stringList, verticalDivider);
     }
 
     public void printTable(String title, String columnHeaders, List<String> stringList, boolean verticalDivider) {
@@ -138,6 +158,8 @@ public class ConsoleHelper {
         }
 
         boolean horizontalDivider = false;
+        boolean subHeader = false;
+
         for (int row = 0; row < stringListProcessed.size(); row++) {
             String[] rowString = stringListProcessed.get(row);
             final List<List<String>> rowStringList = processRowString(rowString, cellLengths);
@@ -155,10 +177,19 @@ public class ConsoleHelper {
                 System.out.print("|  ");
 
                 for (int cell = 0; cell < cellLengths.size(); cell++) {
-                    final String cellRowString = rowStringList.get(cell).get(cellRow);
+                    String cellRowString = rowStringList.get(cell).get(cellRow);
                     final int cellLength = cellLengths.get(cell);
                     final int stringLength = cellRowString.length();
                     final String stringPadding = " ".repeat(cellLength - stringLength);
+
+                    if (cellRowString.startsWith("\\SUB")) {
+                        subHeader = true;
+                        cellRowString = cellRowString.replace("\\SUB", "    ");
+                    }
+
+                    if (subHeader) {
+                        cellRowString = cellRowString.toUpperCase();
+                    }
 
                     if (row == 0 && columnHeaders.length() > 0) {
                         final int pad = Math.max(cellLength - stringLength, 0);
@@ -189,9 +220,11 @@ public class ConsoleHelper {
                 horizontalDivider = true;
             }
 
-            if ((columnHeaders.length() > 0 && row == 0) || (horizontalDivider && row != stringListProcessed.size() - 1)) {
+            if ((columnHeaders.length() > 0 && row == 0) || (horizontalDivider && row != stringListProcessed.size() - 1) || subHeader) {
                 printDivider('-', cellLengths, verticalDivider);
             }
+
+            subHeader = false;
         }
 
         printDivider('=', totalLength);
@@ -298,7 +331,8 @@ public class ConsoleHelper {
                 if ((listSize > 0) && (ret.get(listSize - 1).length() + word.length() < cellLength) && (!word.startsWith("\\\\"))) {
                     ret.set(listSize - 1, ret.get(listSize - 1) + " " + word);
                 } else {
-                    ret.add(word.replace("\\\\", ""));
+                    word = word.replace("\\\\", "");
+                    ret.add(word);
                     trailSpace = Math.max(cellLength - word.length() - 1, 0);
                 }
             } else {

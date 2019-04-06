@@ -1,4 +1,4 @@
-package order;
+package tables;
 
 import client.RestaurantData;
 import enums.DataType;
@@ -45,6 +45,10 @@ public class Order extends RestaurantData {
         orderItemList.add(new OrderItem(item, count));
     }
 
+    public void removeItem(OrderItem item) {
+        orderItemList.remove(item);
+    }
+
     @Override
     public String toFileString() {
         StringBuilder sb = new StringBuilder();
@@ -79,7 +83,7 @@ public class Order extends RestaurantData {
             String s = orderItemList.get(index).getItem().getName() + " x " + orderItemList.get(index).getCount() + " - " + orderItemList.get(index).getPrice();
             totalPrice = totalPrice.add(orderItemList.get(index).getPrice());
             sb.append(s);
-            sb.append("--");
+            sb.append("\n");
         }
 
         sb.append("Total: " + totalPrice.toString());

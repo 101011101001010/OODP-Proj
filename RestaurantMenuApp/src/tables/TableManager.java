@@ -5,10 +5,13 @@ import client.DataManager;
 import client.Restaurant;
 import client.RestaurantData;
 import enums.DataType;
+import menu.AlaCarteItem;
 import menu.MenuItem;
-import order.Order;
+import menu.MenuManager;
+import menu.PromotionPackage;
 import tools.FileIO;
 import tools.Log;
+import tools.Pair;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -16,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,13 +29,11 @@ public class TableManager extends DataManager {
         super(restaurant);
     }
 
-    private void createNewTable(int id) {
-        getRestaurant().save(new Table(id, id / 10));
-    }
-
     @Override
     public void init() throws IOException {
         getRestaurant().registerClass(Table.class, DataType.TABLE);
+        getRestaurant().registerClass(Order.class, DataType.ORDER);
+        getRestaurant().registerClass(Table.Reservation.class, DataType.RESERVATION);
 
         final FileIO f = new FileIO();
         final List<String[]> tableData = f.read(DataType.TABLE).stream().map(data -> data.split(" // ")).filter(data -> data.length == 3).collect(Collectors.toList());
@@ -58,61 +60,96 @@ public class TableManager extends DataManager {
                     Logger.getAnonymousLogger().log(Level.WARNING, "Invalid file data: " + e.getMessage());
                 }
             }
+        }
 
-            for (String[] data : orderData) {
-                try {
-                    final int tableId = Integer.parseInt(data[0]);
-                    final String orderId = data[1];
-                    final int staffId = Integer.parseInt(data[2]);
-                    Order order = new Order(tableId, orderId, staffId);
+        for (String[] data : orderData) {
+            try {
+                final int tableId = Integer.parseInt(data[0]);
+                final String orderId = data[1];
+                final int staffId = Integer.parseInt(data[2]);
+                Order order = new Order(tableId, orderId, staffId);
 
-                    if (data.length == 4) {
-                        for (String itemData : data[3].split("--")) {
-                            int itemId = Integer.parseInt(itemData.split("x")[0]);
-                            int count = Integer.parseInt(itemData.split("x")[1]);
-                            MenuItem item;
+                if (data.length == 4) {
+                    for (String itemData : data[3].split("--")) {
+                        int itemId = Integer.parseInt(itemData.split("x")[0]);
+                        int count = Integer.parseInt(itemData.split("x")[1]);
+                        MenuItem item;
 
-                            if (itemId < 100000) {
-                                item = (MenuItem) getRestaurant().getDataFromId(DataType.ALA_CARTE_ITEM, itemId);
-                            } else {
-                                item = (MenuItem) getRestaurant().getDataFromId(DataType.PROMO_PACKAGE, itemId);
-                            }
-
-                            order.addItem(item, count);
+                        if (itemId < 100000) {
+                            item = (MenuItem) getRestaurant().getDataFromId(DataType.ALA_CARTE_ITEM, itemId);
+                        } else {
+                            item = (MenuItem) getRestaurant().getDataFromId(DataType.PROMO_PACKAGE, itemId);
                         }
 
-                        RestaurantData table = getRestaurant().getDataFromId(DataType.TABLE, tableId);
-
-                        if (table instanceof Table) {
-                            ((Table) table).attachOrder(order);
-                            getRestaurant().update(table);
-                        }
+                        order.addItem(item, count);
                     }
-
-                    getRestaurant().load(order);
-                } catch (NumberFormatException e) {
-                    Logger.getAnonymousLogger().log(Level.WARNING, "Invalid file data: " + e.getMessage());
                 }
-            }
 
-            for (String[] data : reservationData) {
-                try {
-                    int tableId = Integer.parseInt(data[0]);
-                    int contact = Integer.parseInt(data[1]);
-                    String name = data[2];
-                    LocalDateTime date = formatting(data[3]);
-                    int pax = Integer.parseInt(data[4]);
-                    RestaurantData table = getRestaurant().getDataFromId(DataType.TABLE, tableId);
+                getRestaurant().load(order);
+                RestaurantData table = getRestaurant().getDataFromId(DataType.TABLE, tableId);
 
-                    if (table instanceof Table) {
-                        ((Table) table).addReservation(contact, name, date, pax);
-                        getRestaurant().update(table);
-                    }
-                } catch (NumberFormatException e) {
-                    Logger.getAnonymousLogger().log(Level.WARNING, "Invalid file data: " + e.getMessage());
+                if (table instanceof Table) {
+                    ((Table) table).attachOrder(order);
+                    getRestaurant().update(table);
                 }
+            } catch (NumberFormatException e) {
+                Logger.getAnonymousLogger().log(Level.WARNING, "Invalid file data: " + e.getMessage());
             }
         }
+
+        for (String[] data : reservationData) {
+            try {
+                int tableId = Integer.parseInt(data[0]);
+                int contact = Integer.parseInt(data[1]);
+                String name = data[2];
+                LocalDateTime date = formatting(data[3]);
+                int pax = Integer.parseInt(data[4]);
+                RestaurantData table = getRestaurant().getDataFromId(DataType.TABLE, tableId);
+
+                if (table instanceof Table) {
+                    ((Table) table).addReservation(contact, name, date, pax);
+                    getRestaurant().update(table);
+                }
+            } catch (NumberFormatException e) {
+                Logger.getAnonymousLogger().log(Level.WARNING, "Invalid file data: " + e.getMessage());
+            }
+        }
+
+    }
+
+    private Pair<List<String>, Map<Integer, MenuItem>> getMenuDisplayList() {
+        final MenuManager manager = new MenuManager(getRestaurant());
+        final Set<String> categoryList = manager.getAlaCarteCategories();
+        final List<AlaCarteItem> alaCarteItemList = getRestaurant().getData(DataType.ALA_CARTE_ITEM).stream().filter(data -> data instanceof AlaCarteItem).map(data -> (AlaCarteItem) data).collect(Collectors.toList());
+        List<String> displayList = new ArrayList<>();
+        List<MenuItem> tempList;
+        Map<Integer, MenuItem> itemMap = new HashMap<>();
+        int index = 0;
+
+        for (String category : categoryList) {
+            tempList = new ArrayList<>();
+            displayList.add("\\SUB // " + category);
+            alaCarteItemList.stream().filter(data -> data.getCategory().equals(category)).forEach(tempList::add);
+
+            for (MenuItem item : tempList) {
+                itemMap.put(index, item);
+                displayList.add(item.getName());
+                index++;
+            }
+
+            displayList.add("---");
+        }
+
+        displayList.add("\\SUB // Promotion Package");
+        tempList = getRestaurant().getData(DataType.PROMO_PACKAGE).stream().filter(data -> data instanceof PromotionPackage).map(data -> (PromotionPackage) data).collect(Collectors.toList());
+
+        for (MenuItem item : tempList) {
+            itemMap.put(index, item);
+            displayList.add(item.getName());
+            index++;
+        }
+
+        return (new Pair<>(displayList, itemMap));
     }
 
     private List<String> getTableDisplayList(int sortOption) {
@@ -120,7 +157,7 @@ public class TableManager extends DataManager {
         List<Table> tableList = dataList.stream().filter(table -> table instanceof Table).map(table -> (Table) table).collect(Collectors.toList());
 
         if (sortOption > 1) {
-            tableList.sort((sortOption == 3)? Comparator.comparing(Table::isReserved) : Comparator.comparing(Table::isOccupied));
+            tableList.sort((sortOption == 3) ? Comparator.comparing(Table::isReserved) : Comparator.comparing(Table::isOccupied));
         } else {
             tableList.sort(Comparator.comparingInt(RestaurantData::getId));
         }
@@ -128,9 +165,9 @@ public class TableManager extends DataManager {
         return tableList.stream().map(Table::toDisplayString).collect(Collectors.toList());
     }
 
-    private List<String> getOrderDisplayList() {
+    private List<String> getOrderDisplayList(Table table) {
         final List<? extends RestaurantData> dataList = getRestaurant().getData(DataType.ORDER);
-        return dataList.stream().filter(order -> order instanceof Order).map(RestaurantData::toDisplayString).collect(Collectors.toList());
+        return dataList.stream().filter(order -> order instanceof Order).filter(order -> order.getId() == table.getId()).map(RestaurantData::toDisplayString).collect(Collectors.toList());
     }
 
     private List<Table> getActiveTables() {
@@ -147,6 +184,44 @@ public class TableManager extends DataManager {
         final List<? extends RestaurantData> dataList = getRestaurant().getData(DataType.TABLE);
         final List<Table> emptyTableList = dataList.stream().filter(table -> table instanceof Table).filter(table -> !((Table) table).isOccupied()).map(table -> (Table) table).collect(Collectors.toList());
         return (emptyTableList.stream().filter(table -> table.getCapacity() >= fPax && table.getCapacity() <= (fPax + 2)).findFirst().orElse(null));
+    }
+
+    private boolean addItem(Table table, MenuItem item, int count) {
+        table.getOrder().addItem(item, count);
+        return (getRestaurant().update(table.getOrder()) && getRestaurant().update(table));
+    }
+
+    private boolean removeItem(Table table, OrderItem item, int removeCount) {
+        if (removeCount < 0) {
+            removeCount *= -1;
+        }
+
+        if (removeCount == item.getCount()) {
+            table.getOrder().removeItem(item);
+            return (getRestaurant().update(table.getOrder()) && getRestaurant().update(table));
+        }
+
+        removeCount *= -1;
+        item.updateCount(removeCount);
+        return getRestaurant().update(table.getOrder());
+    }
+
+    private boolean voidOrder(Table table) {
+        final List<Order> orderList = getRestaurant().getData(DataType.ORDER).stream().filter(data -> data instanceof Order).map(data -> (Order) data).collect(Collectors.toList());
+        Order order = orderList.stream().filter(data -> data.getId() == table.getId()).findFirst().orElse(null);
+
+        if (order == null) {
+            Log.error(this, "Order is null when attempting to void order.");
+            return false;
+        }
+
+        table.clear();
+
+        if (getRestaurant().remove(order) && getRestaurant().update(table)) {
+            return true;
+        }
+
+        return false;
     }
 
     public void setOccupied(int tableId, String orderId, int staffId) {
@@ -169,8 +244,6 @@ public class TableManager extends DataManager {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
         return LocalDateTime.parse(dateTime, format);
     }
-
-
 
     public void deleteReservation(Scanner s) {
         int index;
@@ -292,21 +365,17 @@ public class TableManager extends DataManager {
     public String[] getMainCLIOptions() {
         return new String[]{
                 "View table status",
-                "View active orders",
                 "Create new order",
-                "Manage orders",
-                "Print bill"
+                "Manage orders"
         };
     }
 
     @Override
     public Runnable[] getOptionRunnables() {
-        return new Runnable[] {
+        return new Runnable[]{
                 this::viewTable,
-                this::viewOrder,
                 this::createNewOrder,
-                this::f,
-                this::f
+                this::manageOrders
         };
     }
 
@@ -316,13 +385,12 @@ public class TableManager extends DataManager {
 
     private void viewTable() {
         int sortOption = 1;
-        final String title = "Table Status";
         final List<String> sortOptions = Arrays.asList("Sort by ID", "Sort by occupancy", "Sort by reservation");
-        final List<String> footerOptions = Collections.singletonList("Go back");
-        final List<String> options = getCs().formatChoiceList(sortOptions, footerOptions);
+        final List<String> options = getCs().formatChoiceList(sortOptions, null);
         List<String> displayList;
 
         do {
+            getCs().clearCmd();
             displayList = getTableDisplayList(sortOption);
             int itemCount = displayList.size();
             int startIndex = (int) Math.ceil(1.0 * displayList.size() / 2);
@@ -335,32 +403,29 @@ public class TableManager extends DataManager {
                 displayList.remove(index);
             }
 
-            final String headers = (itemCount > 1)? "ID // Occupied // Reserved // ID // Occupied // Reserved" : "ID // Occupied // Reserved";
-            getCs().printTable(title, headers, displayList, true);
-            getCs().printTable("", "Command / Sort Option", options, true);
-        } while ((sortOption = getCs().getInt("Select a sort option", (1 - footerOptions.size()), sortOptions.size())) != 0);
+            final String headers = (itemCount > 1) ? "ID // Occupied // Reserved // ID // Occupied // Reserved" : "ID // Occupied // Reserved";
+            getCs().printTable("Table Status", headers, displayList, true);
+            getCs().printTable("Command // Sort Option", options, true);
+        } while ((sortOption = getCs().getInt("Select a sort option", 0, sortOptions.size())) != 0);
+        getCs().clearCmd();
     }
 
-    private void viewOrder() {
-        final String title = "Active Orders";
+    private void viewOrder(Table table) {
         String headers = "Table // Order ID // Staff ID // Order Details";
-        List<String> displayList = getOrderDisplayList();
-
-        if (displayList.size() == 0) {
-            headers = "";
-            displayList = new ArrayList<>(Collections.singletonList("There is no active order."));
-        }
-
-        getCs().printTable(title, headers, displayList, true);
+        List<String> displayList = getOrderDisplayList(table);
+        getCs().printTable(headers, displayList, true);
         getCs().getInt("Enter 0 to go back", 0, 0);
+        getCs().clearCmd();
     }
 
     private void createNewOrder() {
-        int pax = getCs().getInt("Enter number of pax", 1, 10);
-        Table table = getAvailableTable(pax);
+        getCs().printInstructions(Collections.singletonList("Enter number of pax and an empty table will be automatically assigned."));
+        final int pax = getCs().getInt("Enter number of pax", 1, 10);
+        final Table table = getAvailableTable(pax);
 
         if (table == null) {
-            System.out.println("There is no table available for " + pax + " " + ((pax == 1)? "person" : "people") + ".");
+            getCs().clearCmd();
+            System.out.println("There is no table available for " + pax + " " + ((pax == 1) ? "person" : "people") + ".");
             return;
         }
 
@@ -369,9 +434,167 @@ public class TableManager extends DataManager {
         Order order = table.attachOrder(orderId, getRestaurant().getSessionStaffId());
 
         if (getRestaurant().save(order) && getRestaurant().update(table)) {
+            getCs().clearCmd();
             System.out.println("Order " + orderId + " has been created successfully.");
         } else {
+            getCs().clearCmd();
             System.out.println("Failed to create order.");
         }
+    }
+
+    private void manageOrders() {
+        final List<Table> activeTableList = getActiveTables();
+        List<String> displayList = activeTableList.stream().map(table -> "Table: " + table.getId() + " - Order " + table.getOrder().getOrderId()).collect(Collectors.toList());
+        List<String> choiceList = getCs().formatChoiceList(displayList, null);
+        getCs().printTable("Manage Orders", "Command // Active Tables", choiceList, true);
+        int tableIndex = getCs().getInt("Select an order to manage", 0, displayList.size());
+
+        if (tableIndex == 0) {
+            return;
+        }
+
+        tableIndex--;
+        Table table = activeTableList.get(tableIndex);
+
+        while (true) {
+            final List<String> actions = Arrays.asList("View order", "Add item to order", "Remove item from order", "Void order", "Print bill");
+            choiceList = getCs().formatChoiceList(actions, null);
+            getCs().printTable("Command // Action", choiceList, true);
+            final int action = getCs().getInt("Select an action", 0, actions.size());
+
+            if (action == 0) {
+                return;
+            }
+
+            if (action == 1) {
+                viewOrder(table);
+            }
+
+            if (action == 2 && (addItemToOrder(table))) {
+                getCs().clearCmd();
+                System.out.println("Item has been added to order successfully.");
+            }
+
+            if (action == 3 && (removeItemsFromOrder(table))) {
+                getCs().clearCmd();
+                System.out.println("Item has been remove from order successfully.");
+            }
+
+            if (action == 4 && confirmBeforeVoid(table)) {
+                getCs().clearCmd();
+                System.out.println("Order has been voided successfully.");
+                return;
+            }
+
+            if (action == 5) {
+
+            }
+        }
+    }
+
+    private boolean addItemToOrder(Table table) {
+        Pair<List<String>, Map<Integer, MenuItem>> pair = getMenuDisplayList();
+        List<String> displayList = pair.getLeft();
+        Map<Integer, MenuItem> itemMap = pair.getRight();
+        List<String> choiceList = getCs().formatChoiceList(displayList, null);
+
+        getCs().printTable("Command // Menu Item", choiceList, true);
+        int itemIndex = getCs().getInt("Select an item to add to order", 0, displayList.size());
+        int count = getCs().getInt("Enter the amount to add", 1, 100);
+
+        MenuItem item = itemMap.get(itemIndex - 1);
+        return addItem(table, item, count);
+    }
+
+    private boolean removeItemsFromOrder(Table table) {
+        List<String> displayList = new ArrayList<>();
+        Map<Integer, OrderItem> indexItemMap = new HashMap<>();
+
+        int index = 1;
+        for (OrderItem item : table.getOrder().getOrderItemList()) {
+            displayList.add(item.getItem().getName());
+            indexItemMap.put(index, item);
+            index++;
+        }
+
+        List<String> choiceList = getCs().formatChoiceList(displayList, null);
+        getCs().printTable("Command // Menu Item", choiceList, true);
+        int itemIndex = getCs().getInt("Select the item to remove to order", 0, displayList.size());
+
+        OrderItem item = indexItemMap.get(itemIndex);
+        getCs().printInstructions(Arrays.asList("Amount in order: " + item.getCount(), "Enter 0 to go back."));
+        int removeCount = getCs().getInt("Enter the amount to remove", 0, item.getCount());
+
+        if (removeCount == 0) {
+            System.out.println("Remove operation aborted.");
+            return false;
+        }
+
+        return removeItem(table, item, removeCount);
+    }
+
+    private boolean confirmBeforeVoid(Table table) {
+        getCs().printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
+        if (getCs().getString("Confirm void?").equalsIgnoreCase("Y")) {
+            if (voidOrder(table)) {
+                return true;
+            }
+        } else {
+            getCs().clearCmd();
+            System.out.println("Void operation aborted.");
+        }
+
+        return false;
+    }
+
+    private void printBill() {
+        /*
+        List<Table> activeTableList = getActiveTables();
+        List<String> nameList = new ArrayList<>();
+
+        for (Table table : activeTableList) {
+            nameList.add("Table " + table.getId());
+        }
+
+
+        int tableIndex = getCs().printChoices("Select a table", "Index // Active Tables", nameList, new String[]{"Go back"}) - 1;
+        if (tableIndex == -2) {
+            return;
+        }
+
+        Table table = activeTableList.get(tableIndex);
+        for (RestaurantData o : getRestaurant().getData(DataType.ORDER)) {
+            if (o.getId() == table.getId()) {
+                if (o instanceof Order) {
+                    List<String> invoice = ((Order) o).toInvoiceString();
+                    String total = invoice.get(invoice.size() - 1);
+                    invoice.remove(invoice.size() - 1);
+
+                    //getCs().printTitle("Invoice for Table " + table.getId(), true);
+                    //getCs().printTable(Collections.singletonList(invoice.get(0)), false, false, false, false , true);
+                    //getCs().printDivider(' ');
+
+                    invoice.remove(0);
+                    invoice.add(0, "QTY // ITEM DESCRIPTION // TOTAL");
+                    //getCs().printTable(invoice, false, false, false, false, false);
+                    //getCs().printDivider('-');
+
+                    invoice = new ArrayList<>(Collections.singletonList(total));
+                    invoice.add(0, "TOTAL AMOUNT DESCRIPTION // TOTAL");
+                    //getCs().printTable(invoice, false, false, false, false , false);
+                    //getCs().printDivider('=');
+                    o.toFileString();
+
+                    try {
+                        getRestaurant().remove(o);
+                        table.clear();
+                        getRestaurant().update(table);
+                        return;
+                    } catch (IOException | Restaurant.FileIDMismatchException e) {
+                        System.out.print("Failed to clear table: " + e.getMessage());
+                    }
+                }
+            }
+        }*/
     }
 }

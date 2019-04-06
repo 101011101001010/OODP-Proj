@@ -2,7 +2,6 @@ package client;
 
 import enums.DataType;
 import menu.MenuManager;
-import order.OrderManager;
 import staff.StaffManager;
 import tables.TableManager;
 import tools.ConsoleHelper;
@@ -32,7 +31,6 @@ public class Main {
 
     private void mapManagers() throws IOException {
         map(new MenuManager(restaurant));
-        map(new OrderManager(restaurant));
         map(new TableManager(restaurant));
         map(new StaffManager(restaurant));
     }
@@ -40,6 +38,7 @@ public class Main {
     private void start() {
         final ConsoleHelper cs = new ConsoleHelper();
         int staffIndex = staffLogin(cs);
+        cs.clearCmd();
 
         while (staffIndex != 0) {
             try {
@@ -50,6 +49,7 @@ public class Main {
                     return;
                 }
 
+                cs.clearCmd();
                 staffIndex = staffLogin(cs);
             } catch (RuntimeException e) {
                 Logger.getAnonymousLogger().log(Level.WARNING, "An unexpected exception has occurred: " + e.getMessage());
@@ -104,7 +104,7 @@ public class Main {
     private void checkDataTypeExists() {
         for (DataType dataType : DataType.values()) {
             if (!restaurant.checkDataTypeExists(dataType)) {
-                Log.warning("No class registered for data type: " + dataType);
+                Log.warning(this, "No class registered for data type: " + dataType);
             }
         }
     }

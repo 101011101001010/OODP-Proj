@@ -1,7 +1,6 @@
 package tables;
 
 import client.RestaurantData;
-import order.Order;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table extends RestaurantData {
+    private int tableId;
     private int capacity;
     private boolean occupied;
     private boolean reserved;
@@ -17,6 +17,7 @@ public class Table extends RestaurantData {
 
     public Table(int tableId, int capacity) {
         super(tableId);
+        this.tableId = tableId;
         this.capacity = capacity;
         this.occupied = false;
         this.reserved = false;
@@ -108,13 +109,14 @@ public class Table extends RestaurantData {
         reservationList.add(new Reservation(contact, name, date, pax));
     }
 
-    public class Reservation {
+    public class Reservation extends RestaurantData {
         private int contact;
         private String name;
         private LocalDateTime date;
         private int pax;
 
         public Reservation(int contact, String name, LocalDateTime date, int pax) {
+            super(tableId);
             this.contact = contact;
             this.name = name;
             this.date = date;
@@ -142,9 +144,14 @@ public class Table extends RestaurantData {
             return "Reservation date :" + date.format(format) + ", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
         }
 
-        public String toPrintString() {
+        public String toFileString() {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
             return getId() + " // " + contact + " // " + name + " // " + date.format(format) + " // " + pax;
+        }
+
+        @Override
+        public String toDisplayString() {
+            return null;
         }
     }
 }

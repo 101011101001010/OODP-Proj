@@ -1,4 +1,4 @@
-package order;
+package tables;
 
 import menu.MenuItem;
 
@@ -23,6 +23,10 @@ public class OrderItem {
 
 	public MenuItem getItem() {
 		return item;
+	}
+
+	public void updateCount(int count) {
+		this.count += count;
 	}
 
 	public int getCount() {

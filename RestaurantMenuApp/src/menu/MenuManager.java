@@ -63,7 +63,7 @@ public class MenuManager extends DataManager {
         getRestaurant().bulkSave(DataType.PROMO_PACKAGE);
     }
 
-    private Set<String> getAlaCarteCategories() {
+    public Set<String> getAlaCarteCategories() {
         final Set<String> ret = new TreeSet<>();
         getRestaurant().getData(DataType.ALA_CARTE_ITEM).stream().filter(data -> data instanceof AlaCarteItem).forEach(data -> ret.add(((AlaCarteItem) data).getCategory()));
         return ret;
@@ -85,7 +85,7 @@ public class MenuManager extends DataManager {
         return promoPackageList.stream().map(PromotionPackage::toDisplayString).collect(Collectors.toList());
     }
 
-    private List<String> getItemNames(DataType dataType) {
+    public List<String> getItemNames(DataType dataType) {
         final List<String> ret = new ArrayList<>();
 
         if (dataType.equals(DataType.ALA_CARTE_ITEM)) {
@@ -213,6 +213,7 @@ public class MenuManager extends DataManager {
         final Set<String> categoryList = getAlaCarteCategories();
         List<String> displayList = new ArrayList<>();
 
+        getCs().clearCmd();
         if (categoryList.size() == 0) {
             displayList.add("There is no item on the menu.");
             getCs().printTable("Ala-Carte Items", "", displayList, true);
@@ -238,6 +239,7 @@ public class MenuManager extends DataManager {
         displayList = getPromoPackageDisplayList();
         getCs().printTable("Promotion Packages", "", displayList, false);
         getCs().getInt("Enter 0 to go back", 0, 0);
+        getCs().clearCmd();
     }
 
     private void addMenuItem(DataType dataType) {
@@ -253,6 +255,7 @@ public class MenuManager extends DataManager {
             final String category = getCs().getString("Enter item category");
 
             if (addNewItem(name, price, category)) {
+                getCs().clearCmd();
                 System.out.println("Item has been added successfully.");
             }
         } else {
@@ -283,6 +286,7 @@ public class MenuManager extends DataManager {
             }
 
             if (addNewItem(name, alaCarteItemIndices)) {
+                getCs().clearCmd();
                 System.out.println("Item has been added successfully.");
             }
         }
@@ -323,8 +327,10 @@ public class MenuManager extends DataManager {
             }
 
             if (dataType.equals(DataType.ALA_CARTE_ITEM) && updateItem(itemIndex, (action == 1) ? input : "", null, (action == 3) ? input : "")) {
+                getCs().clearCmd();
                 System.out.println("Item has been updated successfully.");
             } else if (dataType.equals(DataType.PROMO_PACKAGE) && updateItem(itemIndex, input)) {
+                getCs().clearCmd();
                 System.out.println("Item has been updated successfully.");
             }
         }
@@ -333,6 +339,7 @@ public class MenuManager extends DataManager {
             final BigDecimal price = new BigDecimal(getCs().getDouble("Enter the new price"));
 
             if (updateItem(itemIndex, "", price, "")) {
+                getCs().clearCmd();
                 System.out.println("Item has been updated successfully.");
             }
         }
@@ -341,9 +348,11 @@ public class MenuManager extends DataManager {
             getCs().printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
             if (getCs().getString("Confirm remove?").equalsIgnoreCase("Y")) {
                 if (removeItem(dataType, itemIndex)) {
+                    getCs().clearCmd();
                     System.out.println("Item has been removed successfully.");
                 }
             } else {
+                getCs().clearCmd();
                 System.out.println("Remove operation aborted.");
             }
         }

@@ -3,10 +3,7 @@ package tools;
 import enums.DataType;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +24,12 @@ public class FileIO {
             if (!Files.exists(path)) {
                 Files.createFile(path);
             }
+        }
+
+        path = Paths.get(FILE_DIR + "log" + FILE_EXT);
+
+        if (!Files.exists(path)) {
+            Files.createFile(path);
         }
     }
 
@@ -57,5 +60,15 @@ public class FileIO {
     public void clearFile(DataType dataType) throws IOException {
         Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
         Files.write(filePath, new ArrayList<String>());
+    }
+
+    void log(String text) {
+        try {
+            text += "\n";
+            Path filePath = Paths.get(FILE_DIR + "log" + FILE_EXT);
+            Files.write(filePath, text.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            Log.notice("Failed to log to file.");
+        }
     }
 }
