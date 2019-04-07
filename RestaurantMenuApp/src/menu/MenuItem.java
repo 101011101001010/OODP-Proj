@@ -1,6 +1,6 @@
 package menu;
 
-import client.RestaurantData;
+import core.RestaurantData;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -39,4 +39,6 @@ public class MenuItem extends RestaurantData {
     public String toDisplayString() {
         return (name + " // " + price);
     }
+
+
 }

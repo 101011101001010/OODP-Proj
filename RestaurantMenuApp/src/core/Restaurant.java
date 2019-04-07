@@ -1,8 +1,8 @@
-package client;
+package core;
 
 import enums.DataType;
+import tools.ConsolePrinter;
 import tools.FileIO;
-import tools.Log;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class Restaurant {
         List<X> dataList = (List<X>) dataTypeListMap.getOrDefault(dataType, null);
 
         if (dataList == null) {
-            Log.error("Data list is null for " + dataType + "!");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Data list is null for " + dataType + "!");
             return;
         }
 
@@ -55,7 +55,7 @@ public class Restaurant {
         final List<X> dataList = (List<X>) dataTypeListMap.getOrDefault(dataType, null);
 
         if (dataList == null) {
-            Log.error("Data list is null for " + dataType + "!");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Data list is null for " + dataType + "!");
             return Optional.empty();
         }
 
@@ -65,7 +65,7 @@ public class Restaurant {
 
     public <X extends RestaurantData> boolean save(X data) {
         if (data == null) {
-            Log.warning("Passing a null object to save to restaurant.");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Passing a null object to save to restaurant.");
             return false;
         }
 
@@ -82,7 +82,7 @@ public class Restaurant {
             final int index = getFileLineFromId(dataType, data.getId());
 
             if (index == -1) {
-                Log.error("Failed to get index for " + dataType + " of ID " + data.getId() + ".");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Failed to get index for " + dataType + " of ID " + data.getId() + ".");
                 return false;
             }
 
@@ -90,13 +90,13 @@ public class Restaurant {
                 int fileId = Integer.parseInt(fileIO.read(dataType).get(index).split(" // ")[0]);
 
                 if (fileId != data.getId()) {
-                    Log.error("File ID mismatch for " + dataType + " at index " + index + ". (" + fileId + " VS " + data.getId() + ")");
+                    ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "File ID mismatch for " + dataType + " at index " + index + ". (" + fileId + " VS " + data.getId() + ")");
                     return false;
                 }
 
                 return fileIO.updateLine(dataType, index, data.toFileString());
             } catch (NumberFormatException e) {
-                Log.error("Invalid file data for " + dataType + " at index " + index + ".");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Invalid file data for " + dataType + " at index " + index + ".");
                 return false;
             }
         }
@@ -112,7 +112,7 @@ public class Restaurant {
 
     public <X extends RestaurantData> boolean load(X data) {
         if (data == null) {
-            Log.warning("Passing a null object to save to restaurant.");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Passing a null object to save to restaurant.");
             return false;
         }
 
@@ -120,7 +120,7 @@ public class Restaurant {
         final List<X> dataList = (List<X>) dataTypeListMap.getOrDefault(dataType, null);
 
         if (dataList == null) {
-            Log.error("Data list is null for " + dataType + "!");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Data list is null for " + dataType + "!");
             return false;
         }
 
@@ -133,7 +133,7 @@ public class Restaurant {
         final List<X> dataList = (List<X>) dataTypeListMap.getOrDefault(dataType, null);
 
         if (dataList == null) {
-            Log.error("Data list is null for " + dataType + "!");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Data list is null for " + dataType + "!");
             return false;
         }
 
@@ -150,7 +150,7 @@ public class Restaurant {
 
     public <X extends RestaurantData> boolean remove(X data) {
         if (data == null) {
-            Log.warning("Passing a null object to remove from restaurant.");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Passing a null object to remove from restaurant.");
             return false;
         }
 
@@ -158,7 +158,7 @@ public class Restaurant {
         final List<X> dataList = (List<X>) dataTypeListMap.getOrDefault(dataType, null);
 
         if (dataList == null) {
-            Log.error("Data list is null for " + dataType + "!");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Data list is null for " + dataType + "!");
             return false;
         }
 
@@ -168,7 +168,7 @@ public class Restaurant {
             final int index = getFileLineFromId(dataType, data.getId());
 
             if (index == -1) {
-                Log.error("Failed to get index for " + dataType + " of ID " + data.getId() + ".");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Failed to get index for " + dataType + " of ID " + data.getId() + ".");
                 return false;
             }
 
@@ -176,7 +176,7 @@ public class Restaurant {
                 int fileId = Integer.parseInt(fileIO.read(dataType).get(index).split(" // ")[0]);
 
                 if (fileId != data.getId()) {
-                    Log.error("File ID mismatch for " + dataType + " at index " + index + ". (" + fileId + " VS " + data.getId() + ")");
+                    ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "File ID mismatch for " + dataType + " at index " + index + ". (" + fileId + " VS " + data.getId() + ")");
                     return false;
                 }
 
@@ -187,11 +187,11 @@ public class Restaurant {
 
                 return false;
             } catch (NumberFormatException e) {
-                Log.error("Invalid file data for " + dataType + " at index " + index + ".");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Invalid file data for " + dataType + " at index " + index + ".");
                 return false;
             }
         } else {
-            Log.error("Item ID of " + dataType + " does not exist in restaurant.");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Item ID of " + dataType + " does not exist in restaurant.");
             return false;
         }
     }
@@ -208,7 +208,7 @@ public class Restaurant {
             return Optional.of(dataList.get().get(index));
         }
 
-        Log.error("Invalid index or data type for " + dataType + ": " + index + ".");
+        ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Invalid index or data type for " + dataType + ": " + index + ".");
         return Optional.empty();
     }
 
@@ -227,7 +227,7 @@ public class Restaurant {
                 index++;
             }
         } catch (NumberFormatException e) {
-            Log.error("Invalid file data for " + DataType.ALA_CARTE_ITEM.name() + ": " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data for " + DataType.ALA_CARTE_ITEM.name() + ": " + e.getMessage());
         }
 
         return -1;

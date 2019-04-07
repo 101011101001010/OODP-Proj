@@ -21,7 +21,7 @@ public class FileIO {
             try {
                 Files.createDirectories(dirPath);
             } catch (IOException e) {
-                Log.notice("Failed to create directories: " + e.getMessage());
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to create directories: " + e.getMessage());
                 return;
             }
         }
@@ -32,7 +32,7 @@ public class FileIO {
                 try {
                     Files.createFile(filePath);
                 } catch (IOException e) {
-                    Log.notice("Failed to create file for " + dataType.name() + ": " + e.getMessage());
+                    ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to create file for " + dataType.name() + ": " + e.getMessage());
                     return;
                 }
             }
@@ -44,7 +44,7 @@ public class FileIO {
             Path filePath = Paths.get(FILE_DIR + dataType.name().toLowerCase() + FILE_EXT);
             return Files.readAllLines(filePath);
         } catch (IOException e) {
-            Log.notice("File IO error when attempting to read file for " + dataType.name() + ": " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "File IO error when attempting to read file for " + dataType.name() + ": " + e.getMessage());
             return null;
         }
     }
@@ -56,7 +56,7 @@ public class FileIO {
             Files.write(filePath, text.getBytes(), StandardOpenOption.APPEND);
             return true;
         } catch (IOException e) {
-            Log.notice("File IO error when attempting to write to file for " + dataType.name() + ": " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "File IO error when attempting to write to file for " + dataType.name() + ": " + e.getMessage());
             return false;
         }
     }
@@ -69,7 +69,7 @@ public class FileIO {
             Files.write(filePath, fileData);
             return true;
         } catch (IOException e) {
-            Log.notice("File IO error when attempting to update line on file for " + dataType.name() + ": " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "File IO error when attempting to update line on file for " + dataType.name() + ": " + e.getMessage());
             return false;
         }
     }
@@ -82,7 +82,7 @@ public class FileIO {
             Files.write(filePath, fileData);
             return true;
         } catch (IOException e) {
-            Log.notice("File IO error when attempting to update line on file for " + dataType.name() + ": " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "File IO error when attempting to update line on file for " + dataType.name() + ": " + e.getMessage());
             return false;
         }
     }
@@ -94,7 +94,7 @@ public class FileIO {
             Files.write(filePath, fileData);
             return true;
         } catch (IOException e) {
-            Log.notice("File IO error when attempting to clear file for " + dataType.name() + ": " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "File IO error when attempting to clear file for " + dataType.name() + ": " + e.getMessage());
             return false;
         }
     }
@@ -103,22 +103,22 @@ public class FileIO {
         final String FILE_DIR = System.getProperty("user.dir") + "/DataStorage/";
         Path path = Paths.get(FILE_DIR);
 
-        if (Files.exists(path)) {
+        if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
             } catch (IOException e) {
-                Log.notice("Failed to create directory for log: " + e.getMessage());
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to create directory for log: " + e.getMessage());
                 return;
             }
         }
 
         path = Paths.get(FILE_DIR + "log.txt");
 
-        if (Files.exists(path)) {
+        if (!Files.exists(path)) {
             try {
                 Files.createFile(path);
             } catch (IOException e) {
-                Log.notice("Failed to create file for log: " + e.getMessage());
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to create file for log: " + e.getMessage());
                 return;
             }
         }
@@ -127,7 +127,7 @@ public class FileIO {
             text += "\n";
             Files.write(path, text.getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
-            Log.notice("Failed to log to file: " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to log to file: " + e.getMessage());
         }
     }
 }

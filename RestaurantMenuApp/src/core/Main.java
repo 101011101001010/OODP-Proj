@@ -1,12 +1,12 @@
-package client;
+package core;
 
 import enums.DataType;
 import menu.MenuManager;
 import staff.Staff;
 import staff.StaffManager;
 import tables.TableManager;
-import tools.ConsoleHelper;
-import tools.Log;
+import tools.ConsolePrinter;
+import tools.InputHelper;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
-    private Map<Integer, Class<? extends DataManager>> commandToClassMap;
+    private Map<Integer, Class<? extends RestaurantDataManager>> commandToClassMap;
     private Map<Integer, Integer> commandToIndexMap;
     private List<String[]> mainCliOptions;
     private Restaurant restaurant;
@@ -36,9 +36,9 @@ public class Main {
     }
 
     private void start() {
-        final ConsoleHelper cs = new ConsoleHelper();
-        int staffIndex = staffLogin(cs);
-        cs.clearCmd();
+        final InputHelper in = new InputHelper();
+        int staffIndex = staffLogin(in);
+        ConsolePrinter.clearCmd();
 
         while (staffIndex != 0) {
             Optional<Staff> oStaff = restaurant.getDataFromIndex(DataType.STAFF, staffIndex - 1);
@@ -48,46 +48,46 @@ public class Main {
             }
 
             restaurant.setSessionStaffId(oStaff.get().getId());
-            cs.sendWelcome(List.copyOf(mainCliOptions));
-            int command = executeCommand(cs, cs.getInt("Select a function", -1, commandIndex - 1));
+            ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
+            int command = executeCommand(in, in.getInt("Select a function", -1, commandIndex - 1));
 
             if (command == -1) {
                 return;
             }
 
-            cs.clearCmd();
-            staffIndex = staffLogin(cs);
+            ConsolePrinter.clearCmd();
+            staffIndex = staffLogin(in);
         }
     }
 
-    private int staffLogin(ConsoleHelper cs) {
+    private int staffLogin(InputHelper in) {
         final List<String> staffNameList = (new StaffManager(restaurant)).getStaffNames();
-        final List<String> choiceList = cs.formatChoiceList(staffNameList, Collections.singletonList("Exit Program"));
-        cs.printTable("", "Command // Staff Account", choiceList, true);
-        return cs.getInt("Select staff account to begin", 0, staffNameList.size());
+        final List<String> choiceList = ConsolePrinter.formatChoiceList(staffNameList, Collections.singletonList("Exit Program"));
+        ConsolePrinter.printTable("", "Command // Staff Account", choiceList, true);
+        return in.getInt("Select staff account to begin", 0, staffNameList.size());
     }
 
-    private int executeCommand(ConsoleHelper cs, int command) {
+    private int executeCommand(InputHelper in, int command) {
         while (command != 0 && command != -1) {
-            cs.clearCmd();
+            ConsolePrinter.clearCmd();
             Objects.requireNonNull(getManagerFromClassMap(command)).getOptionRunnables()[commandToIndexMap.get(command)].run();
-            cs.sendWelcome(List.copyOf(mainCliOptions));
-            command = cs.getInt("Select a function", -1, commandIndex - 1);
+            ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
+            command = in.getInt("Select a function", -1, commandIndex - 1);
         }
 
         return command;
     }
 
-    private DataManager getManagerFromClassMap(int command) {
+    private RestaurantDataManager getManagerFromClassMap(int command) {
         try {
             return commandToClassMap.get(command).getDeclaredConstructor(Restaurant.class).newInstance(restaurant);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            Log.error("Failed to get manager from class map: " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Failed to get manager from class map: " + e.getMessage());
             return null;
         }
     }
 
-    private void hookManagerToMain(DataManager manager) {
+    private void hookManagerToMain(RestaurantDataManager manager) {
         if (manager.getMainCLIOptions().length != manager.getOptionRunnables().length) {
             Logger.getAnonymousLogger().log(Level.WARNING, "CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
             return;
@@ -109,11 +109,11 @@ public class Main {
             main.hookManagers();
             main.start();
         } catch (RuntimeException e) {
-            Log.notice("Something unexpectedly went wrong: " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Something unexpectedly went wrong: " + e.getMessage());
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            Log.writeToFile("Something unexpectedly went wrong: " + e.getMessage() + "\n" + pw.toString() + "\n");
+            ConsolePrinter.logToFile("Something unexpectedly went wrong: " + e.getMessage() + "\n" + pw.toString() + "\n");
         }
     }
 }

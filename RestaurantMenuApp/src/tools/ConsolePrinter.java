@@ -1,75 +1,20 @@
 package tools;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ConsoleHelper {
-    private Scanner scanner;
-
-    public ConsoleHelper() {
-        this.scanner = new Scanner(System.in);
+public class ConsolePrinter {
+    public enum MessageType {
+        SUCCESS,
+        FAILED,
+        WARNING,
+        ERROR
     }
 
-    public int getInt(String message, int lowerBound, int upperBound) {
-
-        while (true) {
-            System.out.println();
-            System.out.print(message + ": ");
-            try {
-                int input = scanner.nextInt();
-                scanner.nextLine();
-
-                if (input >= lowerBound && input <= upperBound) {
-                    return input;
-                } else {
-                    System.out.println("Invalid input. Please try again.");
-                }
-            } catch (InputMismatchException e) {
-                scanner.nextLine();
-                System.out.println("Invalid input. Please try again.");
-            }
-        }
-    }
-
-    public double getDouble(String message, double... bounds) {
-        double upperBound = (bounds.length >= 1)? bounds[0] : 1000000;
-        double lowerBound = (bounds.length >= 2)? bounds[1] : 0;
-
-        while (true) {
-            System.out.println();
-            System.out.print(message + ": ");
-            try {
-                double input = scanner.nextDouble();
-                scanner.nextLine();
-
-                if (input >= lowerBound && input <= upperBound) {
-                    return input;
-                } else {
-                    System.out.println("ERROR: Invalid input. Please try again.");
-                }
-            } catch (InputMismatchException e) {
-                scanner.nextLine();
-                System.out.println("ERROR: Invalid input. Please try again.");
-            }
-        }
-    }
-
-    public String getString(String message) {
-        String input;
-        while (true) {
-            System.out.println();
-            System.out.print(message + ": ");
-
-            if (!(input = scanner.nextLine()).isBlank()) {
-                return input;
-            }
-
-            System.out.println("ERROR: Input cannot be blank.");
-        }
-    }
-
-    public void sendWelcome(List<String[]> mainCLIOptions) {
+    public static void sendWelcome(List<String[]> mainCLIOptions) {
         final List<String> optionsList = new ArrayList<>();
 
         for (String[] options : mainCLIOptions) {
@@ -83,7 +28,7 @@ public class ConsoleHelper {
         printTable("Scam Money Restaurant", "Command // Function", mainDisplay, true);
     }
 
-    public List<String> formatChoiceList(List<String> options, List<String> footerOptions) {
+    public static List<String> formatChoiceList(List<String> options, List<String> footerOptions) {
         if (options == null) {
             return null;
         }
@@ -113,21 +58,15 @@ public class ConsoleHelper {
         return mergedOptions;
     }
 
-    public void clearCmd() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException ignored) {}
-    }
-
-    public void printInstructions(List<String> instructionList) {
+    public static void printInstructions(List<String> instructionList) {
         printTable("", "", instructionList, false);
     }
 
-    public void printTable(String columnHeaders, List<String> stringList, boolean verticalDivider) {
+    public static void printTable(String columnHeaders, List<String> stringList, boolean verticalDivider) {
         printTable("", columnHeaders, stringList, verticalDivider);
     }
 
-    public void printTable(String title, String columnHeaders, List<String> stringList, boolean verticalDivider) {
+    public static void printTable(String title, String columnHeaders, List<String> stringList, boolean verticalDivider) {
         if (stringList == null || stringList.size() == 0) {
             return;
         }
@@ -222,7 +161,7 @@ public class ConsoleHelper {
         printDivider('=', totalLength);
     }
 
-    private List<Integer> calculateCellLengths(String title, List<String> stringList) {
+    private static List<Integer> calculateCellLengths(String title, List<String> stringList) {
         List<int[]> lengthPerRowList = stringList.stream().map(s -> s.split(" // ")).map(s -> Arrays.stream(s).mapToInt(String::length).toArray()).collect(Collectors.toList());
         int maxCellCount = lengthPerRowList.stream().mapToInt(v -> v.length).max().orElse(0);
         List<Integer> cellLengths = new ArrayList<>(Collections.nCopies(maxCellCount, 0));
@@ -269,7 +208,7 @@ public class ConsoleHelper {
         return cellLengths;
     }
 
-    private List<List<String>> processRowString(String[] rowString, List<Integer> cellLengths) {
+    private static List<List<String>> processRowString(String[] rowString, List<Integer> cellLengths) {
         final List<List<String>> ret = new ArrayList<>();
         int maxRowCount = 0;
 
@@ -304,7 +243,7 @@ public class ConsoleHelper {
         return ret;
     }
 
-    private List<String> processCellString(String cellString, int cellLength) {
+    private static List<String> processCellString(String cellString, int cellLength) {
         final List<String> cellWords = new ArrayList<>();
         Arrays.stream(cellString.trim().replace("\n", "\n\\\\").split("\n")).forEach(s -> cellWords.addAll(Arrays.asList(s.split(" "))));
         int trailSpace = 0;
@@ -340,7 +279,7 @@ public class ConsoleHelper {
         return ret;
     }
 
-    private List<String> subString(String s, int maxLength, int trailSpace) {
+    private static List<String> subString(String s, int maxLength, int trailSpace) {
         final List<String> ret = new ArrayList<>();
 
         if (s.length() <= maxLength) {
@@ -365,7 +304,7 @@ public class ConsoleHelper {
         }
     }
 
-    private void printTitle(String title, int length) {
+    private static void printTitle(String title, int length) {
         final int pad = Math.max(length - title.length(), 0);
         System.out.println();
         printDivider('=', length);
@@ -373,11 +312,11 @@ public class ConsoleHelper {
         printDivider('=', length);
     }
 
-    private void printDivider(char c, int length) {
+    private static void printDivider(char c, int length) {
         System.out.println("|" + (c + "").repeat(length + 4) + "|");
     }
 
-    private void printDivider(char c, List<Integer> cellLengths, boolean verticalDivider) {
+    private static void printDivider(char c, List<Integer> cellLengths, boolean verticalDivider) {
         System.out.print("|");
 
         for (int column = 0; column < cellLengths.size(); column++) {
@@ -390,5 +329,27 @@ public class ConsoleHelper {
         }
 
         System.out.println("|");
+    }
+
+    public static void clearCmd() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException ignored) {}
+    }
+
+    public static void printMessage(MessageType messageType, String message) {
+        clearCmd();
+        message = "\n\t[" + messageType.name() + "] " + message;
+        System.out.println(message);
+
+        if (!messageType.equals(MessageType.SUCCESS) && !messageType.equals(MessageType.FAILED)) {
+            logToFile(message);
+        }
+    }
+
+    public static void logToFile(String message) {
+        DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+        String dateTime = LocalDateTime.now().format(dateTimeFormat);
+        FileIO.logToFile(dateTime + ": " + message);
     }
 }

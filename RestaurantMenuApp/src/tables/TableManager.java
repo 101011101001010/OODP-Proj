@@ -1,16 +1,14 @@
 package tables;
 
 
-import client.DataManager;
-import client.Restaurant;
-import client.RestaurantData;
+import core.RestaurantDataManager;
+import core.Restaurant;
+import core.RestaurantData;
 import enums.DataType;
-import menu.AlaCarteItem;
 import menu.MenuItem;
 import menu.MenuManager;
-import menu.PromotionPackage;
+import tools.ConsolePrinter;
 import tools.FileIO;
-import tools.Log;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class TableManager extends DataManager {
+public class TableManager extends RestaurantDataManager {
 
     public TableManager(Restaurant restaurant) {
         super(restaurant);
@@ -52,8 +50,7 @@ public class TableManager extends DataManager {
                         return;
                     }
                 } catch (NumberFormatException e) {
-                    getCm().clearCmd();
-                    Log.warning("Invalid file data for detected for " + DataType.TABLE.name() + ": " + e.getMessage());
+                    ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data for detected for " + DataType.TABLE.name() + ": " + e.getMessage());
                 }
             }
         }
@@ -85,8 +82,7 @@ public class TableManager extends DataManager {
                 table.ifPresent(x -> x.attachOrder(order));
                 table.ifPresent(x -> getRestaurant().save(x));
             } catch (NumberFormatException e) {
-                getCm().clearCmd();
-                Log.warning("Invalid file data for detected for " + DataType.ORDER.name() + ": " + e.getMessage());
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data for detected for " + DataType.ORDER.name() + ": " + e.getMessage());
             }
         }
 
@@ -101,64 +97,9 @@ public class TableManager extends DataManager {
                 table.ifPresent(x -> x.addReservation(contact, name, date, pax));
                 table.ifPresent(x -> getRestaurant().save(x));
             } catch (NumberFormatException e) {
-                getCm().clearCmd();
-                Log.warning("Invalid file data for detected for " + DataType.RESERVATION.name() + ": " + e.getMessage());
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data for detected for " + DataType.RESERVATION.name() + ": " + e.getMessage());
             }
         }
-    }
-
-    private List<String> getAlaCarteDisplayList(String category) {
-        final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
-        return dataList.map(data -> data.stream().filter(x -> x.getCategory().equals(category)).sorted(Comparator.comparing(MenuItem::getName)).map(AlaCarteItem::getName).collect(Collectors.toList())).get();
-    }
-
-    private List<String> getPromoPackageDisplayList() {
-        final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
-        return dataList.map(data -> data.stream().sorted(Comparator.comparing(MenuItem::getName)).map(PromotionPackage::getName).collect(Collectors.toList())).get();
-    }
-
-    private List<String> getTableDisplayList(int sortOption) {
-        Comparator<Table> comparator;
-
-        switch (sortOption) {
-            case 2:
-                comparator = Comparator.comparing(Table::isOccupied);
-                break;
-            case 3:
-                comparator = Comparator.comparing(Table::isReserved);
-                break;
-            default:
-                comparator = Comparator.comparingInt(RestaurantData::getId);
-        }
-
-        final Optional<List<Table>> dataList = getRestaurant().getDataList(DataType.TABLE);
-        return dataList.map(data -> data.stream().sorted(comparator).map(Table::toDisplayString).collect(Collectors.toList())).get();
-    }
-
-    private List<String> getOrderDisplayList(Table table) {
-        final Optional<List<Order>> dataList = getRestaurant().getDataList(DataType.ORDER);
-        return dataList.map(data -> data.stream().filter(x -> x.getId() == table.getId()).sorted(Comparator.comparing(RestaurantData::getId)).map(Order::toDisplayString).collect(Collectors.toList())).get();
-    }
-
-    private List<Table> getActiveTables() {
-        final Optional<List<Table>> dataList = getRestaurant().getDataList(DataType.TABLE);
-        return dataList.map(data -> data.stream().filter(Table::isOccupied).sorted(Comparator.comparing(RestaurantData::getId)).collect(Collectors.toList())).get();
-    }
-
-    private Optional<Table> getAvailableTable(int pax) {
-        if (pax == 5) {
-            pax += 1;
-        }
-
-        final int fPax = pax;
-        final Optional<List<Table>> dataList = getRestaurant().getDataList(DataType.TABLE);
-        final List<Table> emptyTableList =  dataList.map(data -> data.stream().filter(x -> !x.isOccupied()).sorted(Comparator.comparing(RestaurantData::getId)).collect(Collectors.toList())).get();
-        return (emptyTableList.stream().filter(table -> table.getCapacity() >= fPax && table.getCapacity() <= (fPax + 2)).findFirst());
-    }
-
-    private LocalDateTime formatting(String datetime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
-        return LocalDateTime.parse(datetime, formatter);
     }
 
     @Override
@@ -180,17 +121,17 @@ public class TableManager extends DataManager {
     }
 
     private void f() {
-        Log.notice("Not available. Code re-writing in progress.");
+        ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Not available. Code re-writing in progress.");
     }
 
     private void viewTable() {
         int sortOption = 1;
         final List<String> sortOptions = Arrays.asList("Sort by ID", "Sort by occupancy", "Sort by reservation");
-        final List<String> options = getCm().formatChoiceList(sortOptions, null);
+        final List<String> options = ConsolePrinter.formatChoiceList(sortOptions, null);
         List<String> displayList;
 
         do {
-            getCm().clearCmd();
+            ConsolePrinter.clearCmd();
             displayList = getTableDisplayList(sortOption);
             int itemCount = displayList.size();
             int startIndex = (int) Math.ceil(1.0 * displayList.size() / 2);
@@ -204,28 +145,35 @@ public class TableManager extends DataManager {
             }
 
             final String headers = (itemCount > 1) ? "ID // Occupied // Reserved // ID // Occupied // Reserved" : "ID // Occupied // Reserved";
-            getCm().printTable("Table Status", headers, displayList, true);
-            getCm().printTable("Command // Sort Option", options, true);
-        } while ((sortOption = getCm().getInt("Select a sort option", 0, sortOptions.size())) != 0);
-        getCm().clearCmd();
+            ConsolePrinter.printTable("Table Status", headers, displayList, true);
+            ConsolePrinter.printTable("Command // Sort Option", options, true);
+        } while ((sortOption = getInputHelper().getInt("Select a sort option", 0, sortOptions.size())) != 0);
+        ConsolePrinter.clearCmd();
     }
 
     private void viewOrder(Table table) {
-        String headers = "Table // Order ID // Staff ID // Order Details";
-        List<String> displayList = getOrderDisplayList(table);
-        getCm().printTable(headers, displayList, true);
-        getCm().getInt("Enter 0 to go back", 0, 0);
-        getCm().clearCmd();
+        final Optional<List<Order>> dataList = getRestaurant().getDataList(DataType.ORDER);
+        List<String> displayList =  dataList.map(data -> data.stream().filter(x -> x.getId() == table.getId()).map(Order::toDisplayString).collect(Collectors.toList())).get();
+        ConsolePrinter.printTable("Table // Order ID // Staff ID // Order Details", displayList, true);
+        getInputHelper().getInt("Enter 0 to go back", 0, 0);
+        ConsolePrinter.clearCmd();
     }
 
     private void createNewOrder() {
-        getCm().printInstructions(Collections.singletonList("Enter number of pax and an empty table will be automatically assigned."));
-        final int pax = getCm().getInt("Enter number of pax", 1, 10);
-        final Optional<Table> oTable = getAvailableTable(pax);
+        ConsolePrinter.printInstructions(Collections.singletonList("Enter number of pax and an empty table will be automatically assigned."));
+        int pax = getInputHelper().getInt("Enter number of pax", 1, 10);
+
+        if (pax == 5) {
+            pax += 1;
+        }
+
+        final int fPax = pax;
+        final Optional<List<Table>> dataList = getRestaurant().getDataList(DataType.TABLE);
+        final List<Table> emptyTableList =  dataList.map(data -> data.stream().filter(x -> !x.isOccupied()).collect(Collectors.toList())).get();
+        final Optional<Table> oTable = (emptyTableList.stream().filter(table -> table.getCapacity() >= fPax && table.getCapacity() <= (fPax + 2)).findFirst());
 
         if (oTable.isEmpty()) {
-            getCm().clearCmd();
-            System.out.println("There is no table available for " + pax + " " + ((pax == 1) ? "person" : "people") + ".");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "There is no table available for " + pax + " " + ((pax == 1) ? "person" : "people") + ".");
             return;
         }
 
@@ -235,19 +183,21 @@ public class TableManager extends DataManager {
         Order order = table.attachOrder(orderId, getRestaurant().getSessionStaffId());
 
         if (getRestaurant().save(order) && getRestaurant().save(table)) {
-            getCm().clearCmd();
-            System.out.println("Order " + orderId + " has been created successfully.");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Order " + orderId + " has been created successfully.");
         }
     }
 
     private void manageOrders() {
-        final List<Table> activeTableList = getActiveTables();
+        final Optional<List<Table>> dataList = getRestaurant().getDataList(DataType.TABLE);
+        final List<Table> activeTableList =  dataList.map(data -> data.stream().filter(Table::isOccupied).sorted(Comparator.comparing(RestaurantData::getId)).collect(Collectors.toList())).get();
         List<String> displayList = activeTableList.stream().map(table -> "Table: " + table.getId() + ": Order " + table.getOrder().getOrderId()).collect(Collectors.toList());
-        List<String> choiceList = getCm().formatChoiceList(displayList, null);
-        getCm().printTable("Manage Orders", "Command // Active Tables", choiceList, true);
-        int tableIndex = getCm().getInt("Select an order to manage", 0, displayList.size()) - 1;
+        List<String> choiceList = ConsolePrinter.formatChoiceList(displayList, null);
+
+        ConsolePrinter.printTable("Manage Orders", "Command // Active Tables", choiceList, true);
+        int tableIndex = getInputHelper().getInt("Select an order to manage", 0, displayList.size()) - 1;
 
         if (tableIndex == -1) {
+            ConsolePrinter.clearCmd();
             return;
         }
 
@@ -255,11 +205,12 @@ public class TableManager extends DataManager {
 
         while (true) {
             final List<String> actions = Arrays.asList("View order", "Add item to order", "Remove item from order", "Void order", "Print bill");
-            choiceList = getCm().formatChoiceList(actions, null);
-            getCm().printTable("Command // Action", choiceList, true);
-            final int action = getCm().getInt("Select an action", 0, actions.size());
+            choiceList = ConsolePrinter.formatChoiceList(actions, null);
+            ConsolePrinter.printTable("Command // Action", choiceList, true);
+            final int action = getInputHelper().getInt("Select an action", 0, actions.size());
 
             if (action == 0) {
+                ConsolePrinter.clearCmd();
                 return;
             }
 
@@ -268,51 +219,50 @@ public class TableManager extends DataManager {
             }
 
             if (action == 2 && (addItemToOrder(table))) {
-                getCm().clearCmd();
-                System.out.println("Item has been added to order successfully.");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been added to order successfully.");
             }
 
             if (action == 3 && (removeItemsFromOrder(table))) {
-                getCm().clearCmd();
-                System.out.println("Item has been remove from order successfully.");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been remove from order successfully.");
             }
 
             if (action == 4 && voidOrder(table)) {
-                getCm().clearCmd();
-                System.out.println("Order has been voided successfully.");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Order has been voided successfully.");
                 return;
             }
 
             if (action == 5) {
+                ConsolePrinter.clearCmd();
                 f();
             }
         }
     }
 
     private boolean addItemToOrder(Table table) {
-        getCm().clearCmd();
-        MenuManager manager = new MenuManager(getRestaurant());
+        final MenuManager manager = new MenuManager(getRestaurant());
         final Set<String> categoryList = manager.getAlaCarteCategories();
-        List<String> displayList = new ArrayList<>();
-        int itemCount = 0;
-        int trashCount = 0;
+        final List<String> displayList = new ArrayList<>();
 
         for (String category : categoryList) {
             displayList.add("\\SUB // " + category);
-            displayList.addAll(getAlaCarteDisplayList(category));
+            displayList.addAll(manager.getAlaCarteItemNamesForCategory(category));
             displayList.add("---");
-            trashCount += 2;
-            itemCount = displayList.size() - trashCount;
         }
 
-        System.out.println(itemCount);
         displayList.add("\\SUB // " + "Promotion Packages");
-        displayList.addAll(getPromoPackageDisplayList());
-        List<String> choiceList = getCm().formatChoiceList(displayList, null);
-        getCm().printTable("Command // Menu Item", choiceList, true);
+        displayList.addAll(manager.getItemNames(DataType.PROMO_PACKAGE));
 
-        int itemIndex = getCm().getInt("Select an item to add to order", 0, displayList.size());
-        int count = getCm().getInt("Enter the amount to add", 1, 100);
+        List<String> choiceList = ConsolePrinter.formatChoiceList(displayList, null);
+        ConsolePrinter.printTable("Command // Menu Item", choiceList, true);
+        int itemIndex = getInputHelper().getInt("Select an item to add to order", 0, displayList.size());
+
+        if (itemIndex == 0) {
+            ConsolePrinter.clearCmd();
+            return false;
+        }
+
+        int count = getInputHelper().getInt("Enter the amount to add", 1, 100);
+        int itemCount = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM).map(List::size).get();
         DataType dataType = (itemIndex <= itemCount)? DataType.ALA_CARTE_ITEM : DataType.PROMO_PACKAGE;
 
         if (dataType.equals(DataType.PROMO_PACKAGE)) {
@@ -340,16 +290,21 @@ public class TableManager extends DataManager {
             index++;
         }
 
-        List<String> choiceList = getCm().formatChoiceList(displayList, null);
-        getCm().printTable("Command // Menu Item", choiceList, true);
-        int itemIndex = getCm().getInt("Select the item to remove to order", 0, displayList.size());
+        List<String> choiceList = ConsolePrinter.formatChoiceList(displayList, null);
+        ConsolePrinter.printTable("Command // Menu Item", choiceList, true);
+        int itemIndex = getInputHelper().getInt("Select the item to remove to order", 0, displayList.size());
+
+        if (itemIndex == 0) {
+            ConsolePrinter.clearCmd();
+            return false;
+        }
 
         OrderItem item = indexItemMap.get(itemIndex);
-        getCm().printInstructions(Arrays.asList("Amount in order: " + item.getCount(), "Enter 0 to go back."));
-        int removeCount = getCm().getInt("Enter the amount to remove", 0, item.getCount());
+        ConsolePrinter.printInstructions(Arrays.asList("Amount in order: " + item.getCount(), "Enter 0 to go back."));
+        int removeCount = getInputHelper().getInt("Enter the amount to remove", 0, item.getCount());
 
         if (removeCount == 0) {
-            System.out.println("Remove operation aborted.");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Remove operation aborted.");
             return false;
         }
 
@@ -368,9 +323,9 @@ public class TableManager extends DataManager {
     }
 
     private boolean voidOrder(Table table) {
-        getCm().printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
+        ConsolePrinter.printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
 
-        if (getCm().getString("Confirm void?").equalsIgnoreCase("Y")) {
+        if (getInputHelper().getString("Confirm void?").equalsIgnoreCase("Y")) {
             Order order = table.getOrder();
             table.clear();
             return (getRestaurant().remove(order) && getRestaurant().save(table));
@@ -390,7 +345,7 @@ public class TableManager extends DataManager {
         }
 
 
-        int tableIndex = getCm().printChoices("Select a table", "Index // Active Tables", nameList, new String[]{"Go back"}) - 1;
+        int tableIndex = ConsolePrinter.printChoices("Select a table", "Index // Active Tables", nameList, new String[]{"Go back"}) - 1;
         if (tableIndex == -2) {
             return;
         }
@@ -403,19 +358,19 @@ public class TableManager extends DataManager {
                     String total = invoice.get(invoice.size() - 1);
                     invoice.remove(invoice.size() - 1);
 
-                    //getCm().printTitle("Invoice for Table " + table.getId(), true);
-                    //getCm().printTable(Collections.singletonList(invoice.get(0)), false, false, false, false , true);
-                    //getCm().printDivider(' ');
+                    //ConsolePrinter.printTitle("Invoice for Table " + table.getId(), true);
+                    //ConsolePrinter.printTable(Collections.singletonList(invoice.get(0)), false, false, false, false , true);
+                    //ConsolePrinter.printDivider(' ');
 
                     invoice.remove(0);
                     invoice.add(0, "QTY // ITEM DESCRIPTION // TOTAL");
-                    //getCm().printTable(invoice, false, false, false, false, false);
-                    //getCm().printDivider('-');
+                    //ConsolePrinter.printTable(invoice, false, false, false, false, false);
+                    //ConsolePrinter.printDivider('-');
 
                     invoice = new ArrayList<>(Collections.singletonList(total));
                     invoice.add(0, "TOTAL AMOUNT DESCRIPTION // TOTAL");
-                    //getCm().printTable(invoice, false, false, false, false , false);
-                    //getCm().printDivider('=');
+                    //ConsolePrinter.printTable(invoice, false, false, false, false , false);
+                    //ConsolePrinter.printDivider('=');
                     o.toFileString();
 
                     try {
@@ -431,4 +386,27 @@ public class TableManager extends DataManager {
         }
     }
     */
+
+    private List<String> getTableDisplayList(int sortOption) {
+        Comparator<Table> comparator;
+
+        switch (sortOption) {
+            case 2:
+                comparator = Comparator.comparing(Table::isOccupied);
+                break;
+            case 3:
+                comparator = Comparator.comparing(Table::isReserved);
+                break;
+            default:
+                comparator = Comparator.comparingInt(RestaurantData::getId);
+        }
+
+        final Optional<List<Table>> dataList = getRestaurant().getDataList(DataType.TABLE);
+        return dataList.map(data -> data.stream().sorted(comparator).map(Table::toDisplayString).collect(Collectors.toList())).get();
+    }
+
+    private LocalDateTime formatting(String datetime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
+        return LocalDateTime.parse(datetime, formatter);
+    }
 }

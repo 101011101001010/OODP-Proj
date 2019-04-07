@@ -1,22 +1,22 @@
-package client;
+package core;
 
-import tools.ConsoleHelper;
+import tools.InputHelper;
 
-public abstract class DataManager {
+public abstract class RestaurantDataManager {
     private Restaurant restaurant;
-    private ConsoleHelper cm;
+    private InputHelper in;
 
-    public DataManager(Restaurant restaurant) {
+    public RestaurantDataManager(Restaurant restaurant) {
         this.restaurant = restaurant;
-        this.cm = new ConsoleHelper();
+        this.in = new InputHelper();
     }
 
     protected Restaurant getRestaurant() {
         return restaurant;
     }
 
-    protected ConsoleHelper getCm() {
-        return cm;
+    protected InputHelper getInputHelper() {
+        return in;
     }
 
     public abstract void init();

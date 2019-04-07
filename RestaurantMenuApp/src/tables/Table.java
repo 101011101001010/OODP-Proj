@@ -1,6 +1,6 @@
 package tables;
 
-import client.RestaurantData;
+import core.RestaurantData;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

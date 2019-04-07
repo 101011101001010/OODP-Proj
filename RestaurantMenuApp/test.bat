@@ -1,1 +1,1 @@
-java -jar test.jar
+java -jar OODP-Proj_RestaurantMenuApp.jar

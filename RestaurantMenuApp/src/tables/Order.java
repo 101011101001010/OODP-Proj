@@ -1,6 +1,6 @@
 package tables;
 
-import client.RestaurantData;
+import core.RestaurantData;
 import menu.MenuItem;
 
 import java.math.BigDecimal;

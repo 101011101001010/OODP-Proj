@@ -1,6 +1,6 @@
 package staff;
 
-import client.RestaurantData;
+import core.RestaurantData;
 
 public class Staff extends RestaurantData {
     private String name;

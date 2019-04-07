@@ -1,17 +1,17 @@
 package menu;
 
-import client.DataManager;
-import client.Restaurant;
+import core.RestaurantDataManager;
+import core.Restaurant;
 import enums.DataType;
+import tools.ConsolePrinter;
 import tools.FileIO;
-import tools.Log;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MenuManager extends DataManager {
+public class MenuManager extends RestaurantDataManager {
 
     public MenuManager(Restaurant restaurant) {
         super(restaurant);
@@ -39,8 +39,7 @@ public class MenuManager extends DataManager {
                 final String category = data[3];
                 getRestaurant().load(new AlaCarteItem(id, name, price, category));
             } catch (NumberFormatException e) {
-                getCm().clearCmd();
-                Log.warning("Invalid file data for detected for " + DataType.ALA_CARTE_ITEM.name() + ": " + e.getMessage());
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data for detected for " + DataType.ALA_CARTE_ITEM.name() + ": " + e.getMessage());
             }
         }
 
@@ -59,50 +58,12 @@ public class MenuManager extends DataManager {
                 final BigDecimal price = new BigDecimal(data[2]);
                 getRestaurant().load(new PromotionPackage(id, name, price, itemList));
             } catch (NumberFormatException e) {
-                getCm().clearCmd();
-                Log.warning("Invalid file data for detected for " + DataType.PROMO_PACKAGE.name() + ": " + e.getMessage());
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data for detected for " + DataType.PROMO_PACKAGE.name() + ": " + e.getMessage());
             }
         }
 
         getRestaurant().bulkSave(DataType.ALA_CARTE_ITEM);
         getRestaurant().bulkSave(DataType.PROMO_PACKAGE);
-    }
-
-    public Set<String> getAlaCarteCategories() {
-        final Set<String> ret = new TreeSet<>();
-        final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
-        dataList.ifPresent(data -> data.forEach(x -> ret.add(x.getCategory())));
-        return ret;
-    }
-
-    private List<String> getAlaCarteDisplayList(String category) {
-        final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
-        return dataList.map(data -> data.stream().filter(x -> x.getCategory().equals(category)).sorted(Comparator.comparing(MenuItem::getName)).map(AlaCarteItem::toDisplayString).collect(Collectors.toList())).get();
-    }
-
-    private List<String> getPromoPackageDisplayList() {
-        final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
-        return dataList.map(data -> data.stream().sorted(Comparator.comparing(MenuItem::getName)).map(PromotionPackage::toDisplayString).collect(Collectors.toList())).get();
-    }
-
-    private List<String> getItemNames(DataType dataType) {
-        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(dataType);
-        return dataList.map(data -> data.stream().sorted(Comparator.comparing(MenuItem::getName)).map(MenuItem::getName).collect(Collectors.toList())).get();
-    }
-
-    private boolean ifNameExists(DataType dataType, String name) {
-        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(dataType);
-        return dataList.map(data -> data.stream().anyMatch(x -> x.getName().equalsIgnoreCase(name))).get();
-    }
-
-    private void refreshPromoPrices() {
-        final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
-        dataList.ifPresent(data -> data.forEach(PromotionPackage::refreshPrice));
-    }
-
-    private boolean isItemInPackages(AlaCarteItem item) {
-        final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
-        return dataList.map(data -> data.stream().anyMatch(x -> x.getAlaCarteItems().stream().anyMatch(y -> y.getId() == item.getId()))).get();
     }
 
     @Override
@@ -129,43 +90,50 @@ public class MenuManager extends DataManager {
 
     private void viewMenu() {
         final Set<String> categoryList = getAlaCarteCategories();
-        List<String> displayList = new ArrayList<>();
-        getCm().clearCmd();
+        final List<String> displayList = new ArrayList<>();
 
         for (String category : categoryList) {
             displayList.add("\\SUB" + category);
-            displayList.addAll(getAlaCarteDisplayList(category));
+            final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
+            final List<String> tempList = dataList.map(data -> data.stream().filter(x -> x.getCategory().equals(category)).map(AlaCarteItem::toDisplayString).collect(Collectors.toList())).get();
+            displayList.addAll(tempList);
             displayList.add("---");
         }
 
         displayList.add("\\SUB" + "Promotion Packages");
-        displayList.addAll(getPromoPackageDisplayList());
-        getCm().printTable("View Menu Items", "", displayList, false);
-        getCm().getInt("Enter 0 to go back", 0, 0);
-        getCm().clearCmd();
+        final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
+        final List<String> tempList = dataList.map(data -> data.stream().map(PromotionPackage::toDisplayString).collect(Collectors.toList())).get();
+        displayList.addAll(tempList);
+
+        ConsolePrinter.clearCmd();
+        ConsolePrinter.printTable("View Menu Items", "", displayList, false);
+        getInputHelper().getInt("Enter 0 to go back", 0, 0);
+        ConsolePrinter.clearCmd();
     }
 
     private void addMenuItem(DataType dataType) {
-        getCm().printInstructions(Collections.singletonList("Enter -back in item name to go back."));
-        final String name = getCm().getString("Enter item name");
+        ConsolePrinter.printInstructions(Collections.singletonList("Enter -back in item name to go back."));
+        final String name = getInputHelper().getString("Enter item name");
 
         if (name.equalsIgnoreCase("-back")) {
+            ConsolePrinter.clearCmd();
             return;
         }
 
         if (dataType.equals(DataType.ALA_CARTE_ITEM) && (addAlaCarteItem(name)) || dataType.equals(DataType.PROMO_PACKAGE) && (addPromoPackage(name))) {
-            getCm().clearCmd();
-            System.out.println("Item has been added successfully.");
+            ConsolePrinter.clearCmd();
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Item has been added successfully.");
         }
     }
 
     private boolean addAlaCarteItem(String name) {
-        final BigDecimal price = new BigDecimal(getCm().getDouble("Enter item price"));
-        final String category = getCm().getString("Enter item category");
+        final BigDecimal price = new BigDecimal(getInputHelper().getDouble("Enter item price"));
+        final String category = getInputHelper().getString("Enter item category");
+        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
+        boolean isNameExists = dataList.map(data -> data.stream().anyMatch(x -> x.getName().equalsIgnoreCase(name))).get();
 
-        if (ifNameExists(DataType.ALA_CARTE_ITEM, name)) {
-            getCm().clearCmd();
-            Log.notice("Failed to add item as it already exists on the menu.");
+        if (isNameExists) {
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to add item as it already exists on the menu.");
             return false;
         }
 
@@ -176,8 +144,8 @@ public class MenuManager extends DataManager {
 
     private boolean addPromoPackage(String name) {
         final List<String> nameList = getItemNames(DataType.ALA_CARTE_ITEM);
-        final List<String> choiceList = getCm().formatChoiceList(nameList, Collections.singletonList("Go back"));
-        getCm().printTable("Command // Ala-Carte Items", choiceList, true);
+        final List<String> choiceList = ConsolePrinter.formatChoiceList(nameList, Collections.singletonList("Go back"));
+        ConsolePrinter.printTable("Command // Ala-Carte Items", choiceList, true);
 
         final List<AlaCarteItem> itemList = new ArrayList<>();
         BigDecimal price = new BigDecimal(0).setScale(2, RoundingMode.FLOOR);
@@ -186,23 +154,25 @@ public class MenuManager extends DataManager {
 
         do {
             if (cont.equalsIgnoreCase("Y")) {
-                itemIndex = getCm().getInt("Select an item to add to the package", 0, nameList.size()) - 1;
+                itemIndex = getInputHelper().getInt("Select an item to add to the package", 0, nameList.size()) - 1;
                 Optional<AlaCarteItem> item = getRestaurant().getDataFromIndex(DataType.ALA_CARTE_ITEM, itemIndex);
                 if (item.isPresent()) {
                     itemList.add(item.get());
                     price = price.add(item.get().getPrice());
-                    System.out.println(item.get().getName() + " added to package successfully.");
+                    ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, item.get().getName() + " added to package successfully.");
                 } else {
                     return false;
                 }
             }
 
-            cont = getCm().getString("Add another item to package? [Y = YES | N = NO]");
+            cont = getInputHelper().getString("Add another item to package? [Y = YES | N = NO]");
         } while (!cont.equalsIgnoreCase("N"));
 
-        if (ifNameExists(DataType.PROMO_PACKAGE, name)) {
-            getCm().clearCmd();
-            Log.notice("Failed to add item as it already exists on the menu.");
+        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
+        boolean isNameExists = dataList.map(data -> data.stream().anyMatch(x -> x.getName().equalsIgnoreCase(name))).get();
+
+        if (isNameExists) {
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to add item as it already exists on the menu.");
             return false;
         }
 
@@ -213,11 +183,12 @@ public class MenuManager extends DataManager {
 
     private void manageMenuItems(DataType dataType) {
         final List<String> itemList = getItemNames(dataType);
-        List<String> choiceList = getCm().formatChoiceList(itemList, null);
-        getCm().printTable("Manage Menu Items", "Command // Menu Item", choiceList, true);
-        int itemIndex = getCm().getInt("Select an item to manage", 0, itemList.size()) - 1;
+        List<String> choiceList = ConsolePrinter.formatChoiceList(itemList, null);
+        ConsolePrinter.printTable("Manage Menu Items", "Command // Menu Item", choiceList, true);
+        int itemIndex = getInputHelper().getInt("Select an item to manage", 0, itemList.size()) - 1;
 
         if (itemIndex == -1) {
+            ConsolePrinter.clearCmd();
             return;
         }
 
@@ -228,27 +199,26 @@ public class MenuManager extends DataManager {
         }
 
         final String[] actions = dataType.equals(DataType.ALA_CARTE_ITEM) ? new String[]{"Change name.", "Change price.", "Change category", "Remove item from menu."} : new String[]{"Change name.", "Remove package from menu."};
-        choiceList = getCm().formatChoiceList(Arrays.asList(actions), null);
-        getCm().printTable("Command // Action", choiceList, true);
-        final int action = getCm().getInt("Select an action", 0, actions.length);
+        choiceList = ConsolePrinter.formatChoiceList(Arrays.asList(actions), null);
+        ConsolePrinter.printTable("Command // Action", choiceList, true);
+        final int action = getInputHelper().getInt("Select an action", 0, actions.length);
 
         if (action == 0) {
+            ConsolePrinter.clearCmd();
             return;
         }
 
         MenuItem item = oItem.get();
 
         if ((action == 2 && dataType.equals(DataType.PROMO_PACKAGE)) || (action == 4 && dataType.equals(DataType.ALA_CARTE_ITEM))) {
-            getCm().printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
+            ConsolePrinter.printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
 
-            if (getCm().getString("Confirm remove?").equalsIgnoreCase("Y") && (removeItem(item))) {
-                getCm().clearCmd();
-                System.out.println("Item has been removed successfully.");
+            if (getInputHelper().getString("Confirm remove?").equalsIgnoreCase("Y") && (removeItem(item))) {
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been removed successfully.");
             }
         } else {
             if (updateItem(item, action)) {
-                getCm().clearCmd();
-                System.out.println("Item has been updated successfully.");
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been updated successfully.");
             }
         }
     }
@@ -257,8 +227,8 @@ public class MenuManager extends DataManager {
         switch (action) {
             case 1:
             case 3:
-                getCm().printInstructions(Collections.singletonList("Enter -back to go back."));
-                final String input = getCm().getString("Enter the new " + ((action == 1) ? "name" : "category"));
+                ConsolePrinter.printInstructions(Collections.singletonList("Enter -back to go back."));
+                final String input = getInputHelper().getString("Enter the new " + ((action == 1) ? "name" : "category"));
 
                 if (!input.equalsIgnoreCase("-back")) {
                     if (action == 1) {
@@ -268,14 +238,18 @@ public class MenuManager extends DataManager {
                     }
 
                     if (getRestaurant().save(item)) {
-                        refreshPromoPrices();
+                        final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
+                        dataList.ifPresent(data -> data.forEach(PromotionPackage::refreshPrice));
                         return true;
                     }
+                } else {
+                    ConsolePrinter.clearCmd();
+                    return false;
                 }
                 break;
 
             case 2:
-                final BigDecimal price = new BigDecimal(getCm().getDouble("Enter the new price")).setScale(2, RoundingMode.FLOOR);
+                final BigDecimal price = new BigDecimal(getInputHelper().getDouble("Enter the new price")).setScale(2, RoundingMode.FLOOR);
                 item.setPrice(price);
 
                 if (getRestaurant().save(item)) {
@@ -289,19 +263,37 @@ public class MenuManager extends DataManager {
 
     private boolean removeItem(MenuItem item) {
         if (getRestaurant().getDataList(DataType.ORDER).map(List::size).get() > 0) {
-            getCm().clearCmd();
-            Log.notice("Failed to remove item as there are active orders. Clear all orders before removing items.");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to remove item as there are active orders. Clear all orders before removing items.");
             return false;
         }
 
         if (item instanceof AlaCarteItem) {
-            if (isItemInPackages((AlaCarteItem) item)) {
-                getCm().clearCmd();
-                Log.notice("This item is part of a promotion package. Please remove the package first.");
+            final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
+            boolean isItemInPackages = dataList.map(data -> data.stream().anyMatch(x -> x.getAlaCarteItems().stream().anyMatch(y -> y.getId() == item.getId()))).get();
+
+            if (isItemInPackages) {
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "This item is part of a promotion package. Please remove the package first.");
                 return false;
             }
         }
 
         return getRestaurant().remove(item);
+    }
+
+    public Set<String> getAlaCarteCategories() {
+        final Set<String> ret = new TreeSet<>();
+        final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
+        dataList.ifPresent(data -> data.forEach(x -> ret.add(x.getCategory())));
+        return ret;
+    }
+
+    public List<String> getAlaCarteItemNamesForCategory(String category) {
+        final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
+        return dataList.map(data -> data.stream().filter(item -> item.getCategory().equals(category)).map(MenuItem::getName).collect(Collectors.toList())).get();
+    }
+
+    public List<String> getItemNames(DataType dataType) {
+        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(dataType);
+        return dataList.map(data -> data.stream().map(MenuItem::getName).collect(Collectors.toList())).get();
     }
 }
