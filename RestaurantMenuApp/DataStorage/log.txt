@@ -37,3 +37,21 @@
 20190406-193736: <Main> [Warning] No class registered for data type: REVENUE
 20190406-193817: <Main> [Warning] No class registered for data type: REVENUE
 20190406-193820: <Main> [Warning] No class registered for data type: REVENUE
+20190408-073923: Something unexpectedly went wrong: Text '11:00am' could not be parsed at index 5
+java.io.PrintWriter@757942a1
+
+20190408-074029: Something unexpectedly went wrong: Text '11:00am' could not be parsed at index 5
+java.io.PrintWriter@757942a1
+
+20190408-074121: Something unexpectedly went wrong: Text '03:00pm' could not be parsed at index 5
+java.io.PrintWriter@757942a1
+
+20190408-074149: Something unexpectedly went wrong: Text '11:00am' could not be parsed at index 5
+java.io.PrintWriter@757942a1
+
+20190408-074221: Something unexpectedly went wrong: Text '03:00pm' could not be parsed at index 5
+java.io.PrintWriter@32eebfca
+
+20190408-074231: Something unexpectedly went wrong: Text '0404201911:18pm' could not be parsed at index 13
+java.io.PrintWriter@13eb8acf
+
