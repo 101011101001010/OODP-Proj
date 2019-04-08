@@ -34,8 +34,43 @@ public class Order extends RestaurantData {
         orderItemList.add(new OrderItem(item, count));
     }
 
-    void removeItem(OrderItem item) {
-        orderItemList.remove(item);
+    boolean ifItemExists(OrderItem item) {
+        return orderItemList.stream().anyMatch(orderItem -> orderItem.matchItemId(item));
+    }
+
+    boolean matchItemCount(OrderItem item, int count) {
+        return (item.matchCount(count));
+    }
+
+    void updateItemCount(OrderItem item, int count) {
+        item.updateCount(count);
+    }
+
+    String getItemName(OrderItem item) {
+        return item.getItem().getName();
+    }
+
+    int getItemCount(OrderItem item) {
+        return item.getCount();
+    }
+
+    boolean removeItems(OrderItem item, int count) {
+        if (!ifItemExists(item)) {
+            return false;
+        }
+
+        if (count < 0) {
+            count *= -1;
+        }
+
+        if (matchItemCount(item, count)) {
+            orderItemList.remove(item);
+            return true;
+        }
+
+        count *= -1;
+        updateItemCount(item, count);
+        return true;
     }
 
     @Override
@@ -110,28 +145,35 @@ public class Order extends RestaurantData {
         private BigDecimal price;
         private BigDecimal pricePer;
 
-        OrderItem(MenuItem item, int count)
-        {
+        private OrderItem(MenuItem item, int count) {
             this.item = item;
             this.count = count;
             this.pricePer = item.getPrice();
             this.price = pricePer.multiply(new BigDecimal(count)).setScale(2, RoundingMode.FLOOR);
         }
 
-        MenuItem getItem() {
+        private boolean matchItemId(OrderItem item) {
+            return (this.getItem().getId() == item.getItem().getId());
+        }
+
+        private MenuItem getItem() {
             return item;
         }
 
-        void updateCount(int count) {
+        private void updateCount(int count) {
             this.count += count;
             this.price = pricePer.multiply(new BigDecimal(this.count)).setScale(2, RoundingMode.FLOOR);
         }
 
-        int getCount() {
+        private int getCount() {
             return count;
         }
 
-        BigDecimal getPrice() {
+        private boolean matchCount(int count) {
+            return (this.count == count);
+        }
+
+        private BigDecimal getPrice() {
             return price;
         }
     }

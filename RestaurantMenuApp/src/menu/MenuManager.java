@@ -89,19 +89,20 @@ public class MenuManager extends RestaurantManager {
     }
 
     private void viewMenu() {
-        final Set<String> categoryList = getAlaCarteCategories();
+        final Set<String> categoryList = new TreeSet<>();
+        final Optional<List<AlaCarteItem>> alaCarteItemList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
+        alaCarteItemList.ifPresent(data -> data.forEach(x -> categoryList.add(x.getCategory())));
         final List<String> displayList = new ArrayList<>();
 
         for (String category : categoryList) {
             displayList.add("\\SUB" + category);
-            final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
-            final List<String> tempList = dataList.map(data -> data.stream().filter(x -> x.getCategory().equals(category)).map(AlaCarteItem::toDisplayString).collect(Collectors.toList())).get();
+            final List<String> tempList = alaCarteItemList.map(data -> data.stream().filter(x -> x.matchCategory(category)).map(AlaCarteItem::toDisplayString).collect(Collectors.toList())).get();
             displayList.addAll(tempList);
         }
 
         displayList.add("\\SUB" + "Promotion Packages");
-        final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
-        final List<String> tempList = dataList.map(data -> data.stream().map(PromotionPackage::toDisplayString).collect(Collectors.toList())).get();
+        final Optional<List<PromotionPackage>> promoPackageList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
+        final List<String> tempList = promoPackageList.map(data -> data.stream().map(PromotionPackage::toDisplayString).collect(Collectors.toList())).get();
         displayList.addAll(tempList);
 
         ConsolePrinter.clearCmd();
@@ -119,13 +120,14 @@ public class MenuManager extends RestaurantManager {
             return;
         }
 
-        if (dataType.equals(DataType.ALA_CARTE_ITEM) && (addAlaCarteItem(name)) || dataType.equals(DataType.PROMO_PACKAGE) && (addPromoPackage(name))) {
-            ConsolePrinter.clearCmd();
-            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Item has been added successfully.");
+        if (dataType.equals(DataType.ALA_CARTE_ITEM)) {
+            addAlaCarteItem(name);
+        } else {
+            addPromoPackage(name);
         }
     }
 
-    private boolean addAlaCarteItem(String name) {
+    private void addAlaCarteItem(String name) {
         final BigDecimal price = new BigDecimal(getInputHelper().getDouble("Enter item price"));
         final String category = getInputHelper().getString("Enter item category");
         final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
@@ -133,16 +135,20 @@ public class MenuManager extends RestaurantManager {
 
         if (isNameExists) {
             ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to add item as it already exists on the menu.");
-            return false;
+            return;
         }
 
         final int id = getRestaurant().generateUniqueId(DataType.ALA_CARTE_ITEM);
         AlaCarteItem item = new AlaCarteItem(id, name, price, category);
-        return getRestaurant().save(item);
+
+        if (getRestaurant().save(item)) {
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been added successfully.");
+        }
     }
 
-    private boolean addPromoPackage(String name) {
-        final List<String> nameList = getItemNames(DataType.ALA_CARTE_ITEM);
+    private void addPromoPackage(String name) {
+        Optional<List<MenuItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
+        final List<String> nameList = new ArrayList<>(dataList.map(data -> data.stream().map(MenuItem::getName).collect(Collectors.toList())).get());
         final List<String> choiceList = ConsolePrinter.formatChoiceList(nameList, Collections.singletonList("Go back"));
         ConsolePrinter.printTable("Command // Ala-Carte Items", choiceList, true);
 
@@ -160,29 +166,34 @@ public class MenuManager extends RestaurantManager {
                     price = price.add(item.get().getPrice());
                     ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, item.get().getName() + " added to package successfully.");
                 } else {
-                    return false;
+                    return;
                 }
             }
 
             cont = getInputHelper().getString("Add another item to package? [Y = YES | N = NO]");
         } while (!cont.equalsIgnoreCase("N"));
 
-        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
+        dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
         boolean isNameExists = dataList.map(data -> data.stream().anyMatch(x -> x.getName().equalsIgnoreCase(name))).get();
 
         if (isNameExists) {
             ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to add item as it already exists on the menu.");
-            return false;
+            return;
         }
 
         final int id = getRestaurant().generateUniqueId(DataType.PROMO_PACKAGE);
         PromotionPackage item = new PromotionPackage(id, name, price.multiply(new BigDecimal(0.8)), itemList);
-        return getRestaurant().save(item);
+
+        if (getRestaurant().save(item)) {
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Package has been added successfully.");
+        }
     }
 
     private void manageMenuItems(DataType dataType) {
-        final List<String> itemList = getItemNames(dataType);
+        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(dataType);
+        final List<String> itemList = new ArrayList<>(dataList.map(data -> data.stream().map(MenuItem::getName).collect(Collectors.toList())).get());
         List<String> choiceList = ConsolePrinter.formatChoiceList(itemList, null);
+
         ConsolePrinter.printTable("Manage Menu Items", "Command // Menu Item", choiceList, true);
         int itemIndex = getInputHelper().getInt("Select an item to manage", 0, itemList.size()) - 1;
 
@@ -199,6 +210,7 @@ public class MenuManager extends RestaurantManager {
 
         final String[] actions = dataType.equals(DataType.ALA_CARTE_ITEM) ? new String[]{"Change name.", "Change price.", "Change category", "Remove item from menu."} : new String[]{"Change name.", "Remove package from menu."};
         choiceList = ConsolePrinter.formatChoiceList(Arrays.asList(actions), null);
+
         ConsolePrinter.printTable("Command // Action", choiceList, true);
         final int action = getInputHelper().getInt("Select an action", 0, actions.length);
 
@@ -212,17 +224,15 @@ public class MenuManager extends RestaurantManager {
         if ((action == 2 && dataType.equals(DataType.PROMO_PACKAGE)) || (action == 4 && dataType.equals(DataType.ALA_CARTE_ITEM))) {
             ConsolePrinter.printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
 
-            if (getInputHelper().getString("Confirm remove?").equalsIgnoreCase("Y") && (removeItem(item))) {
-                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been removed successfully.");
+            if (getInputHelper().getString("Confirm remove?").equalsIgnoreCase("Y")) {
+                removeItem(item);
             }
         } else {
-            if (updateItem(item, action)) {
-                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been updated successfully.");
-            }
+            updateItem(item, action);
         }
     }
 
-    private boolean updateItem(MenuItem item, int action) {
+    private void updateItem(MenuItem item, int action) {
         switch (action) {
             case 1:
             case 3:
@@ -239,11 +249,12 @@ public class MenuManager extends RestaurantManager {
                     if (getRestaurant().save(item)) {
                         final Optional<List<PromotionPackage>> dataList = getRestaurant().getDataList(DataType.PROMO_PACKAGE);
                         dataList.ifPresent(data -> data.forEach(PromotionPackage::refreshPrice));
-                        return true;
+                        ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been updated successfully.");
+                        return;
                     }
                 } else {
                     ConsolePrinter.clearCmd();
-                    return false;
+                    return;
                 }
                 break;
 
@@ -252,18 +263,17 @@ public class MenuManager extends RestaurantManager {
                 item.setPrice(price);
 
                 if (getRestaurant().save(item)) {
-                    return true;
+                    ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been updated successfully.");
+                    return;
                 }
                 break;
         }
-
-        return false;
     }
 
-    private boolean removeItem(MenuItem item) {
+    private void removeItem(MenuItem item) {
         if (getRestaurant().getDataList(DataType.ORDER).map(List::size).get() > 0) {
             ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to remove item as there are active orders. Clear all orders before removing items.");
-            return false;
+            return;
         }
 
         if (item instanceof AlaCarteItem) {
@@ -272,27 +282,12 @@ public class MenuManager extends RestaurantManager {
 
             if (isItemInPackages) {
                 ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "This item is part of a promotion package. Please remove the package first.");
-                return false;
+                return;
             }
         }
 
-        return getRestaurant().remove(item);
-    }
-
-    public Set<String> getAlaCarteCategories() {
-        final Set<String> ret = new TreeSet<>();
-        final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
-        dataList.ifPresent(data -> data.forEach(x -> ret.add(x.getCategory())));
-        return ret;
-    }
-
-    public List<String> getAlaCarteItemNamesForCategory(String category) {
-        final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
-        return dataList.map(data -> data.stream().filter(item -> item.getCategory().equals(category)).map(MenuItem::getName).collect(Collectors.toList())).get();
-    }
-
-    public List<String> getItemNames(DataType dataType) {
-        final Optional<List<MenuItem>> dataList = getRestaurant().getDataList(dataType);
-        return dataList.map(data -> data.stream().map(MenuItem::getName).collect(Collectors.toList())).get();
+        if (getRestaurant().remove(item)) {
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been removed successfully.");
+        }
     }
 }

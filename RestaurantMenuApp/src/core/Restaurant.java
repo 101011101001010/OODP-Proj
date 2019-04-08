@@ -42,7 +42,7 @@ public class Restaurant {
         sortList(dataType);
     }
 
-    public <X extends RestaurantData> Comparator<X> getDefaultComparator(DataType dataType) {
+    private <X extends RestaurantData> Comparator<X> getDefaultComparator(DataType dataType) {
         return (Comparator<X>) dataTypeDefaultComparatorMap.get(dataType);
     }
 
@@ -220,7 +220,7 @@ public class Restaurant {
         return Optional.empty();
     }
 
-    private <X extends RestaurantData> int getFileLineFromId(DataType dataType, int id) {
+    private int getFileLineFromId(DataType dataType, int id) {
         final List<String> fileData = (new FileIO()).read(dataType);
         int index = 0;
 

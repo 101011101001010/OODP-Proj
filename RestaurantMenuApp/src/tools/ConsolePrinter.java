@@ -11,7 +11,8 @@ public class ConsolePrinter {
         SUCCESS,
         FAILED,
         WARNING,
-        ERROR
+        ERROR,
+        FATAL
     }
 
     public static void sendWelcome(List<String[]> mainCLIOptions) {
@@ -176,7 +177,7 @@ public class ConsolePrinter {
             }
         }
 
-        int MAX_LENGTH = 66;
+        int MAX_LENGTH = 80;
         int maxLength = Math.max(title.length(), MAX_LENGTH);
         int totalStringSpace = maxLength - (5 * (cellLengths.size() - 1));
         int totalRowLength = cellLengths.stream().mapToInt(Integer::intValue).sum();

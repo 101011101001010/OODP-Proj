@@ -1,15 +1,14 @@
 package tables;
 
 import core.RestaurantData;
-import tools.FileIO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Table extends RestaurantData {
-    private int tableId;
     private int capacity;
     private boolean occupied;
     private boolean reserved;
@@ -18,7 +17,6 @@ public class Table extends RestaurantData {
 
     Table(int tableId, int capacity) {
         super(tableId);
-        this.tableId = tableId;
         this.capacity = capacity;
         this.occupied = false;
         this.reserved = false;
@@ -26,18 +24,13 @@ public class Table extends RestaurantData {
         this.reservationMap = new HashMap<>();
     }
 
-    Table(int tableId, int capacity, boolean occupied, Order order) {
+    Table(int tableId, int capacity, boolean occupied, boolean reserved, Order order) {
         super(tableId);
-        this.tableId = tableId;
         this.capacity = capacity;
         this.occupied = occupied;
-        this.reserved = false;
+        this.reserved = reserved;
         this.order = order;
         this.reservationMap = new HashMap<>();
-    }
-
-    int getCapacity() {
-        return capacity;
     }
 
     boolean isOccupied() {
@@ -48,10 +41,21 @@ public class Table extends RestaurantData {
         return reserved;
     }
 
+    Order getOrder() {
+        return order;
+    }
+
+    boolean hasOrder() {
+        return (occupied && order != null);
+    }
+
+    void setReserved(boolean reserved) {
+        this.reserved = reserved;
+    }
+
     boolean isAvailable(LocalDateTime dateTime) {
         DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
         String dateKey = dateTime.format(format);
-
         return (!occupied && !reservationMap.containsKey(dateKey));
     }
 
@@ -59,25 +63,14 @@ public class Table extends RestaurantData {
         return (capacity >= pax && capacity <= (pax + 2));
     }
 
-    void removeNoShow(){
-        if (reservationMap.size() == 0) {
-            return;
-        }
-
-        for (Reservation r : reservationMap.values()) {
-            if (r.isExpired()) {
-                deleteReservation(r);
-            }
-        }
+    void removeExpiredReservations() {
+        reservationMap.values().stream().filter(Reservation::isExpired).forEach(this::deleteReservation);
     }
 
-    public void setReserved(boolean reserved) {
-        this.reserved = reserved;
-    }
-
-    Order attachOrder(String orderId, int staffId) {
+    Order attachOrder(int staffId) {
         occupied = true;
         reserved = false;
+        String orderId = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         order = new Order(getId(), orderId, staffId);
         return order;
     }
@@ -88,23 +81,36 @@ public class Table extends RestaurantData {
         this.order = order;
     }
 
-    Order getOrder() {
-        return order;
-    }
-
-    int getTableId(){
-        return this.tableId;
-    }
-
     void clear() {
         occupied = false;
+        reserved = false;
         order = null;
     }
 
-    Map<String, Reservation> getReservationMap(){
+    Map<String, Reservation> getReservationMap() {
         return reservationMap;
     }
 
+    boolean addReservation(int contact, String name, LocalDateTime date, int pax) {
+        Reservation r = new Reservation(contact, name, date, pax);
+        String dateKey = r.getSessionString();
+
+        if (reservationMap.containsKey(dateKey)) {
+            return false;
+        }
+
+        reservationMap.put(dateKey, r);
+        return true;
+    }
+
+    void deleteReservation(Reservation r) {
+        String dateKey = r.getSessionString();
+        reservationMap.remove(dateKey);
+    }
+
+    List<Reservation> findReservationsByContact(int contact) {
+        return reservationMap.values().stream().filter(reservation -> reservation.matchContact(contact)).sorted(Comparator.comparing(Reservation::getDate)).collect(Collectors.toList());
+    }
 
     @Override
     public String toFileString() {
@@ -127,42 +133,6 @@ public class Table extends RestaurantData {
     @Override
     public String toDisplayString() {
         return getId() + " // " + occupied + " // " + reserved;
-    }
-
-    boolean checkIsReserved(LocalDateTime date) {
-        DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
-        String dateKey = date.format(format);
-
-        return reservationMap.containsKey(dateKey);
-    }
-
-    boolean addReservation(int contact, String name, LocalDateTime date, int pax) {
-        Reservation r = new Reservation(contact, name, date, pax);
-        String dateKey = r.getSessionString();
-
-        if (reservationMap.containsKey(dateKey)) {
-            return false;
-        }
-
-        reservationMap.put(dateKey, r);
-        return true;
-    }
-
-    void deleteReservation(Reservation r) {
-        String dateKey = r.getSessionString();
-        reservationMap.remove(dateKey);
-    }
-
-    List<Reservation> findReservation(int contact){
-        List<Reservation> ret = new ArrayList<>();
-        for (Reservation r : reservationMap.values()){
-            if(r.getContact() == contact){
-                ret.add(r);
-            }
-        }
-
-        ret.sort(Comparator.comparing(Reservation::getDate));
-        return ret;
     }
 
     class Reservation {
@@ -191,42 +161,42 @@ public class Table extends RestaurantData {
             return name;
         }
 
-        public int getTableId() {
+        int getTableId() {
             return getId();
-        }
-
-        int getContact() {
-            return contact;
         }
 
         int getPax() {
             return pax;
         }
 
-        public String toFileString() {
+        String toFileString() {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
             return contact + "," + name + "," + date.format(format) + "," + pax;
         }
 
-        public String toDisplayString() {
+        String toDisplayString() {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             return getId() + " // " + name + " // " + contact + " // " + date.format(format) + " // " + pax;
         }
 
-        public boolean isExpired() {
+        boolean isExpired() {
             return date.plusSeconds(30).isBefore(LocalDateTime.now());
         }
 
-        public boolean isCurrentSession() {
+        boolean isCurrentSession() {
             DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
             return getSessionString().equals(LocalDateTime.now().format(format));
         }
 
-        public boolean isArrivalWindow() {
+        boolean matchContact(int contact) {
+            return (this.contact == contact);
+        }
+
+        boolean isArrivalWindow() {
             return (isCurrentSession() && !isExpired());
         }
 
-        public String getSessionString() {
+        String getSessionString() {
             DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
             return date.format(format);
         }

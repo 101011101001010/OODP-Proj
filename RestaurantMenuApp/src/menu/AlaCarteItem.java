@@ -14,6 +14,10 @@ public class AlaCarteItem extends MenuItem {
 		this.category = category;
 	}
 
+	public boolean matchCategory(String category) {
+		return this.category.equalsIgnoreCase(category);
+	}
+
 	public String getCategory() {
 		return category;
 	}

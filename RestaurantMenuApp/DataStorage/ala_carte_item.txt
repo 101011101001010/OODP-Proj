@@ -34,5 +34,6 @@
 33 // Salmon Spaghetti // 10.90 // Spaghetti Fiesta
 34 // Seafood Marinara // 10.90 // Spaghetti Fiesta
 35 // Teriyaki Chicken // 10.90 // Grillworks Chicken
-36 // Vienna Sausages (8pcs) // 5.90 // Starters
-37 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks
+36 // Test Item // 99.00 // Test Item
+37 // Vienna Sausages (8pcs) // 5.90 // Starters
+38 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks

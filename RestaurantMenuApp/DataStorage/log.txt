@@ -307,7 +307,7 @@ java.time.format.DateTimeParseException: Text '19:00' could not be parsed at ind
 	at java.base/java.time.format.DateTimeFormatter.parseResolved0(DateTimeFormatter.java:2046)
 	at java.base/java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:1948)
 	at java.base/java.time.LocalTime.parse(LocalTime.java:463)
-	at tables.TableManager.formattingtime(TableManager.java:620)
+	at formatTime(TableManager.java:620)
 	at tables.TableManager.newReservation(TableManager.java:395)
 	at core.Main.executeCommand(Main.java:71)
 	at core.Main.start(Main.java:50)
@@ -332,5 +332,53 @@ java.lang.ClassCastException: class java.util.HashMap$Values cannot be cast to c
 	at core.Main.executeCommand(Main.java:71)
 	at core.Main.start(Main.java:50)
 	at core.Main.main(Main.java:108)
+
+
+20190409-071942: 
+	[FATAL] Something unexpectedly went wrong, please check logs: Text '260420191800' could not be parsed at index 4
+20190409-071942: java.time.format.DateTimeParseException: Text '260420191800' could not be parsed at index 4
+	at java.base/java.time.format.DateTimeFormatter.parseResolved0(DateTimeFormatter.java:2046)
+	at java.base/java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:1948)
+	at java.base/java.time.LocalDateTime.parse(LocalDateTime.java:492)
+	at tables.TableManager.newReservation(TableManager.java:416)
+	at core.Main.start(Main.java:59)
+	at core.Main.main(Main.java:106)
+
+
+20190409-073619: 
+	[FATAL] Something unexpectedly went wrong, please check logs: null
+20190409-073619: java.lang.NullPointerException
+	at tables.TableManager.viewOrder(TableManager.java:166)
+	at tables.TableManager.manageOrders(TableManager.java:229)
+	at core.Main.start(Main.java:59)
+	at core.Main.main(Main.java:106)
+
+
+20190409-073949: 
+	[FATAL] Something unexpectedly went wrong, please check logs: Index 39 out of bounds for length 39
+20190409-073949: java.lang.IndexOutOfBoundsException: Index 39 out of bounds for length 39
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+	at java.base/java.util.Objects.checkIndex(Objects.java:372)
+	at java.base/java.util.ArrayList.get(ArrayList.java:458)
+	at tables.TableManager.addItemToOrder(TableManager.java:293)
+	at tables.TableManager.manageOrders(TableManager.java:233)
+	at core.Main.start(Main.java:59)
+	at core.Main.main(Main.java:106)
+
+
+20190409-074050: 
+	[FATAL] Something unexpectedly went wrong, please check logs: Index 39 out of bounds for length 39
+20190409-074050: java.lang.IndexOutOfBoundsException: Index 39 out of bounds for length 39
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+	at java.base/java.util.Objects.checkIndex(Objects.java:372)
+	at java.base/java.util.ArrayList.get(ArrayList.java:458)
+	at tables.TableManager.addItemToOrder(TableManager.java:293)
+	at tables.TableManager.manageOrders(TableManager.java:233)
+	at core.Main.start(Main.java:59)
+	at core.Main.main(Main.java:106)
 
 

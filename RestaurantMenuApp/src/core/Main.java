@@ -31,9 +31,9 @@ public class Main {
     }
 
     private void hookManagers() {
-        hookManagerToMain(new StaffManager(restaurant));
         hookManagerToMain(new MenuManager(restaurant));
         hookManagerToMain(new TableManager(restaurant));
+        hookManagerToMain(new StaffManager(restaurant));
     }
 
     private void start() {
@@ -50,7 +50,21 @@ public class Main {
 
             restaurant.setSessionStaffId(oStaff.get().getId());
             ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
-            int command = executeCommand(in, in.getInt("Select a function", -1, commandIndex - 1));
+            int command = in.getInt("Select a function", -1, commandIndex - 1);
+
+            while (command != 0 && command != -1) {
+                ConsolePrinter.clearCmd();
+
+                try {
+                    Objects.requireNonNull(commandToClassMap.get(command).getDeclaredConstructor(Restaurant.class).newInstance(restaurant)).getOptionRunnables()[commandToIndexMap.get(command)].run();
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Failed to get manager from class map: " + e.getMessage());
+
+                }
+
+                ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
+                command = in.getInt("Select a function", -1, commandIndex - 1);
+            }
 
             if (command == -1) {
                 return;
@@ -67,26 +81,6 @@ public class Main {
         final List<String> choiceList = ConsolePrinter.formatChoiceList(staffNameList, Collections.singletonList("Exit Program"));
         ConsolePrinter.printTable("", "Command // Staff Account", choiceList, true);
         return in.getInt("Select staff account to begin", 0, staffNameList.size());
-    }
-
-    private int executeCommand(InputHelper in, int command) {
-        while (command != 0 && command != -1) {
-            ConsolePrinter.clearCmd();
-            Objects.requireNonNull(getManagerFromClassMap(command)).getOptionRunnables()[commandToIndexMap.get(command)].run();
-            ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
-            command = in.getInt("Select a function", -1, commandIndex - 1);
-        }
-
-        return command;
-    }
-
-    private RestaurantManager getManagerFromClassMap(int command) {
-        try {
-            return commandToClassMap.get(command).getDeclaredConstructor(Restaurant.class).newInstance(restaurant);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Failed to get manager from class map: " + e.getMessage());
-            return null;
-        }
     }
 
     private void hookManagerToMain(RestaurantManager manager) {
@@ -111,12 +105,12 @@ public class Main {
             main.hookManagers();
             main.start();
         } catch (RuntimeException e) {
-            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Something unexpectedly went wrong: " + e.getMessage());
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FATAL, "Something unexpectedly went wrong, please check logs: " + e.getMessage());
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             pw.close();
-            ConsolePrinter.logToFile("Something unexpectedly went wrong: " + e.getMessage() + "\n" + sw.toString() + "\n");
+            ConsolePrinter.logToFile(sw.toString() + "\n");
         }
     }
 }
