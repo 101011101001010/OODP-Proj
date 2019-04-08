@@ -44,16 +44,20 @@ public class Main {
         while (staffIndex != 0) {
             Optional<Staff> oStaff = restaurant.getDataFromIndex(DataType.STAFF, staffIndex - 1);
 
-            if (oStaff.isPresent()) {
-                restaurant.setSessionStaffId(oStaff.get().getId());
-                ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
-                int command = executeCommand(in, in.getInt("Select a function", -1, commandIndex - 1));
-
-                if (command != -1) {
-                    ConsolePrinter.clearCmd();
-                    staffIndex = staffLogin(in);
-                }
+            if (oStaff.isEmpty()) {
+                return;
             }
+
+            restaurant.setSessionStaffId(oStaff.get().getId());
+            ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
+            int command = executeCommand(in, in.getInt("Select a function", -1, commandIndex - 1));
+
+            if (command == -1) {
+                return;
+            }
+
+            ConsolePrinter.clearCmd();
+            staffIndex = staffLogin(in);
         }
     }
 
@@ -111,7 +115,8 @@ public class Main {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            ConsolePrinter.logToFile("Something unexpectedly went wrong: " + e.getMessage() + "\n" + pw.toString() + "\n");
+            pw.close();
+            ConsolePrinter.logToFile("Something unexpectedly went wrong: " + e.getMessage() + "\n" + sw.toString() + "\n");
         }
     }
 }

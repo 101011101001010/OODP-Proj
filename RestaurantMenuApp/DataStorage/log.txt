@@ -266,3 +266,71 @@ java.io.PrintWriter@120d6fe6
 	[WARNING] 2019-04-10T19:30
 20190408-230722: 
 	[WARNING] 2019-04-08T23:07:22.118443700
+20190409-014524: Something unexpectedly went wrong: Text '09042019 1118' could not be parsed at index 8
+java.io.PrintWriter@4923ab24
+
+20190409-021301: Something unexpectedly went wrong: null
+java.io.PrintWriter@5d11346a
+
+20190409-021604: Something unexpectedly went wrong: null
+java.io.PrintWriter@5d11346a
+
+20190409-021653: Something unexpectedly went wrong: null
+java.lang.NullPointerException
+	at tables.TableManager.checkReservations(TableManager.java:462)
+	at tables.TableManager.init(TableManager.java:125)
+	at core.Main.hookManagerToMain(Main.java:94)
+	at core.Main.hookManagers(Main.java:36)
+	at core.Main.main(Main.java:107)
+
+
+20190409-030831: Something unexpectedly went wrong: Unsupported field: AmPmOfDay
+java.time.temporal.UnsupportedTemporalTypeException: Unsupported field: AmPmOfDay
+	at java.base/java.time.LocalDate.get0(LocalDate.java:708)
+	at java.base/java.time.LocalDate.getLong(LocalDate.java:687)
+	at java.base/java.time.format.DateTimePrintContext.getValue(DateTimePrintContext.java:308)
+	at java.base/java.time.format.DateTimeFormatterBuilder$TextPrinterParser.format(DateTimeFormatterBuilder.java:3296)
+	at java.base/java.time.format.DateTimeFormatterBuilder$CompositePrinterParser.format(DateTimeFormatterBuilder.java:2335)
+	at java.base/java.time.format.DateTimeFormatter.formatTo(DateTimeFormatter.java:1843)
+	at java.base/java.time.format.DateTimeFormatter.format(DateTimeFormatter.java:1817)
+	at java.base/java.time.LocalDate.format(LocalDate.java:1816)
+	at tables.Table$Reservation.isCurrentSession(Table.java:222)
+	at tables.TableManager.checkReservations(TableManager.java:515)
+	at tables.TableManager.init(TableManager.java:132)
+	at core.Main.hookManagerToMain(Main.java:94)
+	at core.Main.hookManagers(Main.java:36)
+	at core.Main.main(Main.java:107)
+
+
+20190409-033013: Something unexpectedly went wrong: Text '19:00' could not be parsed at index 5
+java.time.format.DateTimeParseException: Text '19:00' could not be parsed at index 5
+	at java.base/java.time.format.DateTimeFormatter.parseResolved0(DateTimeFormatter.java:2046)
+	at java.base/java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:1948)
+	at java.base/java.time.LocalTime.parse(LocalTime.java:463)
+	at tables.TableManager.formattingtime(TableManager.java:620)
+	at tables.TableManager.newReservation(TableManager.java:395)
+	at core.Main.executeCommand(Main.java:71)
+	at core.Main.start(Main.java:50)
+	at core.Main.main(Main.java:108)
+
+
+20190409-033156: Something unexpectedly went wrong: class java.util.HashMap$Values cannot be cast to class tables.Table$Reservation (java.util.HashMap$Values is in module java.base of loader 'bootstrap'; tables.Table$Reservation is in unnamed module of loader 'app')
+java.lang.ClassCastException: class java.util.HashMap$Values cannot be cast to class tables.Table$Reservation (java.util.HashMap$Values is in module java.base of loader 'bootstrap'; tables.Table$Reservation is in unnamed module of loader 'app')
+	at tables.TableManager.lambda$showReservations$21(TableManager.java:359)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+	at java.base/java.util.AbstractList$RandomAccessSpliterator.forEachRemaining(AbstractList.java:720)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
+	at tables.TableManager.lambda$showReservations$22(TableManager.java:359)
+	at java.base/java.util.Optional.ifPresent(Optional.java:183)
+	at tables.TableManager.showReservations(TableManager.java:359)
+	at core.Main.executeCommand(Main.java:71)
+	at core.Main.start(Main.java:50)
+	at core.Main.main(Main.java:108)
+
+

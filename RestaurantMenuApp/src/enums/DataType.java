@@ -6,6 +6,5 @@ public enum DataType {
     TABLE,
     STAFF,
     ORDER,
-    RESERVATION,
     REVENUE
 }

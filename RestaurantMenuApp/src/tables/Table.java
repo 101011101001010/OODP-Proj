@@ -1,13 +1,12 @@
 package tables;
 
 import core.RestaurantData;
-import tools.ConsolePrinter;
+import tools.FileIO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 public class Table extends RestaurantData {
     private int tableId;
@@ -15,7 +14,7 @@ public class Table extends RestaurantData {
     private boolean occupied;
     private boolean reserved;
     private Order order;
-    private List<Reservation> reservationList;
+    private Map<String, Reservation> reservationMap;
 
     Table(int tableId, int capacity) {
         super(tableId);
@@ -24,7 +23,7 @@ public class Table extends RestaurantData {
         this.occupied = false;
         this.reserved = false;
         this.order = null;
-        this.reservationList = new ArrayList<>();
+        this.reservationMap = new HashMap<>();
     }
 
     Table(int tableId, int capacity, boolean occupied, Order order) {
@@ -34,7 +33,7 @@ public class Table extends RestaurantData {
         this.occupied = occupied;
         this.reserved = false;
         this.order = order;
-        this.reservationList = new ArrayList<>();
+        this.reservationMap = new HashMap<>();
     }
 
     int getCapacity() {
@@ -49,25 +48,25 @@ public class Table extends RestaurantData {
         return reserved;
     }
 
-    boolean isAvailable() {
-        return (!occupied && !reserved);
+    boolean isAvailable(LocalDateTime dateTime) {
+        DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
+        String dateKey = dateTime.format(format);
+
+        return (!occupied && !reservationMap.containsKey(dateKey));
     }
 
     boolean isLargeEnough(int pax) {
         return (capacity >= pax && capacity <= (pax + 2));
     }
 
-    public void removeNoShow(){
-        if (reservationList.size() == 0) {
+    void removeNoShow(){
+        if (reservationMap.size() == 0) {
             return;
         }
 
-        for (int index = 0; index < reservationList.size(); index++) {
-            Reservation r = reservationList.get(index);
-
-            if (r.getDate().plusSeconds(30).isBefore(LocalDateTime.now())) {
-                reservationList.remove(index);
-                index--;
+        for (Reservation r : reservationMap.values()) {
+            if (r.isExpired()) {
+                deleteReservation(r);
             }
         }
     }
@@ -102,14 +101,27 @@ public class Table extends RestaurantData {
         order = null;
     }
 
-    List<Reservation> getReservationList(){
-        return reservationList;
+    Map<String, Reservation> getReservationMap(){
+        return reservationMap;
     }
 
 
     @Override
     public String toFileString() {
-        return getId() + " // " + capacity + " // " + occupied;
+        String head = getId() + " // " + capacity + " // " + occupied + " // " + reserved;
+        StringBuilder sb = new StringBuilder(head);
+
+        if (reservationMap.size() > 0) {
+            sb.append(" // ");
+        }
+
+        for (Reservation r : reservationMap.values()) {
+            String s = r.toFileString();
+            sb.append(s);
+            sb.append("--");
+        }
+
+        return sb.toString();
     }
 
     @Override
@@ -117,40 +129,70 @@ public class Table extends RestaurantData {
         return getId() + " // " + occupied + " // " + reserved;
     }
 
+    boolean checkIsReserved(LocalDateTime date) {
+        DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
+        String dateKey = date.format(format);
 
-    void addReservation(int contact, String name, LocalDateTime date, int pax) {
-        reservationList.add(new Reservation(tableId, contact, name, date, pax));
+        return reservationMap.containsKey(dateKey);
+    }
+
+    boolean addReservation(int contact, String name, LocalDateTime date, int pax) {
+        Reservation r = new Reservation(contact, name, date, pax);
+        String dateKey = r.getSessionString();
+
+        if (reservationMap.containsKey(dateKey)) {
+            return false;
+        }
+
+        reservationMap.put(dateKey, r);
+        return true;
     }
 
     void deleteReservation(Reservation r) {
-        reservationList.remove(r);
+        String dateKey = r.getSessionString();
+        reservationMap.remove(dateKey);
     }
 
-    public class Reservation extends RestaurantData {
+    List<Reservation> findReservation(int contact){
+        List<Reservation> ret = new ArrayList<>();
+        for (Reservation r : reservationMap.values()){
+            if(r.getContact() == contact){
+                ret.add(r);
+            }
+        }
+
+        ret.sort(Comparator.comparing(Reservation::getDate));
+        return ret;
+    }
+
+    class Reservation {
         private int contact;
         private String name;
         private LocalDateTime date;
         private int pax;
 
-        Reservation(int id, int contact, String name, LocalDateTime date, int pax) {
-            super(id);
+        private Reservation(int contact, String name, LocalDateTime date, int pax) {
             this.contact = contact;
             this.name = name;
             this.date = date;
             this.pax = pax;
         }
 
-        public LocalDateTime getDate() {
+        LocalDateTime getDate() {
             return date;
         }
 
-        public String getDateStr() {
+        String getDateStr() {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             return date.format(format);
         }
 
-        public String getName() {
+        String getName() {
             return name;
+        }
+
+        public int getTableId() {
+            return getId();
         }
 
         int getContact() {
@@ -163,25 +205,30 @@ public class Table extends RestaurantData {
 
         public String toFileString() {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("ddMMyyyy HHmm");
-            return getId() + " // " + contact + " // " + name + " // " + date.format(format) + " // " + pax;
+            return contact + "," + name + "," + date.format(format) + "," + pax;
         }
 
-        @Override
         public String toDisplayString() {
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             return getId() + " // " + name + " // " + contact + " // " + date.format(format) + " // " + pax;
         }
-    }
 
-    List<Reservation> findReservation(int contact){
-        List<Reservation> ret = new ArrayList<>();
-        for (Reservation r : reservationList){
-            if(r.getContact() == contact){
-                ret.add(r);
-            }
+        public boolean isExpired() {
+            return date.plusSeconds(30).isBefore(LocalDateTime.now());
         }
 
-        ret.sort(Comparator.comparing(Reservation::getDate));
-        return ret;
+        public boolean isCurrentSession() {
+            DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
+            return getSessionString().equals(LocalDateTime.now().format(format));
+        }
+
+        public boolean isArrivalWindow() {
+            return (isCurrentSession() && !isExpired());
+        }
+
+        public String getSessionString() {
+            DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
+            return date.format(format);
+        }
     }
 }
