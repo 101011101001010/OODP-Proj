@@ -31,17 +31,28 @@ public class TableManager {
             if (id == 85)
                 id = 100;
         }
-        String test1 = "0404201911:18pm";
-        String test2 = "0504201910:30pm";
-        String test3 = "0504201909:45pm";
-        String test4 = "0504201909:15pm";
-        String test5 = "0504201907:30pm";
+        String test1 = "0804201911:18pm";
+        String test2 = "1004201910:30pm";
+        String test3 = "1004201909:45pm";
+        String test4 = "0804201909:15pm";
+        String test5 = "1004201907:30pm";
         tableList.get(25).isReserved(12345, "A", formattingdatetime(test1), 10);
         tableList.get(26).isReserved(67890, "B", formattingdatetime(test2), 10);
         tableList.get(27).isReserved(54321, "C", formattingdatetime(test3), 10);
         tableList.get(28).isReserved(9876, "D", formattingdatetime(test4), 10);
         tableList.get(29).isReserved(24680, "E", formattingdatetime(test5), 10);
 
+        for (Table t : tableList){
+            if (t.getReservationList().size()!=0){
+                for (int i = 0; i<t.getReservationList().size();i++){
+                    if (t.getReservationList().get(i).getDate().toLocalDate().isBefore(now))
+                        t.getReservationList().remove(i);
+                    if (t.getReservationList().get(i).getDate().toLocalDate().isEqual(now)){
+                        t.setOccupied(-1);
+                    }
+                }
+            }
+        }
     }
 
     public void choices(Scanner s) {
@@ -76,9 +87,7 @@ public class TableManager {
         for (Table t : tableList) {
             t.checkNoShow();
             System.out.println(t.toString());
-
         }
-
         showReservation();
     }
 
@@ -253,7 +262,6 @@ public class TableManager {
             if (t.getReservationList().size()!=0){
                 System.out.println("For Table " + t.getTableID());
                 for (Table.Reservations r : t.getReservationList()){
-
                     System.out.println(count++ + ". " + r.toStringTwo());
                 }
             }
