@@ -14,9 +14,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class Main {
-    private Map<Integer, Class<? extends RestaurantDataManager>> commandToClassMap;
+    private Map<Integer, Class<? extends RestaurantManager>> commandToClassMap;
     private Map<Integer, Integer> commandToIndexMap;
     private List<String[]> mainCliOptions;
     private Restaurant restaurant;
@@ -30,9 +31,9 @@ public class Main {
     }
 
     private void hookManagers() {
+        hookManagerToMain(new StaffManager(restaurant));
         hookManagerToMain(new MenuManager(restaurant));
         hookManagerToMain(new TableManager(restaurant));
-        hookManagerToMain(new StaffManager(restaurant));
         //hookManagerToMain(new Classes.TableManager(restaurant));
     }
 
@@ -44,25 +45,22 @@ public class Main {
         while (staffIndex != 0) {
             Optional<Staff> oStaff = restaurant.getDataFromIndex(DataType.STAFF, staffIndex - 1);
 
-            if (oStaff.isEmpty()) {
-                return;
+            if (oStaff.isPresent()) {
+                restaurant.setSessionStaffId(oStaff.get().getId());
+                ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
+                int command = executeCommand(in, in.getInt("Select a function", -1, commandIndex - 1));
+
+                if (command != -1) {
+                    ConsolePrinter.clearCmd();
+                    staffIndex = staffLogin(in);
+                }
             }
-
-            restaurant.setSessionStaffId(oStaff.get().getId());
-            ConsolePrinter.sendWelcome(List.copyOf(mainCliOptions));
-            int command = executeCommand(in, in.getInt("Select a function", -1, commandIndex - 1));
-
-            if (command == -1) {
-                return;
-            }
-
-            ConsolePrinter.clearCmd();
-            staffIndex = staffLogin(in);
         }
     }
 
     private int staffLogin(InputHelper in) {
-        final List<String> staffNameList = (new StaffManager(restaurant)).getStaffNames();
+        final Optional<List<Staff>> staffList = restaurant.getDataList(DataType.STAFF);
+        final List<String> staffNameList = staffList.map(data -> data.stream().map(Staff::getName).collect(Collectors.toList())).get();
         final List<String> choiceList = ConsolePrinter.formatChoiceList(staffNameList, Collections.singletonList("Exit Program"));
         ConsolePrinter.printTable("", "Command // Staff Account", choiceList, true);
         return in.getInt("Select staff account to begin", 0, staffNameList.size());
@@ -79,7 +77,7 @@ public class Main {
         return command;
     }
 
-    private RestaurantDataManager getManagerFromClassMap(int command) {
+    private RestaurantManager getManagerFromClassMap(int command) {
         try {
             return commandToClassMap.get(command).getDeclaredConstructor(Restaurant.class).newInstance(restaurant);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -88,7 +86,7 @@ public class Main {
         }
     }
 
-    private void hookManagerToMain(RestaurantDataManager manager) {
+    private void hookManagerToMain(RestaurantManager manager) {
         if (manager.getMainCLIOptions().length != manager.getOptionRunnables().length) {
             Logger.getAnonymousLogger().log(Level.WARNING, "CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
             return;

@@ -1,7 +1,7 @@
 package tables;
 
 
-import core.RestaurantDataManager;
+import core.RestaurantManager;
 import core.Restaurant;
 import core.RestaurantData;
 import enums.DataType;
@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class TableManager extends RestaurantDataManager {
+public class TableManager extends RestaurantManager {
 
     public TableManager(Restaurant restaurant) {
         super(restaurant);

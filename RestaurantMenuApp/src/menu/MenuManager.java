@@ -1,6 +1,6 @@
 package menu;
 
-import core.RestaurantDataManager;
+import core.RestaurantManager;
 import core.Restaurant;
 import enums.DataType;
 import tools.ConsolePrinter;
@@ -11,7 +11,7 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MenuManager extends RestaurantDataManager {
+public class MenuManager extends RestaurantManager {
 
     public MenuManager(Restaurant restaurant) {
         super(restaurant);

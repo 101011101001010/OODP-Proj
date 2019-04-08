@@ -1,6 +1,6 @@
 package staff;
 
-import core.RestaurantDataManager;
+import core.RestaurantManager;
 import core.Restaurant;
 import core.RestaurantData;
 import enums.DataType;
@@ -10,7 +10,7 @@ import tools.FileIO;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class StaffManager extends RestaurantDataManager {
+public class StaffManager extends RestaurantManager {
 
     public StaffManager(Restaurant restaurant) {
         super(restaurant);

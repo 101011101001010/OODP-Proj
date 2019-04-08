@@ -2,11 +2,11 @@ package core;
 
 import tools.InputHelper;
 
-public abstract class RestaurantDataManager {
+public abstract class RestaurantManager {
     private Restaurant restaurant;
     private InputHelper in;
 
-    public RestaurantDataManager(Restaurant restaurant) {
+    public RestaurantManager(Restaurant restaurant) {
         this.restaurant = restaurant;
         this.in = new InputHelper();
     }
