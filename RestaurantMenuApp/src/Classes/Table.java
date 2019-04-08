@@ -1,9 +1,13 @@
 package Classes;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Locale;
 
 
 public class Table {
@@ -44,8 +48,8 @@ public class Table {
 		}
 
 		public String toStringTwo(){
-			DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
-			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime().format(tf) +
+			DateTimeFormatter tf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.ENGLISH);
+			return "Reservation date :" + date.toLocalDate() + " " + date.toLocalTime().format(tf).toUpperCase() +
 					", Name :" + getName() + ", Contact :" + getContact() + ", Pax :" + getPax();
 		}
 		public int compareTo(Reservations anotherReservation){
@@ -131,7 +135,7 @@ public class Table {
 
 	public void isReserved(int contact,String name, LocalDateTime date, int pax){
 		String session = "03:00pm";
-		DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
+		DateTimeFormatter tf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.ENGLISH);
 		if (date.toLocalTime().isBefore(LocalTime.parse(session, tf)))
 			session = "am";
 		else

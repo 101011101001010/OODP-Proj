@@ -1,18 +1,12 @@
 package Classes;
 
 
-import core.Restaurant;
-import core.RestaurantDataManager;
-import enums.DataType;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Period;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
-public class TableManager extends RestaurantDataManager {
+public class TableManager {
 
     public static ArrayList<Table> tableList = new ArrayList<>();
     private static Map<Integer, Integer> map;
@@ -21,10 +15,9 @@ public class TableManager extends RestaurantDataManager {
     private LocalTime amClosingHour = formattingtime("03:00pm");
     private LocalTime pmOpeningHour = formattingtime("06:00pm");
     private LocalTime pmClosingHour = formattingtime("10:00pm");
-    private DateTimeFormatter tf = DateTimeFormatter.ofPattern("hh:mma");
+    private DateTimeFormatter tf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.ENGLISH);
 
-    public TableManager(Restaurant restaurant) {
-        super(restaurant);
+    public TableManager() {
         map = new HashMap<>();
         int id = 20;
         for (int i = 0; i < 30; i++) {
@@ -268,39 +261,36 @@ public class TableManager extends RestaurantDataManager {
     }
 
     private LocalDate formattingdate (String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy").toFormatter(Locale.ENGLISH);
         return LocalDate.parse(date, formatter);
     }
     private LocalTime formattingtime (String time) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mma");
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.ENGLISH);
         return LocalTime.parse(time, formatter);
     }
     private LocalDateTime formattingdatetime (String datetime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyyhh:mma").toFormatter(Locale.ENGLISH);
         return LocalDateTime.parse(datetime, formatter);
     }
     public boolean compareDate (LocalDateTime compare1, LocalDateTime compare2){
         return compare1.toLocalDate().equals(compare2.toLocalDate());
     }
 
-    @Override
-    public void init() {
 
-    }
+    //
+    //
+    //
 
-    @Override
-    public String[] getMainCLIOptions() {
-        return new String[]{
+    /*public Pair<Op, String> init(){
+        FileIO f = new FileIO();
+        List<String> tableData = f.read(FileIO.FileNames.TABLE_FILE);
+        String splitStr = " // ";
 
-        };
-    }
-
-    @Override
-    public Runnable[] getOptionRunnables() {
-        return new Runnable[]{
-
-        };
-    }
+        if (tableData==null)
+            return  (new Pair<>(Op.FAILED, "Failed to read files."));
+        if (!getRestaurant().registerClassToAsset(Table.class, AssetType.TABLE))
+            return (new Pair<>(Op.FAILED, "Failed to register class."))
+    }*/
 }
 
 
