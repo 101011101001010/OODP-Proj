@@ -10,16 +10,24 @@ import menu.MenuManager;
 import tools.ConsolePrinter;
 import tools.FileIO;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TableManager extends RestaurantManager {
 
+    private LocalDateTime now = LocalDateTime.now();
+
     public TableManager(Restaurant restaurant) {
         super(restaurant);
+
+        if (getRestaurant().isDataTypeExists(DataType.TABLE)) {
+            checkReservations();
+        }
     }
 
     @Override
@@ -100,14 +108,32 @@ public class TableManager extends RestaurantManager {
                 ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data for detected for " + DataType.RESERVATION.name() + ": " + e.getMessage());
             }
         }
+
+        String test1 = "0904201911:18am";
+        String test2 = "0904201910:30am";
+        String test3 = "1004201909:45pm";
+        String test4 = "0904201909:15pm";
+        String test5 = "1004201907:30pm";
+        Optional<List<Table>> tableList = getRestaurant().getDataList(DataType.TABLE);
+
+        if (tableList.isPresent()) {
+            tableList.get().get(25).addReservation(12345, "Aaaaaaaaaaaaaaaaaaa", formattingdatetime(test1), 10);
+            tableList.get().get(26).addReservation(12345, "B", formattingdatetime(test2), 10);
+            tableList.get().get(27).addReservation(54321, "C", formattingdatetime(test3), 10);
+            tableList.get().get(28).addReservation(12345, "D", formattingdatetime(test4), 10);
+            tableList.get().get(29).addReservation(11111, "E", formattingdatetime(test5), 10);
+        }
+
+        checkReservations();
     }
 
     @Override
     public String[] getMainCLIOptions() {
         return new String[]{
                 "View table status",
-                "Create new order",
-                "Manage orders"
+                "Create new walk-in order",
+                "Manage reservation",
+                "Manage orders",
         };
     }
 
@@ -116,7 +142,8 @@ public class TableManager extends RestaurantManager {
         return new Runnable[]{
                 this::viewTable,
                 this::createNewOrder,
-                this::manageOrders
+                this::getReservation,
+                this::manageOrders,
         };
     }
 
@@ -169,8 +196,8 @@ public class TableManager extends RestaurantManager {
 
         final int fPax = pax;
         final Optional<List<Table>> dataList = getRestaurant().getDataList(DataType.TABLE);
-        final List<Table> emptyTableList =  dataList.map(data -> data.stream().filter(x -> !x.isOccupied()).collect(Collectors.toList())).get();
-        final Optional<Table> oTable = (emptyTableList.stream().filter(table -> table.getCapacity() >= fPax && table.getCapacity() <= (fPax + 2)).findFirst());
+        final List<Table> emptyTableList =  dataList.map(data -> data.stream().filter(Table::isAvailable).collect(Collectors.toList())).get();
+        final Optional<Table> oTable = (emptyTableList.stream().filter(table -> table.isLargeEnough(fPax)).findFirst());
 
         if (oTable.isEmpty()) {
             ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "There is no table available for " + pax + " " + ((pax == 1) ? "person" : "people") + ".");
@@ -242,19 +269,20 @@ public class TableManager extends RestaurantManager {
         final MenuManager manager = new MenuManager(getRestaurant());
         final Set<String> categoryList = manager.getAlaCarteCategories();
         final List<String> displayList = new ArrayList<>();
+        int trashCount = 0;
 
         for (String category : categoryList) {
-            displayList.add("\\SUB // " + category);
+            displayList.add("\\SUB" + category);
             displayList.addAll(manager.getAlaCarteItemNamesForCategory(category));
-            displayList.add("---");
+            trashCount += 2;
         }
 
-        displayList.add("\\SUB // " + "Promotion Packages");
+        displayList.add("\\SUB" + "Promotion Packages");
         displayList.addAll(manager.getItemNames(DataType.PROMO_PACKAGE));
-
+        trashCount++;
         List<String> choiceList = ConsolePrinter.formatChoiceList(displayList, null);
         ConsolePrinter.printTable("Command // Menu Item", choiceList, true);
-        int itemIndex = getInputHelper().getInt("Select an item to add to order", 0, displayList.size());
+        int itemIndex = getInputHelper().getInt("Select an item to add to order", 0, displayList.size() - trashCount);
 
         if (itemIndex == 0) {
             ConsolePrinter.clearCmd();
@@ -334,6 +362,118 @@ public class TableManager extends RestaurantManager {
         return false;
     }
 
+    private void showReservations(){
+        Optional<List<Table>> tableList = getRestaurant().getDataList(DataType.TABLE);
+        List<Table.Reservation> reservationList = new ArrayList<>();
+        tableList.ifPresent(data -> data.stream().map(Table::getReservationList).forEach(reservationList::addAll));
+        List<String> printList = new ArrayList<>();
+        reservationList.forEach(r -> printList.add(r.toDisplayString()));
+        printList.add("\\SUBTEST // 123");
+        ConsolePrinter.printTable("Reservation List", "Table ID // Name // Contact // Date & Time // Pax", printList, true);
+        // Table ID // Name // Contact // Date and Time // Pax
+
+    }
+
+    void getReservation (){
+        int contact;
+        Optional<List<Table>> tableList = getRestaurant().getDataList(DataType.TABLE);
+        if (tableList.isEmpty())
+            return;
+        contact = getInputHelper().getInt("Enter contact number to check for reservation", 10000, 99999999);
+        List<String> printList = new ArrayList<>();
+        List<Table.Reservation> rList = new ArrayList<>();
+
+        for (Table t : tableList.get()){
+            List<Table.Reservation> reservationList = t.findReservation(contact);
+
+            if (reservationList.size() > 0) {
+                rList.addAll(t.findReservation(contact));
+            }
+        }
+
+        if (rList.size() == 0) {
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "No reservation found.");
+        } else {
+            int upperBound = rList.size();
+            rList.forEach(r -> printList.add(r.getDateStr() + " // " + r.getId() + " // " + r.getPax()));
+            ConsolePrinter.printTable("Date // Table ID // Pax", ConsolePrinter.formatChoiceList(printList, null), true);
+            int choice = getInputHelper().getInt("Select reservation to manage", 0, upperBound);
+
+            if (choice == 0) {
+                return;
+            }
+
+            Table.Reservation r = rList.get(choice - 1);
+            String[] actions = new String[] {"Fulfil reservation", "Delete reservation"};
+            List<String> choiceList = ConsolePrinter.formatChoiceList(Arrays.asList(actions), null);
+            ConsolePrinter.printTable("Manage Reservation", "Command // Action", choiceList, true);
+            int action = getInputHelper().getInt("Select action", 0, actions.length);
+
+            if (action == 1) {
+                fulfilReservation(r);
+            } else {
+                deleteReservation(r);
+            }
+        }
+    }
+
+    private void fulfilReservation(Table.Reservation r) {
+        Optional<Table> table = getRestaurant().getDataFromId(DataType.TABLE, r.getId());
+
+        if (table.isPresent()) {
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+            String orderId = LocalDateTime.now().format(format);
+            Order order = table.get().attachOrder(orderId, getRestaurant().getSessionStaffId());
+            table.get().deleteReservation(r);
+
+            if (getRestaurant().save(order) && getRestaurant().save(table.get())) {
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Order " + orderId + " has been created successfully.");
+                return;
+            }
+        }
+
+        ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to fulfil reservation.");
+    }
+
+    private void deleteReservation(Table.Reservation r) {
+        Optional<Table> table = getRestaurant().getDataFromId(DataType.TABLE, r.getId());
+
+        if (table.isPresent()) {
+            table.get().deleteReservation(r);
+
+            if (getRestaurant().save(table.get())) {
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Reservation has been deleted successfully.");
+                return;
+            }
+        }
+
+        ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to delete reservation.");
+    }
+
+    void checkReservations() {
+        Optional<List<Table>> tableList = getRestaurant().getDataList(DataType.TABLE);
+        tableList.ifPresent(list -> list.forEach(Table::removeNoShow));
+
+
+        if (tableList.isPresent()) {
+            for (Table t : tableList.get()) {
+                t.setReserved(false);
+
+                for (int i = 0; i < t.getReservationList().size(); i++) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("a");
+                    LocalDateTime reserveDateTime = t.getReservationList().get(i).getDate();
+
+                    if (reserveDateTime.toLocalDate().isEqual(now.toLocalDate()) && reserveDateTime.format(formatter).equals(now.format(formatter))) {
+                        t.setReserved(true);
+                    }
+                }
+
+                getRestaurant().save(t);
+            }
+        }
+
+    }
+
     /*
     private void printBill() {
         /*
@@ -407,6 +547,11 @@ public class TableManager extends RestaurantManager {
 
     private LocalDateTime formatting(String datetime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyhh:mma");
+        return LocalDateTime.parse(datetime, formatter);
+    }
+
+    private LocalDateTime formattingdatetime (String datetime) {
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyyhh:mma").toFormatter(Locale.ENGLISH);
         return LocalDateTime.parse(datetime, formatter);
     }
 }

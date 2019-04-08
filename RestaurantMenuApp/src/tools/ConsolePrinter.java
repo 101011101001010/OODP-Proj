@@ -89,7 +89,6 @@ public class ConsolePrinter {
         }
 
         boolean horizontalDivider = false;
-        boolean subHeader = false;
 
         for (int row = 0; row < stringListProcessed.size(); row++) {
             String[] rowString = stringListProcessed.get(row);
@@ -105,6 +104,21 @@ public class ConsolePrinter {
                     break;
                 }
 
+                if (rowStringList.size() == 1 && rowStringList.get(0).size() == 1 && rowStringList.get(0).get(0).startsWith("\\SUB")) {
+                    String s = rowStringList.get(0).get(0);
+                    s = s.replace("\\SUB", "");
+                    s = s.toUpperCase();
+                    final String stringPadding = " ".repeat(totalLength - s.length());
+
+                    if (((row > 0 && columnHeaders.length() == 0) || (row > 1)) && !horizontalDivider) {
+                        printDivider('-', cellLengths, verticalDivider);
+                    }
+
+                    System.out.println("|  " + s + stringPadding + "  |");
+                    printDivider('-', cellLengths, verticalDivider);
+                    break;
+                }
+
                 System.out.print("|  ");
 
                 for (int cell = 0; cell < cellLengths.size(); cell++) {
@@ -112,15 +126,6 @@ public class ConsolePrinter {
                     final int cellLength = cellLengths.get(cell);
                     final int stringLength = cellRowString.length();
                     final String stringPadding = " ".repeat(cellLength - stringLength);
-
-                    if (cellRowString.startsWith("\\SUB")) {
-                        subHeader = true;
-                        cellRowString = cellRowString.replace("\\SUB", "    ");
-                    }
-
-                    if (subHeader) {
-                        cellRowString = cellRowString.toUpperCase();
-                    }
 
                     if (row == 0 && columnHeaders.length() > 0) {
                         final int pad = Math.max(cellLength - stringLength, 0);
@@ -151,11 +156,9 @@ public class ConsolePrinter {
                 horizontalDivider = true;
             }
 
-            if ((columnHeaders.length() > 0 && row == 0) || (horizontalDivider && row != stringListProcessed.size() - 1) || subHeader) {
+            if ((columnHeaders.length() > 0 && row == 0) || (horizontalDivider && row != stringListProcessed.size() - 1)) {
                 printDivider('-', cellLengths, verticalDivider);
             }
-
-            subHeader = false;
         }
 
         printDivider('=', totalLength);
@@ -214,8 +217,8 @@ public class ConsolePrinter {
 
         for (int cell = 0; cell < cellLengths.size(); cell++) {
             final List<String> cellStringList = new ArrayList<>();
-            if (rowString.length == 1 && rowString[0].equals("---")) {
-                cellStringList.add("---");
+            if (rowString.length == 1 && (rowString[0].equals("---") || rowString[0].startsWith("\\SUB"))) {
+                cellStringList.add(rowString[0]);
                 ret.add(cellStringList);
                 return ret;
             }

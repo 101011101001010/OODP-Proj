@@ -21,6 +21,14 @@ public class Restaurant {
         uniqueIdMap = new HashMap<>();
     }
 
+    public boolean isDataTypeExists(DataType dataType) {
+        if (dataTypeListMap.getOrDefault(dataType, null) == null) {
+            return false;
+        }
+
+        return true;
+    }
+
     public <X extends RestaurantData> void registerClassToDataType(Class<X> targetClass, DataType dataType) {
         classDataTypeMap.putIfAbsent(targetClass, dataType);
         final List<X> newList = new ArrayList<>();
@@ -60,7 +68,7 @@ public class Restaurant {
         }
 
         Comparator<X> comparator = getDefaultComparator(dataType);
-        return Optional.of(dataList.stream().sorted(comparator).collect(Collectors.toList()));
+        return Optional.of(List.copyOf(dataList.stream().sorted(comparator).collect(Collectors.toList())));
     }
 
     public <X extends RestaurantData> boolean save(X data) {

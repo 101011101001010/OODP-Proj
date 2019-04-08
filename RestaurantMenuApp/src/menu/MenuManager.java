@@ -97,7 +97,6 @@ public class MenuManager extends RestaurantManager {
             final Optional<List<AlaCarteItem>> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
             final List<String> tempList = dataList.map(data -> data.stream().filter(x -> x.getCategory().equals(category)).map(AlaCarteItem::toDisplayString).collect(Collectors.toList())).get();
             displayList.addAll(tempList);
-            displayList.add("---");
         }
 
         displayList.add("\\SUB" + "Promotion Packages");
