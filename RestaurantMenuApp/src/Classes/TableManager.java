@@ -1,12 +1,15 @@
 package Classes;
 
 
+import core.Restaurant;
+import core.RestaurantManager;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
-public class TableManager {
+public class TableManager extends RestaurantManager {
 
     public static ArrayList<Table> tableList = new ArrayList<>();
     private static Map<Integer, Integer> map;
@@ -17,7 +20,8 @@ public class TableManager {
     private LocalTime pmClosingHour = formattingtime("10:00pm");
     private DateTimeFormatter tf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("hh:mma").toFormatter(Locale.ENGLISH);
 
-    public TableManager() {
+    public TableManager(Restaurant restaurant) {
+        super(restaurant);
         map = new HashMap<>();
         int id = 20;
         for (int i = 0; i < 30; i++) {
@@ -284,21 +288,24 @@ public class TableManager {
         return compare1.toLocalDate().equals(compare2.toLocalDate());
     }
 
+    @Override
+    public void init() {
 
-    //
-    //
-    //
+    }
 
-    /*public Pair<Op, String> init(){
-        FileIO f = new FileIO();
-        List<String> tableData = f.read(FileIO.FileNames.TABLE_FILE);
-        String splitStr = " // ";
+    @Override
+    public String[] getMainCLIOptions() {
+        return new String[] {
 
-        if (tableData==null)
-            return  (new Pair<>(Op.FAILED, "Failed to read files."));
-        if (!getRestaurant().registerClassToAsset(Table.class, AssetType.TABLE))
-            return (new Pair<>(Op.FAILED, "Failed to register class."))
-    }*/
+        };
+    }
+
+    @Override
+    public Runnable[] getOptionRunnables() {
+        return new Runnable[] {
+
+        };
+    }
 }
 
 

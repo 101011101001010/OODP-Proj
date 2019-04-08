@@ -34,7 +34,7 @@ public class Main {
         hookManagerToMain(new StaffManager(restaurant));
         hookManagerToMain(new MenuManager(restaurant));
         hookManagerToMain(new TableManager(restaurant));
-        //hookManagerToMain(new Classes.TableManager(restaurant));
+        hookManagerToMain(new Classes.TableManager(restaurant));
     }
 
     private void start() {
