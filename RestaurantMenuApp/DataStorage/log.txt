@@ -382,3 +382,5 @@ java.lang.ClassCastException: class java.util.HashMap$Values cannot be cast to c
 	at core.Main.main(Main.java:106)
 
 
+20190409-203014: 
+	[ERROR] Failed to get manager from class map: Classes.Test.<init>(core.Restaurant)
