@@ -343,6 +343,11 @@ public class ConsolePrinter {
 
     public static void printMessage(MessageType messageType, String message) {
         clearCmd();
+
+        if (darkPath && messageType.equals(MessageType.FAILED)) {
+            darkPathMsg();
+        }
+
         message = "\n\t[" + messageType.name() + "] " + message;
         System.out.println(message);
     }
@@ -354,6 +359,20 @@ public class ConsolePrinter {
         FileIO.logToFile(dateTime + ": " + message, e);
     }
 
+    public static boolean darkPath = true;
+    public static void darkPathMsg() {
+        System.out.println("....................../´¯/) ");
+        System.out.println("....................,/¯../ ");
+        System.out.println(".................../..../ ");
+        System.out.println("............./´¯¯/'..'/´¯¯`·¸ ");
+        System.out.println("........../'/.../..../......./¨¯\\ ");
+        System.out.println("........('(...´...´.... ¯~/'...') ");
+        System.out.println(".........\\.................'...../ ");
+        System.out.println("..........''...\\.......... _.·´ ");
+        System.out.println("............\\..............( ");
+        System.out.println("..............\\.............\\...");
+        System.out.println();
+    }
     public static void darkPath() throws Exception {
         InputHelper in = new InputHelper();
         String s = in.getString("Yes?");

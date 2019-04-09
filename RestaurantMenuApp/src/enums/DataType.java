@@ -12,7 +12,8 @@ public enum DataType {
     PROMO_PACKAGE(PromotionPackage.class),
     TABLE(Table.class),
     STAFF(Staff.class),
-    ORDER(Order.class);
+    ORDER(Order.class),
+    REVENUE(null);
 
     private Class<? extends RestaurantData> c;
 

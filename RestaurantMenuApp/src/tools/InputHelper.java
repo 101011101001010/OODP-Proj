@@ -22,10 +22,17 @@ public class InputHelper {
                 if (input >= lowerBound && input <= upperBound) {
                     return input;
                 } else {
+                    if (ConsolePrinter.darkPath) {
+                        ConsolePrinter.darkPathMsg();
+                    }
+
                     System.out.println("Invalid input. Please try again.");
                 }
             } catch (InputMismatchException e) {
                 scanner.nextLine();
+                if (ConsolePrinter.darkPath) {
+                    ConsolePrinter.darkPathMsg();
+                }
                 System.out.println("Invalid input. Please try again.");
             }
         }
@@ -45,10 +52,16 @@ public class InputHelper {
                 if (input >= lowerBound && input <= upperBound) {
                     return input;
                 } else {
+                    if (ConsolePrinter.darkPath) {
+                        ConsolePrinter.darkPathMsg();
+                    }
                     System.out.println("ERROR: Invalid input. Please try again.");
                 }
             } catch (InputMismatchException e) {
                 scanner.nextLine();
+                if (ConsolePrinter.darkPath) {
+                    ConsolePrinter.darkPathMsg();
+                }
                 System.out.println("ERROR: Invalid input. Please try again.");
             }
         }
@@ -64,6 +77,9 @@ public class InputHelper {
                 return input;
             }
 
+            if (ConsolePrinter.darkPath) {
+                ConsolePrinter.darkPathMsg();
+            }
             System.out.println("ERROR: Input cannot be blank.");
         }
     }

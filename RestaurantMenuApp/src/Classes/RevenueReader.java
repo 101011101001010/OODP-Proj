@@ -28,7 +28,7 @@ public class RevenueReader extends RestaurantManager {
     private Map<String, Integer>  totalCount;
     private Map<String, BigDecimal> totalPrice;
 
-    public RevenueReader(Restaurant restaurant) {
+    public RevenueReader(Restaurant restaurant) throws Exception {
         super(restaurant);
         final FileIO f = new FileIO();
         stringList = f.read(DataType.REVENUE);
@@ -90,9 +90,9 @@ public class RevenueReader extends RestaurantManager {
             }
 
             // ordername - count - price--ordername - count - price
-            if (LocalDateTime.parse(str.split(" // ")[0]).toLocalDate().equals(LocalDateTime.now())){
+            //if (LocalDateTime.parse(str.split(" // ")[0]).toLocalDate().equals(LocalDateTime.now())){
 
-            }
+            //}
         }
         /*
         stringList.stream().filter(str -> LocalDateTime.parse(str.split(" // ")[0], format).toLocalDate().equals(LocalDateTime.now().toLocalDate())).forEach(todayList::add);
