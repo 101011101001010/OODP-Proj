@@ -1,4 +1,4 @@
-0 // $$$cam Money Item // 999999.00 // $cam Money
+0 // $cam Money Item // 1000000.00 // $cam Money
 1 // Astons Classic Cheeseburger // 14.90 // Burger
 2 // Beef Bolognese // 10.90 // Spaghetti Fiesta
 3 // Black Pepper Chicken // 10.90 // Grillworks Chicken
@@ -34,7 +34,6 @@
 33 // Salmon Spaghetti // 10.90 // Spaghetti Fiesta
 34 // Seafood Marinara // 10.90 // Spaghetti Fiesta
 35 // Teriyaki Chicken // 10.90 // Grillworks Chicken
-36 // Test Item // 99.00 // Test Item
-37 // Vienna Sausages (8pcs) // 5.90 // Starters
-38 // WHATTHEFUCK // 10.00 // 10
-39 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks
+36 // Vienna Sausages (8pcs) // 5.90 // Starters
+37 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks
+38 // What's up? // 100.00 // ZZZ
