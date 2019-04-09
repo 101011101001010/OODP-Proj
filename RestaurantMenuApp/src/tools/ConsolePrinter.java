@@ -345,15 +345,12 @@ public class ConsolePrinter {
         clearCmd();
         message = "\n\t[" + messageType.name() + "] " + message;
         System.out.println(message);
-
-        if (!messageType.equals(MessageType.SUCCESS) && !messageType.equals(MessageType.FAILED)) {
-            logToFile(message);
-        }
     }
 
-    public static void logToFile(String message) {
+    public static void logToFile(String message, Exception e) {
+        printMessage(MessageType.ERROR, message);
         DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
         String dateTime = LocalDateTime.now().format(dateTimeFormat);
-        FileIO.logToFile(dateTime + ": " + message);
+        FileIO.logToFile(dateTime + ": " + message, e);
     }
 }

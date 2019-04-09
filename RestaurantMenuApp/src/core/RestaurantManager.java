@@ -19,7 +19,7 @@ public abstract class RestaurantManager {
         return in;
     }
 
-    public abstract void init();
+    public void init() throws Exception {}
     public abstract String[] getMainCLIOptions();
     public abstract Runnable[] getOptionRunnables();
 }

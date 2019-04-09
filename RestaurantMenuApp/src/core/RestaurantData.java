@@ -7,6 +7,10 @@ public abstract class RestaurantData {
         this.id = id;
     }
 
+    public boolean matchId(int id) {
+        return (this.id == id);
+    }
+
     public int getId() {
         return id;
     }

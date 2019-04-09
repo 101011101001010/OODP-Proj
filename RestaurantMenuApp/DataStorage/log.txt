@@ -382,5 +382,48 @@ java.lang.ClassCastException: class java.util.HashMap$Values cannot be cast to c
 	at core.Main.main(Main.java:106)
 
 
-20190409-203014: 
-	[ERROR] Failed to get manager from class map: Classes.Test.<init>(core.Restaurant)
+
+20190409-223221: Unexpected fatal error, please check logs: Failed to find item for the given ID '0'.
+java.lang.Exception: Failed to find item for the given ID '0'.
+	at core.Restaurant.getDataFromId(Restaurant.java:157)
+	at menu.MenuManager.init(MenuManager.java:48)
+	at core.Main.hookManagerToMain(Main.java:93)
+	at core.Main.hookManagers(Main.java:32)
+	at core.Main.main(Main.java:106)
+
+20190409-223420: Unexpected fatal error, please check logs: Failed to find item for the given ID '0'.
+java.lang.Exception: Failed to find item for the given ID '0'.
+	at core.Restaurant.getDataFromId(Restaurant.java:157)
+	at menu.MenuManager.init(MenuManager.java:50)
+	at core.Main.hookManagerToMain(Main.java:93)
+	at core.Main.hookManagers(Main.java:32)
+	at core.Main.main(Main.java:106)
+
+20190409-223502: Unexpected fatal error, please check logs: Failed to find item for the given ID '0'.
+java.lang.Exception: Failed to find item for the given ID '0'.
+	at core.Restaurant.getDataFromId(Restaurant.java:157)
+	at menu.MenuManager.init(MenuManager.java:50)
+	at core.Main.hookManagerToMain(Main.java:93)
+	at core.Main.hookManagers(Main.java:32)
+	at core.Main.main(Main.java:106)
+
+20190409-223734: Unexpected fatal error, please check logs: Failed to find item for the given ID '0'.
+java.lang.Exception: Failed to find item for the given ID '0'.
+	at core.Restaurant.getDataFromId(Restaurant.java:157)
+	at menu.MenuManager.init(MenuManager.java:50)
+	at core.Main.hookManagerToMain(Main.java:93)
+	at core.Main.hookManagers(Main.java:32)
+	at core.Main.main(Main.java:106)
+
+20190409-225131: Failed to find index for the given ID '38'.
+java.lang.Exception: Failed to find index for the given ID '38'.
+	at core.Restaurant.getFileLineFromId(Restaurant.java:184)
+	at core.Restaurant.remove(Restaurant.java:126)
+	at menu.MenuManager.removeItem(MenuManager.java:292)
+	at menu.MenuManager.manageMenuItems(MenuManager.java:236)
+	at menu.MenuManager.display(MenuManager.java:105)
+	at menu.MenuManager.lambda$getOptionRunnables$7(MenuManager.java:84)
+	at core.Main.start(Main.java:65)
+	at core.Main.main(Main.java:107)
+
+
