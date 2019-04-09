@@ -353,4 +353,36 @@ public class ConsolePrinter {
         String dateTime = LocalDateTime.now().format(dateTimeFormat);
         FileIO.logToFile(dateTime + ": " + message, e);
     }
+
+    public static void darkPath() throws Exception {
+        InputHelper in = new InputHelper();
+        String s = in.getString("Yes?");
+        int sleepTime = 250;
+        if (s.equalsIgnoreCase("yes")) {
+            while (true) {
+                System.out.println("....................../´¯/) ");
+                Thread.sleep(sleepTime);
+                System.out.println("....................,/¯../ ");
+                Thread.sleep(sleepTime);
+                System.out.println(".................../..../ ");
+                Thread.sleep(sleepTime);
+                System.out.println("............./´¯¯/'..'/´¯¯`·¸ ");
+                Thread.sleep(sleepTime);
+                System.out.println("........../'/.../..../......./¨¯\\ ");
+                Thread.sleep(sleepTime);
+                System.out.println("........('(...´...´.... ¯~/'...') ");
+                Thread.sleep(sleepTime);
+                System.out.println(".........\\.................'...../ ");
+                Thread.sleep(sleepTime);
+                System.out.println("..........''...\\.......... _.·´ ");
+                Thread.sleep(sleepTime);
+                System.out.println("............\\..............( ");
+                Thread.sleep(sleepTime);
+                System.out.println("..............\\.............\\...");
+                Thread.sleep(sleepTime);
+                System.out.println("\nYES!\n");
+                Thread.sleep(sleepTime);
+            }
+        }
+    }
 }
