@@ -30,6 +30,7 @@ public class StaffManager extends RestaurantManager {
                 final int id = Integer.parseInt(data[0]);
                 final String name = data[1];
                 final String title = data[2];
+                getRestaurant().setUniqueId(DataType.STAFF, id);
                 getRestaurant().load(new Staff(id, name, title));
             } catch (NumberFormatException e) {
                 ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "Invalid file data: " + e.getMessage());

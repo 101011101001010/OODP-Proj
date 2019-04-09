@@ -36,4 +36,5 @@
 35 // Teriyaki Chicken // 10.90 // Grillworks Chicken
 36 // Test Item // 99.00 // Test Item
 37 // Vienna Sausages (8pcs) // 5.90 // Starters
-38 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks
+38 // WHATTHEFUCK // 10.00 // 10
+39 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks

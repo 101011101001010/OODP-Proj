@@ -102,7 +102,12 @@ public class Restaurant {
                     return false;
                 }
 
-                return fileIO.updateLine(dataType, index, data.toFileString());
+                if (fileIO.updateLine(dataType, index, data.toFileString())) {
+                    sortList(dataType);
+                    return true;
+                } else {
+                    return false;
+                }
             } catch (NumberFormatException e) {
                 ConsolePrinter.printMessage(ConsolePrinter.MessageType.ERROR, "Invalid file data for " + dataType + " at index " + index + ".");
                 return false;
@@ -242,7 +247,9 @@ public class Restaurant {
     }
 
     public void setUniqueId(DataType dataType, int id) {
-        uniqueIdMap.put(dataType, id);
+        if (id > uniqueIdMap.get(dataType)) {
+            uniqueIdMap.put(dataType, id);
+        }
     }
 
     public int generateUniqueId(DataType dataType) {
