@@ -34,6 +34,12 @@ public class StaffManager extends RestaurantManager {
             }
         }
 
+        if (getRestaurant().getDataList(DataType.STAFF).size() == 0) {
+            final String name = "admin";
+            final String title = "Default admin account";
+            getRestaurant().load(new Staff(0, name, title));
+        }
+
         getRestaurant().bulkSave(DataType.STAFF);
     }
 
