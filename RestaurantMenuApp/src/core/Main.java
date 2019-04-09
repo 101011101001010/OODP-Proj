@@ -1,5 +1,6 @@
 package core;
 
+import Classes.RevenueReader;
 import enums.DataType;
 import menu.MenuManager;
 import staff.Staff;
@@ -32,6 +33,7 @@ public class Main {
         hookManagerToMain(new MenuManager(restaurant));
         hookManagerToMain(new TableManager(restaurant));
         hookManagerToMain(new StaffManager(restaurant));
+        hookManagerToMain(new RevenueReader(restaurant));
     }
 
     private void start() {

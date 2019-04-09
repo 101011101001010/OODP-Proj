@@ -382,6 +382,7 @@ java.lang.ClassCastException: class java.util.HashMap$Values cannot be cast to c
 	at core.Main.main(Main.java:106)
 
 
+
 20190409-223221: Unexpected fatal error, please check logs: Failed to find item for the given ID '0'.
 java.lang.Exception: Failed to find item for the given ID '0'.
 	at core.Restaurant.getDataFromId(Restaurant.java:157)
@@ -424,4 +425,5 @@ java.lang.Exception: Failed to find index for the given ID '38'.
 	at menu.MenuManager.lambda$getOptionRunnables$7(MenuManager.java:84)
 	at core.Main.start(Main.java:65)
 	at core.Main.main(Main.java:107)
+
 
