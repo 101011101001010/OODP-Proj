@@ -72,6 +72,7 @@ public class RevenueReader extends RestaurantManager {
 
     private void printDaily() {
         List<String> todayList = new ArrayList<>();
+        LocalDateTime checkdate;
         this.totalCount = new HashMap<>();
         this.totalPrice = new HashMap<>();
 
@@ -79,21 +80,26 @@ public class RevenueReader extends RestaurantManager {
         for ( String s1 : stringList) {
             String[] split = s1.split(" // ");
             String orderId = split[0];
-            String items = split[1];
-            String[] itemArray = items.split("--");
+            checkdate = LocalDateTime.parse(orderId, format);
+            if(checkdate.toLocalDate().equals(LocalDateTime.now().toLocalDate())){
+                String items = split[1];
+                String[] itemArray = items.split("--");
 
-            for (String s2 : itemArray) {
-                String[] itemDetails = s2.split(" - ");
-                String orderName = itemDetails[0];
-                int count = Integer.parseInt(itemDetails[1]);
-                BigDecimal price = new BigDecimal(itemDetails[2]);
+                for (String s2 : itemArray) {
+                    String[] itemDetails = s2.split(" - ");
+                    String orderName = itemDetails[0];
+                    int count = Integer.parseInt(itemDetails[1]);
+                    BigDecimal price = new BigDecimal(itemDetails[2]);
+                }
             }
+        }
+
+
 
             // ordername - count - price--ordername - count - price
             //if (LocalDateTime.parse(str.split(" // ")[0]).toLocalDate().equals(LocalDateTime.now())){
 
             //}
-        }
         /*
         stringList.stream().filter(str -> LocalDateTime.parse(str.split(" // ")[0], format).toLocalDate().equals(LocalDateTime.now().toLocalDate())).forEach(todayList::add);
         todayList = todayList.stream().map(str -> str.replace("--", "\n")).collect(Collectors.toList());
