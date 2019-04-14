@@ -1,0 +1,30 @@
+Suggestions:
+
+	Prompt to display item has been added successfully?
+
+
+Bugs:
+
+	Menu items that have been added are off center
+		-Add new item
+			- When inputting name, enter only digits
+			- View all items
+
+	Multiple instances of Category
+		- Add new item
+			- When inputting category, enter a similar name with different case sensitivity
+			- View all items. Duplicates of category displayed
+			
+	Reservation creation fail
+		-Add a new reservation
+			- When entering '5' for pax, user is kicked to main menu 
+
+	Revenue List not displaying
+		-Attempt to display revenue
+			
+Extra: 
+	
+	Simi dark path lmaoo
+	
+	I feel damn sad kena flipped off the whole day :(
+	#testerlyfe

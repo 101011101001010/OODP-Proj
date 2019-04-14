@@ -1,0 +1,133 @@
+Test Case IDs:
+
+00 - Start Application
+	1 - Select Staff 
+	2 - Exit
+	3 - Invalid
+
+01 - View food menu
+	1 - Exit
+	2 - Invalid
+	
+02 - Add new ala carte
+	1 - Exit
+	2 - Invalid 
+	
+03 - Add new promotional package
+	1 - Multiple items
+	2 - Single item
+	3 - Exit
+	4 - Invalid
+	
+04 - Manage ala carte items
+	1 - Change Name
+		1 - Exit
+	2 - Change Price
+		1 - Invalid
+	3 - Change Category
+		1 - Exit
+	4 - Remove
+		1 - Yes
+		2 - No
+		3 - Invalid
+	5 - Exit
+	6 - Invalid
+	
+05 - Manage promo items
+	1 - Change name
+	2 - Remove
+		1 - Yes ---------FAILED
+		2 - No
+		3 - Invalid
+	3 - Exit
+	4 - Invalid
+	
+06 - View table status
+	1 - Sort by ID
+	2 - Sort by occupancy
+	3 - Sort by reservation
+	4 - Exit
+	5 - Invalid
+
+07 - New walk in order
+	1 - Too many
+	2 - Tables full -----------FAILED
+	3 - Invalid
+	
+08 - Manage Orders
+	1 - View
+	2 - Add item
+		1 - Invalid
+	3 - Remove item
+		1 - Exit
+		2 - Invalid
+	4 - Void order
+		1 - Yes
+		2 - No
+		4 - Invalid
+	5 - Print bill -----------FAILED
+	6 - Exit
+	7 - Invalid
+	
+09 - View all reservations
+	1 - Exit
+	2 - Invalid
+	
+10 - Make new reservation
+	1 - Date
+		1 - Invalid Date
+		2 - Invalid Format
+	2 - Time
+		1 - Invalid Time
+		2 - Invalid Format
+	3 - Pax
+		1 - Full
+		2 - Invalid
+	4 - Name
+	5 - Contact
+		1 - Repeat ------------FAILED
+		2 - Invalid Format
+		3 - Invalid 
+	6 - Reservation Timeout
+
+11 - Manage Reservation
+	1 - Fulfill 
+	2 - Remove
+	3 - Invalid Number
+	4 - Invalid
+	
+12 - View Staff Roster
+	1 - Sort by ID
+	2 - Sort by name
+	3 - Sort by title
+	4 - Exit
+	5 - Invalid Input
+
+13 - Add new staff
+	1 - Exit
+	
+14 - Manage staff
+	1 - Change name
+		1 - Exit
+	2 - Change title
+		1 - Exit
+	3 - Remove
+		1 - Yes
+		2 - No
+		3 - Invalid
+	4 - Exit
+	5 - Invalid
+
+15 - Show Revenue (lifetime) --- FAILED
+
+16 - Show Revenue (annually) --- FAILED
+
+17 - Show Revenue (monthly) --- FAILED
+
+18 - Show Revenue (daily) --- FAILED
+
+19 - Switch Staff Account
+	1 - Exit
+	2 - Invalid
+	
+20 - Exit
