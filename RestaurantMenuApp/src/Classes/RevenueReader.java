@@ -93,7 +93,7 @@ public class RevenueReader extends RestaurantManager {
                 }
             }
         }
-        printRevenue(totalCount, totalPrice, todayList);
+        printRevenue(totalCount, totalPrice, todayList, Period.DAILY);
     }
 
     private void printMonthly() {
@@ -122,7 +122,7 @@ public class RevenueReader extends RestaurantManager {
                 }
             }
         }
-        printRevenue(totalCount, totalPrice, monthlyList);
+        printRevenue(totalCount, totalPrice, monthlyList, Period.MONTHLY);
     }
 
     private void printAnnually() {
@@ -150,7 +150,7 @@ public class RevenueReader extends RestaurantManager {
                 }
             }
         }
-        printRevenue(totalCount, totalPrice, annuallyList);
+        printRevenue(totalCount, totalPrice, annuallyList, Period.ANNUALLY);
     }
 
     private void printLifetime() {
@@ -173,7 +173,7 @@ public class RevenueReader extends RestaurantManager {
                 addPrice(totalPrice, orderName, price);
             }
         }
-        printRevenue(totalCount, totalPrice, allList);
+        printRevenue(totalCount, totalPrice, allList, Period.LIFETIME);
     }
 
     private void addList (List<String> list, String itemName){
@@ -199,11 +199,17 @@ public class RevenueReader extends RestaurantManager {
             map.put(key, value + count);
         }
     }
-    private void printRevenue(Map<String, Integer> totalCount, Map<String, BigDecimal> totalPrice, List<String> revenueList){
+    private void printRevenue(Map<String, Integer> totalCount, Map<String, BigDecimal> totalPrice, List<String> revenueList, Period period){
         BigDecimal total;
+        List<String> displayList = new ArrayList<>();
         for ( String l : revenueList){
             total = new BigDecimal(totalCount.get(l));
-            System.out.println(totalCount.get(l) + " " + l + " is/are sold of a total of " + totalPrice.get(l).multiply(total));
+            displayList.add(l + " // " + totalCount.get(l) + " // " + total.multiply(totalPrice.get(l)));
         }
+
+        final String title = period + " Revenue Report";
+
+            ConsolePrinter.clearCmd();
+            ConsolePrinter.printTable(title, "Item // Amount // Total Price", displayList, true);
     }
 }

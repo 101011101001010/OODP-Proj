@@ -457,3 +457,26 @@ java.lang.NoSuchMethodException: Classes.RevenueReader.printAnnually()
 	at core.Main.start(Main.java:67)
 	at core.Main.main(Main.java:109)
 
+20190418-180248: Method error
+java.lang.NoSuchMethodException: Classes.RevenueReader.printDaily()
+	at java.base/java.lang.Class.getDeclaredMethod(Class.java:2476)
+	at Classes.RevenueReader.print(RevenueReader.java:63)
+	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at core.Main.start(Main.java:74)
+	at core.Main.main(Main.java:131)
+
+20190418-182718: Method error
+java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at Classes.RevenueReader.print(RevenueReader.java:64)
+	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at core.Main.start(Main.java:74)
+	at core.Main.main(Main.java:131)
+Caused by: java.lang.NullPointerException
+	at Classes.RevenueReader.printRevenue(RevenueReader.java:207)
+	at Classes.RevenueReader.printDaily(RevenueReader.java:96)
+	... 8 more
+
