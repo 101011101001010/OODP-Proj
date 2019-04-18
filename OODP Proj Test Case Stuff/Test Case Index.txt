@@ -36,7 +36,7 @@ Test Case IDs:
 05 - Manage promo items
 	1 - Change name
 	2 - Remove
-		1 - Yes ---------FAILED
+		1 - Yes
 		2 - No
 		3 - Invalid
 	3 - Exit
@@ -51,7 +51,7 @@ Test Case IDs:
 
 07 - New walk in order
 	1 - Too many
-	2 - Tables full -----------FAILED
+	2 - Tables full
 	3 - Invalid
 	
 08 - Manage Orders
@@ -65,7 +65,7 @@ Test Case IDs:
 		1 - Yes
 		2 - No
 		4 - Invalid
-	5 - Print bill -----------FAILED
+	5 - Print bill
 	6 - Exit
 	7 - Invalid
 	
@@ -85,7 +85,7 @@ Test Case IDs:
 		2 - Invalid
 	4 - Name
 	5 - Contact
-		1 - Repeat ------------FAILED
+		1 - Repeat
 		2 - Invalid Format
 		3 - Invalid 
 	6 - Reservation Timeout
