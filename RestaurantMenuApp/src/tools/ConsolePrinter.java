@@ -99,6 +99,8 @@ public class ConsolePrinter {
             }
 
             int maxRowCount = rowStringList.get(0).size();
+            boolean header = false;
+
             for (int cellRow = 0; cellRow < maxRowCount; cellRow++) {
                 if (rowStringList.size() == 1 && rowStringList.get(0).size() == 1 && rowStringList.get(0).get(0).equals("---")) {
                     printDivider('-', cellLengths, verticalDivider);
@@ -128,6 +130,16 @@ public class ConsolePrinter {
                     final int stringLength = cellRowString.length();
                     final String stringPadding = " ".repeat(cellLength - stringLength);
 
+                    if (cellRowString.startsWith("\\SUB")) {
+                        cellRowString = cellRowString.replace("\\SUB", "");
+                        cellRowString += "    ";
+                        header = true;
+                    }
+
+                    if (header) {
+                        cellRowString = cellRowString.toUpperCase();
+                    }
+
                     if (row == 0 && columnHeaders.length() > 0) {
                         final int pad = Math.max(cellLength - stringLength, 0);
                         System.out.print(" ".repeat(pad / 2) + cellRowString.toUpperCase() + " ".repeat(pad - (pad / 2)));
@@ -135,7 +147,6 @@ public class ConsolePrinter {
                         if (cellRowString.matches("^(-?\\d+|-?\\d+\\.\\d+)$")) {
                             final int pad = Math.max(cellLength - stringLength, 0);
                             System.out.print(" ".repeat(pad - (pad / 2)) + cellRowString + " ".repeat(pad / 2));
-                            //System.out.print(stringPadding + cellRowString);
                         } else {
                             System.out.print(cellRowString + stringPadding);
                         }
@@ -157,7 +168,7 @@ public class ConsolePrinter {
                 horizontalDivider = true;
             }
 
-            if ((columnHeaders.length() > 0 && row == 0) || (horizontalDivider && row != stringListProcessed.size() - 1)) {
+            if ((columnHeaders.length() > 0 && row == 0) || ((horizontalDivider || header) && row != stringListProcessed.size() - 1)) {
                 printDivider('-', cellLengths, verticalDivider);
             }
         }

@@ -8,9 +8,12 @@ import enums.DataType;
 import menu.AlaCarteItem;
 import menu.MenuItem;
 import menu.PromotionPackage;
+import staff.Staff;
 import tools.ConsolePrinter;
 import tools.FileIO;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -264,6 +267,7 @@ public class TableManager extends RestaurantManager {
                     return;
 
                 case 5:
+                    printBill(table);
                     ConsolePrinter.clearCmd();
                     return;
             }
@@ -527,57 +531,62 @@ public class TableManager extends RestaurantManager {
         }
     }
 
-    /*
-    private void printBill() {
-        List<Table> activeTableList = getActiveTables();
-        List<String> nameList = new ArrayList<>();
 
-        for (Table table : activeTableList) {
-            nameList.add("Table " + table.getId());
-        }
+    private void printBill(Table table) throws Exception {
+        Order order = table.getOrder();
 
-
-        int tableIndex = ConsolePrinter.printChoices("Select a table", "Index // Active Tables", nameList, new String[]{"Go back"}) - 1;
-        if (tableIndex == -2) {
+        if (order == null) {
             return;
         }
 
-        Table table = activeTableList.get(tableIndex);
-        for (RestaurantData o : getRestaurant().getDataList(DataType.ORDER)) {
-            if (o.getId() == table.getId()) {
-                if (o instanceof Order) {
-                    List<String> invoice = ((Order) o).toInvoiceString();
-                    String total = invoice.get(invoice.size() - 1);
-                    invoice.remove(invoice.size() - 1);
-
-                    //ConsolePrinter.printTitle("Invoice for Table " + table.getId(), true);
-                    //ConsolePrinter.printTable(Collections.singletonList(invoice.get(0)), false, false, false, false , true);
-                    //ConsolePrinter.printDivider(' ');
-
-                    invoice.remove(0);
-                    invoice.add(0, "QTY // ITEM DESCRIPTION // TOTAL");
-                    //ConsolePrinter.printTable(invoice, false, false, false, false, false);
-                    //ConsolePrinter.printDivider('-');
-
-                    invoice = new ArrayList<>(Collections.singletonList(total));
-                    invoice.add(0, "TOTAL AMOUNT DESCRIPTION // TOTAL");
-                    //ConsolePrinter.printTable(invoice, false, false, false, false , false);
-                    //ConsolePrinter.printDivider('=');
-                    o.toFileString();
-
-                    try {
-                        getRestaurant().remove(o);
-                        table.clear();
-                        getRestaurant().update(table);
-                        return;
-                    } catch (IOException | Restaurant.FileIDMismatchException e) {
-                        System.out.print("Failed to clear table: " + e.getMessage());
-                    }
-                }
-            }
+        if (order.getOrderItemList().size() == 0) {
+            return;
         }
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+        DateTimeFormatter format2 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter format3 = DateTimeFormatter.ofPattern("yyyyMMdd HHmmss");
+        String receiptId = order.getOrderId();
+        LocalDateTime dateTime = LocalDateTime.parse(receiptId, format);
+        int tableNo= table.getId();
+        int staffId = getRestaurant().getSessionStaffId();
+        final Staff staff = getRestaurant().getDataFromId(DataType.STAFF, staffId);
+        final String title = "Scam Money Restaurant";
+        List<String> printList = new ArrayList<>();
+
+        ConsolePrinter.clearCmd();
+        printList.add("Server: " + staff.getName() + " // " + dateTime.format(format2));
+        printList.add("Table " + tableNo);
+        printList.add(" ");
+
+        BigDecimal total = new BigDecimal(0).setScale(2, RoundingMode.FLOOR);
+        StringBuilder sb = new StringBuilder(dateTime.format(format3) + " // ");
+
+        for (Order.OrderItem o : order.getOrderItemList()) {
+            final String name = order.getItemName(o);
+            final int count = order.getItemCount(o);
+            final BigDecimal price = order.getItemPrice(o);
+            printList.add(name + " x " + count + " // " + price);
+            total = total.add(price);
+            sb.append(name).append(" - ").append(count).append(" - ").append(price);
+            sb.append("--");
+        }
+
+        printList.add(" ");
+
+        BigDecimal sc = total.multiply(new BigDecimal(0.5)).setScale(2, RoundingMode.FLOOR);
+        BigDecimal gst = total.multiply(new BigDecimal(0.07)).setScale(2, RoundingMode.FLOOR);
+        printList.add("Service charge (50%): // " + sc);
+        printList.add("GST (7%): // " + gst);
+        printList.add("Total (incl. GST and service charge): // " + total.add(sc).add(gst));
+        ConsolePrinter.printTable(title, "", printList, false);
+        getInputHelper().getInt("Enter 0 to process payment", 0, 0);
+        (new FileIO()).writeLine("revenue", sb.toString());
+        table.clear();
+        getRestaurant().remove(order);
+        getRestaurant().save(table);
     }
-    */
+
 
     private Table getAvailableTable(LocalDateTime dateTime, int pax) throws Exception {
         final List<Table> dataList = getRestaurant().getDataList(DataType.TABLE);
