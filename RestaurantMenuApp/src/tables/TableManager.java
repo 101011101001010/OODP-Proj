@@ -573,7 +573,12 @@ public class TableManager extends RestaurantManager {
         }
 
         printList.add(" ");
-        printList.add("Total: // " + total);
+
+        BigDecimal sc = total.multiply(new BigDecimal(0.5)).setScale(2, RoundingMode.FLOOR);
+        BigDecimal gst = total.multiply(new BigDecimal(0.07)).setScale(2, RoundingMode.FLOOR);
+        printList.add("Service charge (50%): // " + sc);
+        printList.add("GST (7%): // " + gst);
+        printList.add("Total (incl. GST and service charge): // " + total.add(sc).add(gst));
         ConsolePrinter.printTable(title, "", printList, false);
         getInputHelper().getInt("Enter 0 to process payment", 0, 0);
         (new FileIO()).writeLine("revenue", sb.toString());
