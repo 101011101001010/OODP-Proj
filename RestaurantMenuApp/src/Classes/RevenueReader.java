@@ -8,7 +8,7 @@ import tools.FileIO;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter;S
 import java.util.*;
 
 
@@ -200,16 +200,16 @@ public class RevenueReader extends RestaurantManager {
         }
     }
     private void printRevenue(Map<String, Integer> totalCount, Map<String, BigDecimal> totalPrice, List<String> revenueList, Period period){
-        BigDecimal total;
         List<String> displayList = new ArrayList<>();
+
         for ( String l : revenueList){
-            total = new BigDecimal(totalCount.get(l));
-            displayList.add(l + " // " + totalCount.get(l) + " // " + total.multiply(totalPrice.get(l)));
+            displayList.add(l + " // " + totalCount.get(l) + " // " + totalPrice.get(l));
         }
 
         final String title = period + " Revenue Report";
 
-            ConsolePrinter.clearCmd();
-            ConsolePrinter.printTable(title, "Item // Amount // Total Price", displayList, true);
+        ConsolePrinter.clearCmd();
+        ConsolePrinter.printTable(title, "Item // Amount // Total Price", displayList, true);
+        getInputHelper().getInt("Enter 0 to go back", 0, 0);
     }
 }

@@ -480,3 +480,46 @@ Caused by: java.lang.NullPointerException
 	at Classes.RevenueReader.printDaily(RevenueReader.java:96)
 	... 8 more
 
+20190418-200808: Text '20190418-183837' could not be parsed at index 8
+java.time.format.DateTimeParseException: Text '20190418-183837' could not be parsed at index 8
+	at java.base/java.time.format.DateTimeFormatter.parseResolved0(DateTimeFormatter.java:2046)
+	at java.base/java.time.format.DateTimeFormatter.parse(DateTimeFormatter.java:1948)
+	at java.base/java.time.LocalDateTime.parse(LocalDateTime.java:492)
+	at tables.TableManager.printBill(TableManager.java:545)
+	at tables.TableManager.manageOrders(TableManager.java:270)
+	at tables.TableManager.display(TableManager.java:167)
+	at tables.TableManager.lambda$getOptionRunnables$6(TableManager.java:148)
+	at core.Main.start(Main.java:74)
+	at core.Main.main(Main.java:131)
+
+20190418-204148: Method error
+java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at Classes.RevenueReader.print(RevenueReader.java:64)
+	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at core.Main.start(Main.java:74)
+	at core.Main.main(Main.java:131)
+Caused by: java.lang.NumberFormatException: For input string: "200.00"
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.base/java.lang.Integer.parseInt(Integer.java:652)
+	at java.base/java.lang.Integer.parseInt(Integer.java:770)
+	at Classes.RevenueReader.printDaily(RevenueReader.java:88)
+	... 8 more
+
+20190418-204657: Method error
+java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at Classes.RevenueReader.print(RevenueReader.java:64)
+	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at core.Main.start(Main.java:74)
+	at core.Main.main(Main.java:131)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+	at Classes.RevenueReader.printDaily(RevenueReader.java:82)
+	... 8 more
+

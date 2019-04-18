@@ -1,7 +1,9 @@
 package tables;
 
 import core.RestaurantData;
+import enums.DataType;
 import menu.MenuItem;
+import tools.FileIO;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,7 +21,6 @@ public class Order extends RestaurantData {
         this.orderId = orderId;
         this.staffId = staffId;
         orderItemList = new ArrayList<>();
-        //orderDate.toLocalDate();
     }
 
     List<OrderItem> getOrderItemList() {
@@ -52,6 +53,10 @@ public class Order extends RestaurantData {
 
     int getItemCount(OrderItem item) {
         return item.getCount();
+    }
+
+    BigDecimal getItemPrice(OrderItem item) {
+        return item.getPrice();
     }
 
     boolean removeItems(OrderItem item, int count) {
@@ -113,31 +118,8 @@ public class Order extends RestaurantData {
         return sb.toString();
     }
 
-    /*
-    public List<String> toInvoiceString() {
-        List<String> list = new ArrayList<>();
-        BigDecimal totalPrice = new BigDecimal(0);
-        list.add("Order ID: " + getOrderId());
-        list.add("QTY // ITEM DESCRIPTION // TOTAL");
 
-        for (OrderItem item : orderItemList) {
-            String s = item.getCount() + " // " + item.getItem().getName() + " // " + item.getPrice();
-            list.add(s);
-            totalPrice = totalPrice.add(item.getPrice());
-        }
 
-        list.add("Total payable // " + totalPrice.toString());
-
-        FileIO f = new FileIO();
-        String writeData;
-        for (OrderItem orderItem : orderItemList) {
-            writeData = getId() + ", " + orderId + ", ";
-            writeData += orderItem.getItem().getId() + ", " + orderItem.getCount() + ", " + orderItem.getPrice();
-            f.writeLine(DataType.REVENUE, writeData);
-        }
-        return list;
-    }
-    */
 
     class OrderItem {
         private int count;
