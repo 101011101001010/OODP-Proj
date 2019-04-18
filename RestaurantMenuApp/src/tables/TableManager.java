@@ -212,13 +212,8 @@ public class TableManager extends RestaurantManager {
             return;
         }
 
-        int fPax = pax;
-        if (fPax == 5) {
-            fPax += 1;
-        }
-
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-        Table table = getAvailableTable(LocalDateTime.now(), fPax);
+        Table table = getAvailableTable(LocalDateTime.now(), pax);
         String orderId = LocalDateTime.now().format(format);
         Order order = table.attachOrder(getRestaurant().getSessionStaffId());
         getRestaurant().save(order);
@@ -418,7 +413,7 @@ public class TableManager extends RestaurantManager {
 
         do {
             try {
-                ConsolePrinter.printInstructions(Arrays.asList("Reservations may only be made from opening hours to ONE hour before closing.", "Time format: HH:mm (24-hour)"));
+                ConsolePrinter.printInstructions(Arrays.asList("Reservations may only be made from opening hours to ONE hour before closing.", "Time format: HHmm (24-hour)"));
                 time = getInputHelper().getString("Enter reserving time");
                 timeFormatted = LocalTime.parse(time, formatter);
 
@@ -439,15 +434,9 @@ public class TableManager extends RestaurantManager {
             return;
         }
 
-        int fPax = pax;
-
-        if (pax == 5) {
-            fPax++;
-        }
-
         formatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyyHHmm").toFormatter(Locale.ENGLISH);
         LocalDateTime reserveDateTime = LocalDateTime.parse(date + time, formatter);
-        Table table = getAvailableTable(reserveDateTime, fPax);
+        Table table = getAvailableTable(reserveDateTime, pax);
         String name = getInputHelper().getString("Enter name");
         int contact = getInputHelper().getInt("Enter contact number", 65000000, 99999999);
 

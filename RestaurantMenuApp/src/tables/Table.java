@@ -60,6 +60,10 @@ public class Table extends RestaurantData {
     }
 
     boolean isLargeEnough(int pax) {
+        if (pax == 5) {
+            pax++;
+        }
+
         return (capacity >= pax && capacity <= (pax + 2));
     }
 

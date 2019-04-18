@@ -48,8 +48,7 @@ public class StaffManager extends RestaurantManager {
         return new String[] {
                 "View staff roster",
                 "Add new staff",
-                "Manage staff",
-                "Go down the dark path"
+                "Manage staff"
         };
     }
 
@@ -58,8 +57,7 @@ public class StaffManager extends RestaurantManager {
         return new Runnable[] {
                 () -> display(1),
                 () -> display(2),
-                () -> display(3),
-                () -> display(4),
+                () -> display(3)
         };
     }
 
@@ -76,10 +74,6 @@ public class StaffManager extends RestaurantManager {
 
                 case 3:
                     manageStaff();
-                    break;
-
-                case 4:
-                    ConsolePrinter.darkPath();
                     break;
             }
         } catch (Exception e) {

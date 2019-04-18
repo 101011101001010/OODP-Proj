@@ -34,7 +34,7 @@ public class MenuManager extends RestaurantManager {
                 final String name = data[1];
                 final BigDecimal price = new BigDecimal(data[2]);
                 final String category = data[3];
-                getRestaurant().load(new AlaCarteItem(id, name, price, category));
+                getRestaurant().load(new AlaCarteItem(id, name, price, category.toLowerCase()));
             } catch (NumberFormatException e) {
                 throw (new Exception("Invalid file data detected for " + DataType.ALA_CARTE_ITEM.name() + ": " + e.getMessage()));
             }
@@ -164,7 +164,7 @@ public class MenuManager extends RestaurantManager {
         }
 
         final int id = getRestaurant().generateUniqueId(DataType.ALA_CARTE_ITEM);
-        AlaCarteItem item = new AlaCarteItem(id, name, price, category);
+        AlaCarteItem item = new AlaCarteItem(id, name, price, category.toLowerCase());
         getRestaurant().save(item);
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been added successfully.");
     }
