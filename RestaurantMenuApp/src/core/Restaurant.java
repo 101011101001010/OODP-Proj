@@ -6,12 +6,41 @@ import tools.FileIO;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class acts as a database for all restaurant data objects declared in the DataType enumerator.
+ * Contains a map that maps data types to a list dedicated to each data type.
+ * Allows the generation of unique ID for the sake of data storage in text files.
+ * Stores the staff ID using the current application session.
+ */
 public class Restaurant {
+    /**
+     * Maps data types to their respective dedicated list.
+     */
     private Map<DataType, List<? extends RestaurantData>> dataListMap;
+
+    /**
+     * Maps data types to a default comparator each. The comparators are used to sort the respective lists for each data type.
+     * The default comparator sorts by ID, a mandatory property for every restaurant data object.
+     */
     private Map<DataType, Comparator<? extends RestaurantData>> defaultComparatorMap;
+
+    /**
+     * Maps data types to an unique ID integer each.
+     * Unique ID generation is handled using a set and generate function in this class.
+     */
     private Map<DataType, Integer> uniqueIdMap;
+
+    /**
+     * ID of the staff running the restaurant application.
+     */
     private int sessionStaffId = -1;
 
+    /**
+     * Initialises all hash-maps used in this class.
+     * Initialises and assigns a list to each data type declared in the DataType enumerator.
+     * @param <X> Constrains all lists to only be able to hold a RestaurantData object, or any of its sub-classes.
+     * @see DataType
+     */
     <X extends RestaurantData> Restaurant() {
         dataListMap = new HashMap<>();
         defaultComparatorMap = new HashMap<>();

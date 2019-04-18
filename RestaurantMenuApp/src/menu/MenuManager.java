@@ -17,6 +17,10 @@ public class MenuManager extends RestaurantManager {
         super(restaurant);
     }
 
+    /**
+     * Manager initialisation. Runs only once throughout the application's lifetime.
+     * @throws Exception returns the different exceptions that may be thrown while initialising
+     */
     @Override
     public void init() throws Exception {
         Comparator<MenuItem> comparator = Comparator.comparing(MenuItem::getName);
@@ -86,6 +90,10 @@ public class MenuManager extends RestaurantManager {
         };
     }
 
+    /**
+     * Maps to the various methods to run. Used as some methods throw exceptions, which will be caught by this method for logging purposes.
+     * @param which which method to run
+     */
     private void display(int which) {
         try {
             switch (which) {
@@ -114,6 +122,10 @@ public class MenuManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Displays all items in the menu, both ala-carte and promotional packages.
+     * @throws Exception
+     */
     private void viewMenu() throws Exception {
         final List<String> displayList = new ArrayList<>();
         final Set<String> categoryList = new TreeSet<>();
@@ -137,6 +149,11 @@ public class MenuManager extends RestaurantManager {
         ConsolePrinter.clearCmd();
     }
 
+    /**
+     * Adds a menu item into the restaurant list database. Records the name of the item and calls one of two other sub-functions, 'addAlaCarteItem' and 'addPromoPackage', to complete the process.
+     * @param dataType type of item - ala-carte or promotional package
+     * @throws Exception errors that occurred while adding the item
+     */
     private void addMenuItem(DataType dataType) throws Exception {
         ConsolePrinter.printInstructions(Collections.singletonList("Enter -back in item name to go back."));
         final String name = getInputHelper().getString("Enter item name");
@@ -152,6 +169,11 @@ public class MenuManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Called by addMenuItem as an extension for adding ala-carte items. Records the price and category of the ala-carte item.
+     * @param name name of the item recorded in addMenuItem
+     * @throws Exception errors that occurred while adding the item
+     */
     private void addAlaCarteItem(String name) throws Exception {
         final BigDecimal price = new BigDecimal(getInputHelper().getDouble("Enter item price"));
         final String category = getInputHelper().getString("Enter item category");
@@ -169,6 +191,12 @@ public class MenuManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been added successfully.");
     }
 
+    /**
+     * Called by addMenuItem as an extension for adding promotional packages. Allows users the select from the list of ala-carte items to add into the package, calculating the price automatically.
+     * Formula for price calculation = 0.8 * (sum of all items' price)
+     * @param name name of the item recorded in addMenuItem
+     * @throws Exception errors that occurred while adding the item
+     */
     private void addPromoPackage(String name) throws Exception {
         List<MenuItem> dataList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
         final List<String> nameList = dataList.stream().map(MenuItem::getName).collect(Collectors.toList());
@@ -206,6 +234,11 @@ public class MenuManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Package has been added successfully.");
     }
 
+    /**
+     * Manages menu items in the restaurant list database. Calls updateItem and removeItem accordingly.
+     * @param dataType dataType of the item to be modified
+     * @throws Exception errors that occurred while managing item
+     */
     private void manageMenuItems(DataType dataType) throws Exception {
         final List<MenuItem> dataList = getRestaurant().getDataList(dataType);
         final List<String> itemList = dataList.stream().map(MenuItem::getName).collect(Collectors.toList());
@@ -240,6 +273,12 @@ public class MenuManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Updates a menu item in the restaurant list database.
+     * @param item item obtained in calling function - to be updated
+     * @param action action the user chose in calling function
+     * @throws Exception errors that occurred while updating item
+     */
     private void updateItem(MenuItem item, int action) throws Exception {
         switch (action) {
             case 1:
@@ -273,6 +312,11 @@ public class MenuManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Removes a menu item from the restaurant list database.
+     * @param item item obtained in calling function - to be removed
+     * @throws Exception errors that occurred while removing the item
+     */
     private void removeItem(MenuItem item) throws Exception {
         if (getRestaurant().getDataList(DataType.ORDER).size() > 0) {
             ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Failed to remove item as there are active orders. Clear all orders before removing items.");

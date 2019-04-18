@@ -1,39 +1,39 @@
-0 // $cam Money Item // 1000000.00 // $cam Money
-1 // Astons Classic Cheeseburger // 14.90 // Burger
-2 // Beef Bolognese // 10.90 // Spaghetti Fiesta
-3 // Black Pepper Chicken // 10.90 // Grillworks Chicken
-4 // Black Pepper Fish // 11.50 // Fisherman's Pride
-5 // Black Pepper Steak // 16.90 // Legendary Steaks
-6 // Carbonara // 10.90 // Spaghetti Fiesta
-7 // Chargrilled Chicken // 10.90 // Grillworks Chicken
-8 // Chargrilled Salmon Fillet // 18.90 // Fisherman's Pride
-9 // Chicken Napolitana // 9.90 // Spaghetti Fiesta
-10 // Chicken Wings (2pcs) // 4.50 // Starters
-11 // Classic Caesar Salad // 7.90 // Starters
-12 // Cream of Mushroom // 3.80 // Starters
-13 // Cripsy Fried Fish // 11.50 // Fisherman's Pride
-14 // Crispy Fried Chicken // 10.90 // Grillworks Chicken
-15 // Double Up Chicken // 16.00 // Grillworks Chicken
-16 // Escargots // 7.90 // Starters
-17 // Fiery Chicken // 10.90 // Grillworks Chicken
-18 // Garlic Bread // 2.80 // Starters
-19 // Grilled Fish With Herb // 11.50 // Fisherman's Pride
-20 // Hickory BBQ Chicken // 10.90 // Grillworks Chicken
-21 // Honey Bourbon Ribs // 17.90 // Entree
-22 // IEat Super Burger // 15.90 // Burger
-23 // Lamb Loin Chops // 23.90 // Entree
-24 // Lemon Lime Chicken // 10.90 // Grillworks Chicken
-25 // Mexican Nachos // 7.90 // Starters
-26 // New York Strip // 19.90 // Legendary Steaks
-27 // Nuggets (8pcs) // 4.50 // Starters
-28 // Pork Chops // 12.90 // Entree
-29 // Porter house // 29.90 // Legendary Steaks
-30 // Prime Ribeye // 18.90 // Legendary Steaks
-31 // Prime Sirloin // 16.90 // Legendary Steaks
-32 // Prime Tenderloin // 28.50 // Legendary Steaks
-33 // Salmon Spaghetti // 10.90 // Spaghetti Fiesta
-34 // Seafood Marinara // 10.90 // Spaghetti Fiesta
-35 // Teriyaki Chicken // 10.90 // Grillworks Chicken
-36 // Vienna Sausages (8pcs) // 5.90 // Starters
-37 // Wagyu Ribeye Grade 6 // 43.90 // Legendary Steaks
-38 // What's up? // 100.00 // ZZZ
+0 // $cam Money Item // 1000000.00 // $cam money
+1 // Astons Classic Cheeseburger // 14.90 // burger
+2 // Beef Bolognese // 10.90 // spaghetti fiesta
+3 // Black Pepper Chicken // 10.90 // grillworks chicken
+4 // Black Pepper Fish // 11.50 // fisherman's pride
+5 // Black Pepper Steak // 16.90 // legendary steaks
+6 // Carbonara // 10.90 // spaghetti fiesta
+7 // Chargrilled Chicken // 10.90 // grillworks chicken
+8 // Chargrilled Salmon Fillet // 18.90 // fisherman's pride
+9 // Chicken Napolitana // 9.90 // spaghetti fiesta
+10 // Chicken Wings (2pcs) // 4.50 // starters
+11 // Classic Caesar Salad // 7.90 // starters
+12 // Cream of Mushroom // 3.80 // starters
+13 // Cripsy Fried Fish // 11.50 // fisherman's pride
+14 // Crispy Fried Chicken // 10.90 // grillworks chicken
+15 // Double Up Chicken // 16.00 // grillworks chicken
+16 // Escargots // 7.90 // starters
+17 // Fiery Chicken // 10.90 // grillworks chicken
+18 // Garlic Bread // 2.80 // starters
+19 // Grilled Fish With Herb // 11.50 // fisherman's pride
+20 // Hickory BBQ Chicken // 10.90 // grillworks chicken
+21 // Honey Bourbon Ribs // 17.90 // entree
+22 // IEat Super Burger // 15.90 // burger
+23 // Lamb Loin Chops // 23.90 // entree
+24 // Lemon Lime Chicken // 10.90 // grillworks chicken
+25 // Mexican Nachos // 7.90 // starters
+26 // New York Strip // 19.90 // legendary steaks
+27 // Nuggets (8pcs) // 4.50 // starters
+28 // Pork Chops // 12.90 // entree
+29 // Porter house // 29.90 // legendary steaks
+30 // Prime Ribeye // 18.90 // legendary steaks
+31 // Prime Sirloin // 16.90 // legendary steaks
+32 // Prime Tenderloin // 28.50 // legendary steaks
+33 // Salmon Spaghetti // 10.90 // spaghetti fiesta
+34 // Seafood Marinara // 10.90 // spaghetti fiesta
+35 // Teriyaki Chicken // 10.90 // grillworks chicken
+36 // Vienna Sausages (8pcs) // 5.90 // starters
+37 // Wagyu Ribeye Grade 6 // 43.90 // legendary steaks
+38 // What's up? // 100.00 // zzz

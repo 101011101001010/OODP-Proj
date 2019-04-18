@@ -15,13 +15,43 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * The entry point of the application. Main extends the capability of the application by hooking up classes that extends RestaurantManager, as long as the managers provide an entry point into them. See RestaurantManager for details.
+ * @see RestaurantManager
+ */
 public class Main {
+    /**
+     * Maps command indices to the manager containing the runnable to be called by the command.
+     * @see RestaurantManager
+     */
     private Map<Integer, Class<? extends RestaurantManager>> commandToClassMap;
+
+    /**
+     * Maps command indices to the indices of a runnable array in the respective manager classes.
+     * @see RestaurantManager
+     */
     private Map<Integer, Integer> commandToIndexMap;
+
+    /**
+     * List of string arrays to be displayed on the main CLI. One array per manager.
+     * @see RestaurantManager
+     */
     private List<String[]> mainCliOptions;
+
+    /**
+     * Restaurant instance required for this class to function.
+     */
     private Restaurant restaurant;
+
+    /**
+     * Index used for mapping commands.
+     */
     private int commandIndex = 1;
 
+    /**
+     * Initialises the list and hash-maps used in this class.
+     * Also initialises a restaurant object that will be used for the lifespan duration of the application.
+     */
     private Main() {
         this.restaurant = new Restaurant();
         commandToClassMap = new HashMap<>();
@@ -30,7 +60,9 @@ public class Main {
     }
 
     /**
-     * Consolidatory method that hooks up RestaurantManagers to the main function. RestaurantManagers may be substituted with objects of any of its sub-classes.
+     * Hooks up RestaurantManagers to the main function. RestaurantManagers may be substituted with objects of any of its sub-classes.
+     * Changes are made primarily to this function when extending the application with new managers:
+     * Add a new 'hookManagerToMain(newManagerInstance)' line to hook the particular manager.
      * @throws Exception contains error messages that may be thrown when initialising each managers
      */
     private void hookManagers() throws Exception {
