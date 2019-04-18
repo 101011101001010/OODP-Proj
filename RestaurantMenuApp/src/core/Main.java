@@ -29,6 +29,10 @@ public class Main {
         mainCliOptions = new ArrayList<>();
     }
 
+    /**
+     * Consolidatory method that hooks up RestaurantManagers to the main function. RestaurantManagers may be substituted with objects of any of its sub-classes.
+     * @throws Exception contains error messages that may be thrown when initialising each managers
+     */
     private void hookManagers() throws Exception {
         hookManagerToMain(new MenuManager(restaurant));
         hookManagerToMain(new TableManager(restaurant));
@@ -36,6 +40,9 @@ public class Main {
         hookManagerToMain(new RevenueReader(restaurant));
     }
 
+    /**
+     * Starts the CLI prompts for the application, looping infinitely until the user exits the program.
+     */
     private void start() {
         final InputHelper in = new InputHelper();
         int staffIndex;
@@ -78,6 +85,12 @@ public class Main {
         } while (true);
     }
 
+    /**
+     * Captures the staff ID for the current restaurant session.
+     * @param in initialised inputHelper object
+     * @return staff ID
+     * @throws Exception contains error messages that may be thrown by StaffManager
+     */
     private int staffLogin(InputHelper in) throws Exception {
         final List<Staff> staffList = restaurant.getDataList(DataType.STAFF);
         final List<String> staffNameList = staffList.stream().map(Staff::getName).collect(Collectors.toList());
@@ -86,6 +99,11 @@ public class Main {
         return in.getInt("Select staff account to begin", 0, staffNameList.size());
     }
 
+    /**
+     * Hooks up individual managers to the main function
+     * @param manager instance of manager to be hooked
+     * @throws Exception contains error messages that may be thrown when initialising the manager
+     */
     private void hookManagerToMain(RestaurantManager manager) throws Exception {
         if (manager.getMainCLIOptions().length != manager.getOptionRunnables().length) {
             Logger.getAnonymousLogger().log(Level.WARNING, "CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
@@ -102,6 +120,10 @@ public class Main {
         }
     }
 
+    /**
+     * public static void main(String[] args)
+     * @param args CLI arguments
+     */
     public static void main(String[] args) {
         try {
             final Main main = new Main();
