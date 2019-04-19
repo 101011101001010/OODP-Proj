@@ -48,7 +48,7 @@ public class Staff extends RestaurantData {
      * Updates the title of the staff.
      * @param title New title of the staff.
      */
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -56,7 +56,7 @@ public class Staff extends RestaurantData {
      * Retrieves the title of the staff.
      * @return Title of the staff.
      */
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 

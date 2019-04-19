@@ -138,7 +138,7 @@ public class Main {
      */
     private void hookManagerToMain(RestaurantManager manager) throws Exception {
         if (manager.getMainCLIOptions().length != manager.getOptionRunnables().length) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
+            ConsolePrinter.printMessage(ConsolePrinter.MessageType.WARNING, "CLI options and runnables mismatch for " + manager.getClass().getSimpleName() + ".");
             return;
         }
 

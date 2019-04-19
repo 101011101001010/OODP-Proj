@@ -27,7 +27,7 @@ public class AlaCarteItem extends MenuItem {
 	 * Updates the category of the item.
 	 * @param category New category of the item.
 	 */
-	void setCategory(String category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 

@@ -36,7 +36,7 @@ public class MenuItem extends RestaurantData {
      * Updates the name of the item.
      * @param name New name of the item.
      */
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -52,7 +52,7 @@ public class MenuItem extends RestaurantData {
      * Updates the price of the item.
      * @param price New price of the item in BigDecimal.
      */
-    void setPrice(BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
