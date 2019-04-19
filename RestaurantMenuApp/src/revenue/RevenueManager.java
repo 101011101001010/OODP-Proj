@@ -5,14 +5,15 @@ import core.RestaurantManager;
 import enums.DataType;
 import tools.ConsolePrinter;
 import tools.FileIO;
-import java.lang.reflect.Method;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * Displays revenue information of the restaurant.
+ * Displays revenue information of the restaurant by periods.
  */
 public class RevenueManager extends RestaurantManager {
     /**
@@ -25,16 +26,21 @@ public class RevenueManager extends RestaurantManager {
         DAILY
     }
 
-    private List<String> stringList;
-    private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd HHmmss");
-    private Map<String, Integer>  totalCount;
-    private Map<String, BigDecimal> totalPrice;
+    /**
+     * List of all revenue information read from its text file.
+     */
+    private List<String[]> revenueList;
 
+    /**
+     * Initialises the manager with a restaurant object for data storage and manipulation.
+     * Also reads in data from the revenue text file for local storage.
+     * @param restaurant Restaurant instance from main
+     * @throws Exception Errors that occurred while reading in revenue data from text file.
+     */
     public RevenueManager(Restaurant restaurant) throws Exception {
         super(restaurant);
         final FileIO f = new FileIO();
-        stringList = f.read(DataType.REVENUE);
-        stringList.sort(Collections.reverseOrder());
+        revenueList = f.read(DataType.REVENUE).stream().map(data -> data.split(" // ")).filter(data -> data.length == 2).collect(Collectors.toList());
     }
 
     /**
@@ -67,159 +73,67 @@ public class RevenueManager extends RestaurantManager {
         return tempList.toArray(new Runnable[0]);
     }
 
+    /**
+     * Prints revenue information by period.
+     * @param period Revenue period to print based on the enumerator.
+     */
     private void print(Period period) {
-        String suffix = period.name().substring(0, 1).toUpperCase() + period.name().substring(1).toLowerCase();
         try {
-            Method method = this.getClass().getDeclaredMethod("print" + suffix);
-            method.invoke(this);
-        } catch (Exception e) {
-            ConsolePrinter.logToFile("Method error", e);
-            //System.out.println("No method found." + e.getMessage());
-        }
-    }
+            LocalDate compareDate = LocalDate.now();
+            Set<String> keySet = new TreeSet<>();
+            Map<String, Integer> countMap = new HashMap<>();
+            Map<String, BigDecimal> priceMap = new HashMap<>();
 
-    private void printDaily() {
-        List<String> todayList = new ArrayList<>();
-        LocalDateTime checkdate;
-        this.totalCount = new HashMap<>();
-        this.totalPrice = new HashMap<>();
+            for (String[] datas : revenueList) {
+                String orderId = datas[0];
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd HHmmss");
+                LocalDate orderDate = LocalDate.parse(orderId, format);
 
-        for ( String s1 : stringList) {
-            String[] split = s1.split(" // ");
-            String orderId = split[0];
-            checkdate = LocalDateTime.parse(orderId, format);
-            if(checkdate.toLocalDate().equals(LocalDateTime.now().toLocalDate())){
-                String items = split[1];
-                String[] itemArray = items.split("--");
+                if (period.equals(Period.DAILY) && !orderDate.equals(compareDate)) {
+                    continue;
+                } else if (period.equals(Period.MONTHLY) && (!orderDate.getMonth().equals(compareDate.getMonth()) || orderDate.getYear() != compareDate.getYear())) {
+                    continue;
+                } else if (period.equals(Period.ANNUALLY) && orderDate.getYear() != compareDate.getYear()) {
+                    continue;
+                }
 
-                for (String s2 : itemArray) {
-                    String[] itemDetails = s2.split(" - ");
-                    String orderName = itemDetails[0];
-                    int count = Integer.parseInt(itemDetails[1]);
-                    BigDecimal price = new BigDecimal(itemDetails[2]);
-                    addList(todayList, orderName);
-                    increaseCount(totalCount, orderName, count);
-                    addPrice(totalPrice, orderName, price);
+                for (String items : datas[1].split("--")) {
+                    String[] itemDetails = items.split(" - ");
+                    String itemName = itemDetails[0];
+                    int itemCount = Integer.parseInt(itemDetails[1]);
+                    BigDecimal itemPrice = new BigDecimal(itemDetails[2]);
+
+                    if (countMap.containsKey(itemName)) {
+                        itemCount += countMap.get(itemName);
+                    }
+
+                    if (priceMap.containsKey(itemName)) {
+                        itemPrice = priceMap.get(itemName).add(itemPrice);
+                    }
+
+                    keySet.add(itemName);
+                    countMap.put(itemName, itemCount);
+                    priceMap.put(itemName, itemPrice);
                 }
             }
-        }
-        printRevenue(totalCount, totalPrice, todayList, Period.DAILY);
-    }
 
-    private void printMonthly() {
-        List<String> monthlyList = new ArrayList<>();
-        LocalDateTime checkdate;
-        this.totalCount = new HashMap<>();
-        this.totalPrice = new HashMap<>();
-
-        for ( String s1 : stringList) {
-            String[] split = s1.split(" // ");
-            String orderId = split[0];
-            checkdate = LocalDateTime.parse(orderId, format);
-            if(checkdate.getMonth().equals(LocalDateTime.now().getMonth()) &&
-                    checkdate.getYear() == LocalDateTime.now().getYear()){
-                String items = split[1];
-                String[] itemArray = items.split("--");
-
-                for (String s2 : itemArray) {
-                    String[] itemDetails = s2.split(" - ");
-                    String orderName = itemDetails[0];
-                    int count = Integer.parseInt(itemDetails[1]);
-                    BigDecimal price = new BigDecimal(itemDetails[2]);
-                    addList(monthlyList, orderName);
-                    increaseCount(totalCount, orderName, count);
-                    addPrice(totalPrice, orderName, price);
-                }
-            }
-        }
-        printRevenue(totalCount, totalPrice, monthlyList, Period.MONTHLY);
-    }
-
-    private void printAnnually() {
-        List<String> annuallyList = new ArrayList<>();
-        LocalDateTime checkdate;
-        this.totalCount = new HashMap<>();
-        this.totalPrice = new HashMap<>();
-
-        for ( String s1 : stringList) {
-            String[] split = s1.split(" // ");
-            String orderId = split[0];
-            checkdate = LocalDateTime.parse(orderId, format);
-            if(checkdate.getYear() == LocalDateTime.now().getYear()){
-                String items = split[1];
-                String[] itemArray = items.split("--");
-
-                for (String s2 : itemArray) {
-                    String[] itemDetails = s2.split(" - ");
-                    String orderName = itemDetails[0];
-                    int count = Integer.parseInt(itemDetails[1]);
-                    BigDecimal price = new BigDecimal(itemDetails[2]);
-                    addList(annuallyList, orderName);
-                    increaseCount(totalCount, orderName, count);
-                    addPrice(totalPrice, orderName, price);
-                }
-            }
-        }
-        printRevenue(totalCount, totalPrice, annuallyList, Period.ANNUALLY);
-    }
-
-    private void printLifetime() {
-        List<String> allList = new ArrayList<>();
-        this.totalCount = new HashMap<>();
-        this.totalPrice = new HashMap<>();
-
-        for ( String s1 : stringList) {
-            String[] split = s1.split(" // ");
-            String items = split[1];
-            String[] itemArray = items.split("--");
-
-            for (String s2 : itemArray) {
-                String[] itemDetails = s2.split(" - ");
-                String orderName = itemDetails[0];
-                int count = Integer.parseInt(itemDetails[1]);
-                BigDecimal price = new BigDecimal(itemDetails[2]);
-                addList(allList, orderName);
-                increaseCount(totalCount, orderName, count);
-                addPrice(totalPrice, orderName, price);
-            }
-        }
-        printRevenue(totalCount, totalPrice, allList, Period.LIFETIME);
-    }
-
-    private void addList (List<String> list, String itemName){
-        for (String l :list){
-            if (l.equals(itemName))
+            if (keySet.size() == 0) {
+                ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "No revenue information found for this period.");
                 return;
-        }
-        list.add(itemName);
-    }
-    private void addPrice (Map<String, BigDecimal> map, String key, BigDecimal price){
-        BigDecimal itemPrice = map.get(key);
-        if (itemPrice == null){
-            map.put(key, price);
-        }
-    }
-    private void increaseCount(Map<String, Integer> map, String key, int count){
+            }
 
-        Integer value = map.get(key);
-        if (value == null){
-            map.put(key, count);
-        }
-        else{
-            map.put(key, value + count);
-        }
-    }
-    private void printRevenue(Map<String, Integer> totalCount, Map<String, BigDecimal> totalPrice, List<String> revenueList, Period period){
-        List<String> displayList = new ArrayList<>();
+            List<String> displayList = new ArrayList<>();
 
-        for ( String l : revenueList){
-            displayList.add(l + " // " + totalCount.get(l) + " // " + totalPrice.get(l));
+            for (String key : keySet) {
+                displayList.add(key + " // " + countMap.get(key) + " // " + priceMap.get(key));
+            }
+
+            final String title = period + " Revenue Report";
+            ConsolePrinter.clearCmd();
+            ConsolePrinter.printTable(title, "Item // Amount // Total Price", displayList, true);
+            getInputHelper().getInt("Enter 0 to go back", 0, 0);
+        } catch (RuntimeException e) {
+            ConsolePrinter.logToFile(e.getMessage(), e);
         }
-
-        final String title = period + " Revenue Report";
-
-        ConsolePrinter.clearCmd();
-        ConsolePrinter.printTable(title, "Item // Amount // Total Price", displayList, true);
-        getInputHelper().getInt("Enter 0 to go back", 0, 0);
     }
 }

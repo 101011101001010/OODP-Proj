@@ -523,3 +523,10 @@ Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for l
 	at revenue.RevenueManager.printDaily(RevenueReader.java:82)
 	... 8 more
 
+20190419-180227: No revenue information found.
+java.lang.Exception: No revenue information found.
+	at revenue.RevenueManager.print(RevenueManager.java:121)
+	at revenue.RevenueManager.lambda$getOptionRunnables$2(RevenueManager.java:70)
+	at core.Main.start(Main.java:106)
+	at core.Main.main(Main.java:163)
+
