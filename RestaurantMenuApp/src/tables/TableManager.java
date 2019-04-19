@@ -24,25 +24,49 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Manages table, order information in the restaurant list database through a CLI.
+ * Additionally manages reservation information within each table object.
+ */
 public class TableManager extends RestaurantManager {
-    private LocalTime amOpeningHour;
-    private LocalTime amClosingHour;
-    private LocalTime pmOpeningHour;
-    private LocalTime pmClosingHour;
+    /**
+     * Constant of restaurant opening hour for the morning session.
+     */
+    private final LocalTime AM_OPENING = LocalTime.of(11, 0);
 
+    /**
+     * Constant of restaurant closing hour for the morning session.
+     */
+    private final LocalTime AM_CLOSING = LocalTime.of(15, 0);
+
+    /**
+     * Constant of restaurant opening hour for the afternoon session.
+     */
+    private final LocalTime PM_OPENING = LocalTime.of(18, 0);
+
+    /**
+     * Constant of restaurant closing hour for the afternoon session.
+     */
+    private final LocalTime PM_CLOSING = LocalTime.of(22, 0);
+
+    /**
+     * Initialises the manager with a restaurant object for data storage and manipulation.
+     * Reservations are checked for each table, and expired reservations (>30 minutes) will be removed.
+     * @param restaurant Restaurant instance from main.
+     * @throws Exception Errors that occurred while checking reservations.
+     */
     public TableManager(Restaurant restaurant) throws Exception {
         super(restaurant);
-        DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("HH:mm").toFormatter(Locale.ENGLISH);
-        amOpeningHour = LocalTime.parse("11:00", format);
-        amClosingHour = LocalTime.parse("15:00", format);
-        pmOpeningHour = LocalTime.parse("18:00", format);
-        pmClosingHour = LocalTime.parse("22:00", format);
 
         if (getRestaurant().isDataTypeExists(DataType.TABLE)) {
             checkReservations();
         }
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public void init() throws Exception {
         final FileIO f = new FileIO();
@@ -128,6 +152,10 @@ public class TableManager extends RestaurantManager {
         checkReservations();
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public String[] getMainCLIOptions() {
         return new String[]{
@@ -140,6 +168,10 @@ public class TableManager extends RestaurantManager {
         };
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public Runnable[] getOptionRunnables() {
         return new Runnable[]{
@@ -152,6 +184,10 @@ public class TableManager extends RestaurantManager {
         };
     }
 
+    /**
+     * Maps to the various methods to run. Used as some methods throw exceptions, which will be caught by this method for logging purposes.
+     * @param which Which method to run.
+     */
     private void display(int which) {
         try {
             switch (which) {
@@ -184,6 +220,11 @@ public class TableManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Displays all tables along with their occupancy and reservation status.
+     * Reservation status are displayed for the current session only.
+     * @throws Exception Errors that occurred while displaying the table information.
+     */
     private void viewTable() throws Exception {
         int sortOption = 1;
         final List<String> sortOptions = Arrays.asList("Sort by ID", "Sort by occupancy", "Sort by reservation");
@@ -200,6 +241,10 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.clearCmd();
     }
 
+    /**
+     * Displays all open orders and their details.
+     * @throws Exception Errors that occurred while displaying the order information.
+     */
     private void viewOrder(Table table) {
         List<String> displayList = Collections.singletonList(table.getOrder().toDisplayString());
         ConsolePrinter.printTable("Table // Order ID // Staff ID // Order Details", displayList, true);
@@ -207,6 +252,10 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.clearCmd();
     }
 
+    /**
+     * Creates a new order given a number of pax.
+     * @throws Exception Errors that occurred while creating an order.
+     */
     private void createNewOrder() throws Exception {
         ConsolePrinter.printInstructions(Arrays.asList("Enter number of pax and an empty table will automatically be assigned.", "Enter 0 to exit."));
         int pax = getInputHelper().getInt("Enter number of pax", 0, 10);
@@ -224,6 +273,10 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Order " + orderId + " has been created successfully.");
     }
 
+    /**
+     * Manages open orders in the restaurant list database.
+     * @throws Exception Errors that occurred while managing orders.
+     */
     private void manageOrders() throws Exception {
         final List<Table> dataList = getRestaurant().getDataList(DataType.TABLE);
         final List<Table> activeTableList =  dataList.stream().filter(Table::hasOrder).collect(Collectors.toList());
@@ -274,6 +327,11 @@ public class TableManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Adds menu items into an open order.
+     * @param table The table which the order is attached to.
+     * @throws Exception Errors that occurred while adding items into the order.
+     */
     private void addItemToOrder(Table table) throws Exception {
         final List<AlaCarteItem> alaCarteItemList = getRestaurant().getDataList(DataType.ALA_CARTE_ITEM);
         final Set<String> categoryList = alaCarteItemList.stream().map(AlaCarteItem::getCategory).collect(Collectors.toSet());
@@ -325,6 +383,11 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Item has been added to order successfully.");
     }
 
+    /**
+     * Removes existing items in an open order.
+     * @param table The table which the order is attached to.
+     * @throws Exception Errors that occurred while removing items from the order.
+     */
     private void removeItemsFromOrder(Table table) throws Exception {
         List<String> displayList = new ArrayList<>();
         Map<Integer, Order.OrderItem> indexItemMap = new HashMap<>();
@@ -363,6 +426,11 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Items have been removed from order successfully.");
     }
 
+    /**
+     * Voids an open order without sales recording.
+     * @param table The table which the order is attached to.
+     * @throws Exception Errors that occurred while voiding the order.
+     */
     private void voidOrder(Table table) throws Exception {
         ConsolePrinter.printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
 
@@ -377,6 +445,10 @@ public class TableManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Displays all reservations and their details.
+     * @throws Exception Errors that occurred while displaying the reservations.
+     */
     private void showReservations() throws Exception {
         List<Table> tableList = getRestaurant().getDataList(DataType.TABLE);
         List<Table.Reservation> reservationList = new ArrayList<>();
@@ -390,6 +462,10 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.clearCmd();
     }
 
+    /**
+     * Makes a new reservation for a table.
+     * @throws Exception Errors that occurred while making the reservation.
+     */
     private void newReservation() throws Exception {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy").toFormatter(Locale.ENGLISH);
         String date;
@@ -421,7 +497,7 @@ public class TableManager extends RestaurantManager {
                 time = getInputHelper().getString("Enter reserving time");
                 timeFormatted = LocalTime.parse(time, formatter);
 
-                if (timeFormatted.isBefore(amOpeningHour) || timeFormatted.isAfter(pmClosingHour.minusHours(1)) || (timeFormatted.isAfter(amClosingHour.minusHours(1)) && timeFormatted.isBefore(pmOpeningHour))) {
+                if (timeFormatted.isBefore(AM_OPENING) || timeFormatted.isAfter(PM_CLOSING.minusHours(1)) || (timeFormatted.isAfter(AM_CLOSING.minusHours(1)) && timeFormatted.isBefore(PM_OPENING))) {
                     ConsolePrinter.printMessage(ConsolePrinter.MessageType.FAILED, "Invalid time.");
                 } else {
                     break;
@@ -451,6 +527,10 @@ public class TableManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Manages existing reservations under a contact number.
+     * @throws Exception Errors that occurred while managing the reservations.
+     */
     private void manageReservations() throws Exception {
         int contact;
         List<Table> tableList = getRestaurant().getDataList(DataType.TABLE);
@@ -491,6 +571,11 @@ public class TableManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Fulfil a reservation and opens an order for that reservation.
+     * @param reservation Reservation to fulfil.
+     * @throws Exception Errors that occurred while fulfilling the reservation.
+     */
     private void fulfilReservation(Table.Reservation reservation) throws Exception {
         Table table = getRestaurant().getDataFromId(DataType.TABLE, reservation.getTableId());
 
@@ -506,6 +591,11 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Reservation has been fulfilled successfully.");
     }
 
+    /**
+     * Removes a reservation from a table.
+     * @param reservation Reservation to remove.
+     * @throws Exception Errors that occurred while removing the reservation.
+     */
     private void deleteReservation(Table.Reservation reservation) throws Exception {
         Table table = getRestaurant().getDataFromId(DataType.TABLE, reservation.getTableId());
         table.deleteReservation(reservation);
@@ -513,6 +603,12 @@ public class TableManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Reservation has been deleted successfully.");
     }
 
+    /**
+     * Checks existing reservations.
+     * Expired reservations (>30 minutes) are removed for their respective tables.
+     * Sets tables with reservations in the current session to reserved status.
+     * @throws Exception Errors that occurred while checking the reservations.
+     */
     private void checkReservations() throws Exception {
         List<Table> tableList = getRestaurant().getDataList(DataType.TABLE);
 
@@ -531,7 +627,11 @@ public class TableManager extends RestaurantManager {
         }
     }
 
-
+    /**
+     * Prints the bill invoice for a specified table.
+     * @param table Table to print invoice for.
+     * @throws Exception Errors that occurred while printing the bill invoice.
+     */
     private void printBill(Table table) throws Exception {
         Order order = table.getOrder();
 
@@ -587,7 +687,13 @@ public class TableManager extends RestaurantManager {
         getRestaurant().save(table);
     }
 
-
+    /**
+     * Searches the restaurant list database for an available table for a given dateTime and pax.
+     * @param dateTime The date and time to obtain an available table for.
+     * @param pax Number of pax to obtain an available table for.
+     * @return Available table found in the database.
+     * @throws Exception Errors that occurred while searching for an available table, or if no table is available for the specified pax at the specified date and time.
+     */
     private Table getAvailableTable(LocalDateTime dateTime, int pax) throws Exception {
         final List<Table> dataList = getRestaurant().getDataList(DataType.TABLE);
         final List<Table> emptyTableList =  dataList.stream().filter(table -> table.isAvailable(dateTime)).collect(Collectors.toList());
@@ -600,6 +706,12 @@ public class TableManager extends RestaurantManager {
         return oTable.get();
     }
 
+    /**
+     * Formats the data objects obtained from the restaurant list database into table-friendly format.
+     * @param sortOption Determines which comparator to sort the formatted list by.
+     * @return List of formatted object data. One object per entry.
+     * @throws Exception Errors that occurred while obtaining data objects.
+     */
     private List<String> getTableDisplayList(int sortOption) throws Exception {
         Comparator<Table> comparator;
 

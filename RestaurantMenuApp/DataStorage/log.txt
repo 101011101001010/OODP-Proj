@@ -429,9 +429,9 @@ java.lang.Exception: Failed to find index for the given ID '38'.
 
 20190418-164115: Index 2 out of bounds for length 2
 java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
-	at Classes.RevenueReader.printDaily(RevenueReader.java:110)
-	at Classes.RevenueReader.display(RevenueReader.java:73)
-	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:66)
+	at revenue.RevenueManager.printDaily(RevenueReader.java:110)
+	at revenue.RevenueManager.display(RevenueReader.java:73)
+	at revenue.RevenueManager.lambda$getOptionRunnables$0(RevenueReader.java:66)
 	at core.Main.start(Main.java:67)
 	at core.Main.main(Main.java:109)
 
@@ -441,27 +441,27 @@ java.lang.reflect.InvocationTargetException
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at Classes.RevenueReader.print(RevenueReader.java:68)
-	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:58)
+	at revenue.RevenueManager.print(RevenueReader.java:68)
+	at revenue.RevenueManager.lambda$getOptionRunnables$0(RevenueReader.java:58)
 	at core.Main.start(Main.java:67)
 	at core.Main.main(Main.java:109)
 Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
-	at Classes.RevenueReader.printDaily(RevenueReader.java:94)
+	at revenue.RevenueManager.printDaily(RevenueReader.java:94)
 	... 8 more
 
 20190418-174309: Method error
-java.lang.NoSuchMethodException: Classes.RevenueReader.printAnnually()
+java.lang.NoSuchMethodException: revenue.RevenueManager.printAnnually()
 	at java.base/java.lang.Class.getDeclaredMethod(Class.java:2476)
-	at Classes.RevenueReader.print(RevenueReader.java:67)
-	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:58)
+	at revenue.RevenueManager.print(RevenueReader.java:67)
+	at revenue.RevenueManager.lambda$getOptionRunnables$0(RevenueReader.java:58)
 	at core.Main.start(Main.java:67)
 	at core.Main.main(Main.java:109)
 
 20190418-180248: Method error
-java.lang.NoSuchMethodException: Classes.RevenueReader.printDaily()
+java.lang.NoSuchMethodException: revenue.RevenueManager.printDaily()
 	at java.base/java.lang.Class.getDeclaredMethod(Class.java:2476)
-	at Classes.RevenueReader.print(RevenueReader.java:63)
-	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at revenue.RevenueManager.print(RevenueReader.java:63)
+	at revenue.RevenueManager.lambda$getOptionRunnables$0(RevenueReader.java:54)
 	at core.Main.start(Main.java:74)
 	at core.Main.main(Main.java:131)
 
@@ -471,13 +471,13 @@ java.lang.reflect.InvocationTargetException
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at Classes.RevenueReader.print(RevenueReader.java:64)
-	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at revenue.RevenueManager.print(RevenueReader.java:64)
+	at revenue.RevenueManager.lambda$getOptionRunnables$0(RevenueReader.java:54)
 	at core.Main.start(Main.java:74)
 	at core.Main.main(Main.java:131)
 Caused by: java.lang.NullPointerException
-	at Classes.RevenueReader.printRevenue(RevenueReader.java:207)
-	at Classes.RevenueReader.printDaily(RevenueReader.java:96)
+	at revenue.RevenueManager.printRevenue(RevenueReader.java:207)
+	at revenue.RevenueManager.printDaily(RevenueReader.java:96)
 	... 8 more
 
 20190418-200808: Text '20190418-183837' could not be parsed at index 8
@@ -498,15 +498,15 @@ java.lang.reflect.InvocationTargetException
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at Classes.RevenueReader.print(RevenueReader.java:64)
-	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at revenue.RevenueManager.print(RevenueReader.java:64)
+	at revenue.RevenueManager.lambda$getOptionRunnables$0(RevenueReader.java:54)
 	at core.Main.start(Main.java:74)
 	at core.Main.main(Main.java:131)
 Caused by: java.lang.NumberFormatException: For input string: "200.00"
 	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
 	at java.base/java.lang.Integer.parseInt(Integer.java:652)
 	at java.base/java.lang.Integer.parseInt(Integer.java:770)
-	at Classes.RevenueReader.printDaily(RevenueReader.java:88)
+	at revenue.RevenueManager.printDaily(RevenueReader.java:88)
 	... 8 more
 
 20190418-204657: Method error
@@ -515,11 +515,11 @@ java.lang.reflect.InvocationTargetException
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
-	at Classes.RevenueReader.print(RevenueReader.java:64)
-	at Classes.RevenueReader.lambda$getOptionRunnables$0(RevenueReader.java:54)
+	at revenue.RevenueManager.print(RevenueReader.java:64)
+	at revenue.RevenueManager.lambda$getOptionRunnables$0(RevenueReader.java:54)
 	at core.Main.start(Main.java:74)
 	at core.Main.main(Main.java:131)
 Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
-	at Classes.RevenueReader.printDaily(RevenueReader.java:82)
+	at revenue.RevenueManager.printDaily(RevenueReader.java:82)
 	... 8 more
 

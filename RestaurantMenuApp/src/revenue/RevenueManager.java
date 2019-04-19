@@ -1,4 +1,4 @@
-package Classes;
+package revenue;
 
 import core.Restaurant;
 import core.RestaurantManager;
@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
-public class RevenueReader extends RestaurantManager {
+public class RevenueManager extends RestaurantManager {
     private enum Period {
         LIFETIME,
         ANNUALLY,
@@ -25,7 +25,7 @@ public class RevenueReader extends RestaurantManager {
     private Map<String, Integer>  totalCount;
     private Map<String, BigDecimal> totalPrice;
 
-    public RevenueReader(Restaurant restaurant) throws Exception {
+    public RevenueManager(Restaurant restaurant) throws Exception {
         super(restaurant);
         final FileIO f = new FileIO();
         stringList = f.read(DataType.REVENUE);

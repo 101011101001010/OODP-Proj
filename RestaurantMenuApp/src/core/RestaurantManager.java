@@ -44,7 +44,8 @@ public abstract class RestaurantManager {
     }
 
     /**
-     * Initialisation method for the manager - only runs at application start-up. Not compulsory for classes that extend RestaurantManager to implement this.
+     * Initialisation method for the manager - only runs once throughout the lifetime of the application instance at start-up.
+     * Not compulsory for classes that extend RestaurantManager to implement this.
      * @throws Exception errors that occurred while initialising the manager
      */
     public void init() throws Exception {}
