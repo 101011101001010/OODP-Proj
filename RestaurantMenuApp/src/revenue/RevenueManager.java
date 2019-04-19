@@ -1,4 +1,4 @@
-package Classes;
+package revenue;
 
 import core.Restaurant;
 import core.RestaurantManager;
@@ -11,8 +11,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
-public class RevenueReader extends RestaurantManager {
+/**
+ * Displays revenue information of the restaurant.
+ */
+public class RevenueManager extends RestaurantManager {
+    /**
+     * Period enumerator for the revenue display periods.
+     */
     private enum Period {
         LIFETIME,
         ANNUALLY,
@@ -25,16 +30,17 @@ public class RevenueReader extends RestaurantManager {
     private Map<String, Integer>  totalCount;
     private Map<String, BigDecimal> totalPrice;
 
-    public RevenueReader(Restaurant restaurant) throws Exception {
+    public RevenueManager(Restaurant restaurant) throws Exception {
         super(restaurant);
         final FileIO f = new FileIO();
         stringList = f.read(DataType.REVENUE);
         stringList.sort(Collections.reverseOrder());
     }
 
-    @Override
-    public void init() {}
-
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public String[] getMainCLIOptions() {
         List<String> tempList = new ArrayList<>();
@@ -46,6 +52,10 @@ public class RevenueReader extends RestaurantManager {
         return tempList.toArray(new String[0]);
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public Runnable[] getOptionRunnables() {
         List<Runnable> tempList = new ArrayList<>();

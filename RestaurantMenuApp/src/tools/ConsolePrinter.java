@@ -7,6 +7,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConsolePrinter {
+    /**
+     * Message types for printed messages.
+     */
     public enum MessageType {
         SUCCESS,
         FAILED,
@@ -15,6 +18,10 @@ public class ConsolePrinter {
         FATAL
     }
 
+    /**
+     * CLI formatting for the main options.
+     * @param mainCLIOptions list of string arrays obtained from the different managers in main
+     */
     public static void sendWelcome(List<String[]> mainCLIOptions) {
         final List<String> optionsList = new ArrayList<>();
 
@@ -29,6 +36,14 @@ public class ConsolePrinter {
         printTable("Scam Money Restaurant", "Command // Function", mainDisplay, true);
     }
 
+    /**
+     * Adds a command index to every option for users to select. If footerOptions is supplied (not null), footer options will be formatted in with descending indices starting from 0 inclusive.
+     * @param options List of option strings to be formatted
+     * @param footerOptions Additional footer options to be formatted, usually used for options to 'go back'.
+     *                      May be null.
+     *                      If null, the default footer option will be 'Go back' (go up one menu level).
+     * @return List of formatted strings with command indices.
+     */
     public static List<String> formatChoiceList(List<String> options, List<String> footerOptions) {
         if (options == null) {
             return null;
@@ -59,10 +74,21 @@ public class ConsolePrinter {
         return mergedOptions;
     }
 
+    /**
+     * Wrapper that prints a table of instructions without any dividers.
+     * Primarily used to convey instructions to users.
+     * @param instructionList List of instruction strings to be printed.
+     */
     public static void printInstructions(List<String> instructionList) {
         printTable("", "", instructionList, false);
     }
 
+    /**
+     * Wrapper for printing a table without a title. See the full printTable function for more details.
+     * @param columnHeaders The first row, 'header row', for the table.
+     * @param stringList List of strings to be printed, post-formatted with column division symbols. See print formatting documentation for more details.
+     * @param verticalDivider Specifies if column dividers are to be printed in the table.
+     */
     public static void printTable(String columnHeaders, List<String> stringList, boolean verticalDivider) {
         printTable("", columnHeaders, stringList, verticalDivider);
     }
@@ -176,6 +202,14 @@ public class ConsolePrinter {
         printDivider('=', totalLength);
     }
 
+    /**
+     * Calculates the length for each column in the table.
+     * Column length is capped based on the overall maximum string length.
+     * If each column takes up lesser length than the overall maximum length, each column is padded until its overall length matches the defined maximum length.
+     * @param title Title of the table. Overall max length = whichever is higher: pre-defined length or title length.
+     * @param stringList List of strings to be printed.
+     * @return
+     */
     private static List<Integer> calculateCellLengths(String title, List<String> stringList) {
         List<int[]> lengthPerRowList = stringList.stream().map(s -> s.split(" // ")).map(s -> Arrays.stream(s).mapToInt(String::length).toArray()).collect(Collectors.toList());
         int maxCellCount = lengthPerRowList.stream().mapToInt(v -> v.length).max().orElse(0);
@@ -223,6 +257,12 @@ public class ConsolePrinter {
         return cellLengths;
     }
 
+    /**
+     * Prepares each row of string for column printing.
+     * @param rowString Array of strings to be processed. Each array index holds a string for a column.
+     * @param cellLengths List of calculated lengths for each column.
+     * @return List of a list of processed cell strings for printing for one row.
+     */
     private static List<List<String>> processRowString(String[] rowString, List<Integer> cellLengths) {
         final List<List<String>> ret = new ArrayList<>();
         int maxRowCount = 0;
@@ -258,6 +298,13 @@ public class ConsolePrinter {
         return ret;
     }
 
+    /**
+     * Processes strings for printing in each column by truncating long strings and appending them to the next row.
+     * Strings are truncated by space and newline.
+     * @param cellString Original cell string to be processed
+     * @param cellLength List of calculated lengths for each column.
+     * @return List of processed cell strings for a row.
+     */
     private static List<String> processCellString(String cellString, int cellLength) {
         final List<String> cellWords = new ArrayList<>();
         Arrays.stream(cellString.trim().replace("\n", "\n\\\\").split("\n")).forEach(s -> cellWords.addAll(Arrays.asList(s.split(" "))));
@@ -294,6 +341,15 @@ public class ConsolePrinter {
         return ret;
     }
 
+
+    /**
+     * Breaks up a space-less string into small strings up to the supplied maxLength.
+     * If specified, the string will be trimmed to the length of the trailSpace for the first element.
+     * @param s String to be broken up.
+     * @param maxLength Maximum length of a broken up string.
+     * @param trailSpace The first broken up element will have the length of the trailSpace instead.
+     * @return List of formatted strings for print.
+     */
     private static List<String> subString(String s, int maxLength, int trailSpace) {
         final List<String> ret = new ArrayList<>();
 
@@ -319,6 +375,12 @@ public class ConsolePrinter {
         }
     }
 
+    /**
+     * Prints the title row of a table.
+     * Text in title rows are automatically centered.
+     * @param title Title string to print
+     * @param length Total column lengths not including table online characters like '|'.
+     */
     private static void printTitle(String title, int length) {
         final int pad = Math.max(length - title.length(), 0);
         System.out.println();
@@ -327,10 +389,23 @@ public class ConsolePrinter {
         printDivider('=', length);
     }
 
+    /**
+     * Prints a table divider with no column dividers up to the supplied length.
+     * The length should be the overall column lengths not including the table outline characters '|'.
+     * @param c
+     * @param length
+     */
     private static void printDivider(char c, int length) {
         System.out.println("|" + (c + "").repeat(length + 4) + "|");
     }
 
+    /**
+     * Prints a table divider by repeating the supplied character up to the total length of the supplied cellLengths.
+     * The length should be the overall column lengths not including the table outline characters '|'.
+     * @param c Character to be repeated.
+     * @param cellLengths List of calculated lengths for each column.
+     * @param verticalDivider The table divider conforms to the table column dividers if set to true.
+     */
     private static void printDivider(char c, List<Integer> cellLengths, boolean verticalDivider) {
         System.out.print("|");
 
@@ -346,12 +421,21 @@ public class ConsolePrinter {
         System.out.println("|");
     }
 
+    /**
+     * Clears the command prompt of all outputs.
+     * Note: Does not work in IntelliJ terminal.
+     */
     public static void clearCmd() {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (IOException | InterruptedException ignored) {}
     }
 
+    /**
+     * Prints a message on the CLI of a message type.
+     * @param messageType Message type, appended to the start of the message.
+     * @param message Message to be printed.
+     */
     public static void printMessage(MessageType messageType, String message) {
         clearCmd();
 
@@ -359,6 +443,11 @@ public class ConsolePrinter {
         System.out.println(message);
     }
 
+    /**
+     * Logs an error to text file while printing a message to the CLI at the same time.
+     * @param message
+     * @param e
+     */
     public static void logToFile(String message, Exception e) {
         printMessage(MessageType.ERROR, message);
         DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");

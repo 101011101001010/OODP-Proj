@@ -10,12 +10,22 @@ import tools.FileIO;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Manages staff information in the restaurant list database through a CLI.
+ */
 public class StaffManager extends RestaurantManager {
-
+    /**
+     * Initialises the manager with a restaurant object for data storage and manipulation.
+     * @param restaurant Restaurant instance from main.
+     */
     public StaffManager(Restaurant restaurant) {
         super(restaurant);
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public void init() throws Exception {
         Comparator<Staff> comparator = Comparator.comparing(Staff::getName);
@@ -43,6 +53,10 @@ public class StaffManager extends RestaurantManager {
         getRestaurant().bulkSave(DataType.STAFF);
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public String[] getMainCLIOptions() {
         return new String[] {
@@ -52,6 +66,10 @@ public class StaffManager extends RestaurantManager {
         };
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public Runnable[] getOptionRunnables() {
         return new Runnable[] {
@@ -61,6 +79,10 @@ public class StaffManager extends RestaurantManager {
         };
     }
 
+    /**
+     * Maps to the various methods to run. Used as some methods throw exceptions, which will be caught by this method for logging purposes.
+     * @param which Which method to run.
+     */
     private void display(int which) {
         try {
             switch (which) {
@@ -81,6 +103,10 @@ public class StaffManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Displays all staff information.
+     * @throws Exception Errors that occurred while displaying the staff information.
+     */
     private void viewStaff() throws Exception {
         final String title = "Staff Roster";
         final List<String> sortOptions = Arrays.asList("Sort by ID", "Sort by name", "Sort by title");
@@ -99,6 +125,10 @@ public class StaffManager extends RestaurantManager {
         ConsolePrinter.clearCmd();
     }
 
+    /**
+     * Adds a staff into the restaurant list database.
+     * @throws Exception Errors that occurred while adding the item.
+     */
     private void addStaff() throws Exception {
         ConsolePrinter.printInstructions(Collections.singletonList("Enter -back in staff name to go back."));
         final String name = getInputHelper().getString("Enter staff name");
@@ -122,6 +152,11 @@ public class StaffManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Staff has been added successfully.");
     }
 
+
+    /**
+     * Manages staff information in the restaurant list database. Calls updateStaffInfo and removeStaff as needed.
+     * @throws Exception Errors that occurred while managing the staff information.
+     */
     private void manageStaff() throws Exception {
         final List<Staff> dataList = getRestaurant().getDataList(DataType.STAFF);
         final List<String> nameList = dataList.stream().map(Staff::getName).collect(Collectors.toList());
@@ -152,6 +187,12 @@ public class StaffManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Updates a staff's information in the restaurant list database.
+     * @param staff Staff obtained from the calling function.
+     * @param action Action the user chose in the calling function
+     * @throws Exception Errors that occurred while updating staff information
+     */
     private void updateStaffInfo(Staff staff, int action) throws Exception {
         ConsolePrinter.printInstructions(Collections.singletonList("Enter -back to go back."));
         final String input = getInputHelper().getString("Enter the new " + ((action == 1)? "name" : "title"));
@@ -171,6 +212,11 @@ public class StaffManager extends RestaurantManager {
         ConsolePrinter.printMessage(ConsolePrinter.MessageType.SUCCESS, "Staff information has been updated successfully.");
     }
 
+    /**
+     * Removes a staff's information in the restaurant list database.
+     * @param staff Staff obtained from the calling function.
+     * @throws Exception Errors that occurred while removing staff information
+     */
     private void removeStaff(Staff staff) throws Exception {
         ConsolePrinter.printInstructions(Collections.singletonList("Y = YES | Any other key = NO"));
 
@@ -185,6 +231,12 @@ public class StaffManager extends RestaurantManager {
         }
     }
 
+    /**
+     * Formats the data objects obtained from the restaurant list database into table-friendly format.
+     * @param sortOption Determines which comparator to sort the formatted list by.
+     * @return List of formatted object data. One object per entry.
+     * @throws Exception Errors that occurred while obtaining data objects.
+     */
     private List<String> getDisplayList(int sortOption) throws Exception {
         Comparator<Staff> comparator;
 

@@ -11,15 +11,21 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Manages menu items in the restaurant list database through a CLI.
+ */
 public class MenuManager extends RestaurantManager {
-
+    /**
+     * Initialises the manager with a restaurant object for data storage and manipulation.
+     * @param restaurant Restaurant instance from main
+     */
     public MenuManager(Restaurant restaurant) {
         super(restaurant);
     }
 
     /**
-     * Manager initialisation. Runs only once throughout the application's lifetime.
-     * @throws Exception returns the different exceptions that may be thrown while initialising
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
      */
     @Override
     public void init() throws Exception {
@@ -68,6 +74,10 @@ public class MenuManager extends RestaurantManager {
         getRestaurant().bulkSave(DataType.PROMO_PACKAGE);
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public String[] getMainCLIOptions() {
         return new String[]{
@@ -79,6 +89,10 @@ public class MenuManager extends RestaurantManager {
         };
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public Runnable[] getOptionRunnables() {
         return new Runnable[]{
@@ -124,7 +138,7 @@ public class MenuManager extends RestaurantManager {
 
     /**
      * Displays all items in the menu, both ala-carte and promotional packages.
-     * @throws Exception
+     * @throws Exception Errors that occurred while displaying the menu.
      */
     private void viewMenu() throws Exception {
         final List<String> displayList = new ArrayList<>();
@@ -151,8 +165,8 @@ public class MenuManager extends RestaurantManager {
 
     /**
      * Adds a menu item into the restaurant list database. Records the name of the item and calls one of two other sub-functions, 'addAlaCarteItem' and 'addPromoPackage', to complete the process.
-     * @param dataType type of item - ala-carte or promotional package
-     * @throws Exception errors that occurred while adding the item
+     * @param dataType Type of item - ala-carte or promotional package.
+     * @throws Exception Errors that occurred while adding the item.
      */
     private void addMenuItem(DataType dataType) throws Exception {
         ConsolePrinter.printInstructions(Collections.singletonList("Enter -back in item name to go back."));
