@@ -6,6 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Handles printing of text in the CLI.
+ */
 public class ConsolePrinter {
     /**
      * Message types for printed messages.
