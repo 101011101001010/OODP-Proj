@@ -208,7 +208,7 @@ public class ConsolePrinter {
      * If each column takes up lesser length than the overall maximum length, each column is padded until its overall length matches the defined maximum length.
      * @param title Title of the table. Overall max length = whichever is higher: pre-defined length or title length.
      * @param stringList List of strings to be printed.
-     * @return
+     * @return List of cell lengths.
      */
     private static List<Integer> calculateCellLengths(String title, List<String> stringList) {
         List<int[]> lengthPerRowList = stringList.stream().map(s -> s.split(" // ")).map(s -> Arrays.stream(s).mapToInt(String::length).toArray()).collect(Collectors.toList());
@@ -392,8 +392,8 @@ public class ConsolePrinter {
     /**
      * Prints a table divider with no column dividers up to the supplied length.
      * The length should be the overall column lengths not including the table outline characters '|'.
-     * @param c
-     * @param length
+     * @param c Character to repeat as divider.
+     * @param length Length to repeat characters up to.
      */
     private static void printDivider(char c, int length) {
         System.out.println("|" + (c + "").repeat(length + 4) + "|");
@@ -445,8 +445,8 @@ public class ConsolePrinter {
 
     /**
      * Logs an error to text file while printing a message to the CLI at the same time.
-     * @param message
-     * @param e
+     * @param message Additional message to log to file.
+     * @param e Exception to log to file.
      */
     public static void logToFile(String message, Exception e) {
         printMessage(MessageType.ERROR, message);

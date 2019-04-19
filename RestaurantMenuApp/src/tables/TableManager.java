@@ -51,7 +51,7 @@ public class TableManager extends RestaurantManager {
 
     /**
      * Initialises the manager with a restaurant object for data storage and manipulation.
-     * Reservations are checked for each table, and expired reservations (>30 minutes) will be removed.
+     * Reservations are checked for each table, and expired reservations (over 30 minutes) will be removed.
      * @param restaurant Restaurant instance from main.
      * @throws Exception Errors that occurred while checking reservations.
      */
@@ -242,8 +242,8 @@ public class TableManager extends RestaurantManager {
     }
 
     /**
-     * Displays all open orders and their details.
-     * @throws Exception Errors that occurred while displaying the order information.
+     * Displays order details for the specified table.
+     * @param table Table to display the order from.
      */
     private void viewOrder(Table table) {
         List<String> displayList = Collections.singletonList(table.getOrder().toDisplayString());
@@ -605,7 +605,7 @@ public class TableManager extends RestaurantManager {
 
     /**
      * Checks existing reservations.
-     * Expired reservations (>30 minutes) are removed for their respective tables.
+     * Expired reservations (over 30 minutes) are removed for their respective tables.
      * Sets tables with reservations in the current session to reserved status.
      * @throws Exception Errors that occurred while checking the reservations.
      */

@@ -1,9 +1,7 @@
 package tables;
 
 import core.RestaurantData;
-import enums.DataType;
 import menu.MenuItem;
-import tools.FileIO;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -259,7 +257,7 @@ public class Order extends RestaurantData {
 
         /**
          * Retrieves the count of the assigned MenuItem.
-         * @return
+         * @return Count of the assigned MenuItem.
          */
         private int getCount() {
             return count;

@@ -33,7 +33,7 @@ public class PromotionPackage extends MenuItem {
 
 	/**
 	 * Retrieves the list of ala-carte items in the package.
-	 * @return
+	 * @return List of ala-carte items.
 	 */
 	List<AlaCarteItem> getAlaCarteItems() {
 		return alaCarteItems;

@@ -133,7 +133,7 @@ public class Table extends RestaurantData {
     }
 
     /**
-     * Removes all reservations that are expired (>30 minutes).
+     * Removes all reservations that are expired.
      */
     void removeExpiredReservations() {
         reservationMap.values().stream().filter(Reservation::isExpired).forEach(this::deleteReservation);
@@ -356,7 +356,7 @@ public class Table extends RestaurantData {
         /**
          * Checks if the reservation is in its arrival window.
          * Arrival window is any time in the current session, since a table is reserved for the entire session, and before the expiry time.
-         * @return
+         * @return True / False
          */
         boolean isArrivalWindow() {
             return (isCurrentSession() && !isExpired());
@@ -364,7 +364,7 @@ public class Table extends RestaurantData {
 
         /**
          * Retrieves the session information string of the reservation date.
-         * @return
+         * @return Reservation session information string.
          */
         String getSessionString() {
             DateTimeFormatter format = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("ddMMyyyy a").toFormatter(Locale.ENGLISH);
