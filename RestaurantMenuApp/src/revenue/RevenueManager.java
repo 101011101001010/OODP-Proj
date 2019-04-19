@@ -11,8 +11,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
+/**
+ * Displays revenue information of the restaurant.
+ */
 public class RevenueManager extends RestaurantManager {
+    /**
+     * Period enumerator for the revenue display periods.
+     */
     private enum Period {
         LIFETIME,
         ANNUALLY,
@@ -32,9 +37,10 @@ public class RevenueManager extends RestaurantManager {
         stringList.sort(Collections.reverseOrder());
     }
 
-    @Override
-    public void init() {}
-
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public String[] getMainCLIOptions() {
         List<String> tempList = new ArrayList<>();
@@ -46,6 +52,10 @@ public class RevenueManager extends RestaurantManager {
         return tempList.toArray(new String[0]);
     }
 
+    /**
+     * Please see the method description in RestaurantManager.
+     * @see RestaurantManager
+     */
     @Override
     public Runnable[] getOptionRunnables() {
         List<Runnable> tempList = new ArrayList<>();
